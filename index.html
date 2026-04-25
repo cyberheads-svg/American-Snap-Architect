@@ -58,6 +58,12 @@
   footer{margin-top:20px;font-size:9px;color:var(--dim);letter-spacing:.2em;text-align:center}
   @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
   .animate-in{animation:fadeIn .3s ease forwards}
+  .reroll-btn{background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:2px 6px;line-height:1;transition:color .15s;flex-shrink:0}
+  .reroll-btn:hover{color:var(--accent)}
+  .field-row{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--border)}
+  .field-row:last-child{border-bottom:none}
+  .prompt-textarea{width:100%;background:#0a0808;border:1px solid var(--border2);color:var(--muted);font-family:var(--mono);font-size:11px;line-height:1.9;padding:12px;resize:vertical;min-height:120px;margin-bottom:14px;word-break:break-word}
+  .prompt-textarea:focus{outline:none;border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -98,7 +104,7 @@
   <div id="promptBox" style="display:none">
     <hr class="divider">
     <div class="prompt-label">画像AIにコピー</div>
-    <div class="prompt-text" id="finalPrompt"></div>
+    <textarea class="prompt-textarea" id="finalPrompt" onInput="currentPrompt=this.value"></textarea>
     <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">Copy Prompt</button>
   </div>
 </div>
@@ -120,7 +126,14 @@ let generated = 0;
 let currentPrompt = "";
 
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-const pickN = (arr, n) => [...arr].sort(() => 0.5 - Math.random()).slice(0, Math.min(n, arr.length));
+const pickN = (arr, n) => {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a.slice(0, Math.min(n, a.length));
+};
 
 // ==================== OUTFIT DATA ====================
 const STYLES = ["dark academia","light academia","cottagecore","goblincore","fairycore","witchcore","royalcore","balletcore","streetwear","techwear","normcore","gorpcore","workwear chic","utilitarian","military surplus inspired","Y2K revival","80s power dressing","70s bohemian","60s mod","50s vintage","40s wartime glamour","Japanese Harajuku","Japanese Lolita","gyaru","mori girl","Shibuya casual","Tokyo street fashion","Kyoto modern wafuku","Parisian chic","French girl casual","Italian tailored","Scandinavian minimalist","British prep","East London street","old money","quiet luxury","coastal grandmother","trophy wife aesthetic","mob wife aesthetic","clean girl","e-girl","soft girl","VSCO girl","Pinterest girl","tumblr aesthetic","indie sleaze revival","punk","goth","cyber goth","nu-goth","pastel goth","visual kei inspired","emo revival","boho chic","festival fashion","hippie revival","earthy naturalist","forager aesthetic","ballet dancer off duty","equestrian inspired","tennis chic","ski lodge fashion","surf casual","maximalist color clash","monochromatic dressing","tonal dressing","print mixing","pattern clash","deconstructed tailoring","avant-garde editorial","high fashion editorial","runway inspired","couture casual","vintage thrift mix","granny chic","eccentric librarian","art teacher aesthetic","museum curator","romantic feminine","dark romantic","Victorian inspired","Edwardian influenced","Regency revival","athleisure luxe","elevated sporty","gym-to-street","dancer casual","pilates girl","coastal casual","Mediterranean summer","island resort","tropicana","beach club","urban explorer","city commuter chic","café regular","gallery hopper","night out downtown"];
@@ -131,7 +144,7 @@ const BOTTOMS = ["wide-leg trousers in cream","tailored cigarette trousers","hig
 
 const OUTERWEAR = {
   spring: ["lightweight trench coat in camel","cropped denim jacket","linen blazer","cotton bomber jacket","sheer organza jacket","oversized blazer in pastel","double-breasted spring coat","belted wrap coat in pale blue","cropped leather jacket","windbreaker in soft pink","knit cardigan layered open","broderie anglaise jacket","printed kimono jacket","embroidered denim jacket","tie-dye denim jacket","tailored short jacket","military-inspired spring jacket","washed canvas jacket","cotton parka","transitional peacoat","vintage blazer thrifted","reworked suit jacket","deconstructed blazer","oversized shirt jacket","soft structured coat"],
-  summer: [],
+  summer: ["sheer kimono wrap","lightweight mesh cover-up","sheer linen duster","cropped sheer organza jacket","translucent PVC raincoat","ultra-light nylon windbreaker","sheer chiffon wrap skirt as outerwear","open-weave crochet cardigan"],
   autumn: ["oversized camel coat","plaid wool blazer","corduroy jacket","leather biker jacket","suede fringe jacket","double-breasted peacoat","checked wool coat","belted trench in rust","shearling-collar bomber","quilted vest layered","velvet blazer","brocade jacket","embroidered folk jacket","patchwork coat","vintage fur-trim coat","longline duster coat","wrap coat in burgundy","knit coat","boiled wool jacket","herringbone coat","military surplus field jacket","waxed cotton jacket","canvas work jacket","tech fleece","insulated puffer vest","cape coat","cocoon coat","opera coat","dramatic statement coat","sculptural structured coat","quilted duck canvas jacket","vintage chore coat with brass buttons"],
   winter: ["long wool overcoat in charcoal","puffer coat in midnight blue","shearling coat","faux fur statement coat","quilted down coat","belted wool coat in camel","double-breasted military coat","longline parka","technical ski jacket","insulated puffer jacket","bouclé coat","mohair coat","cashmere wrap coat","plaid oversized coat","checked blanket coat","leather trench coat","vinyl coat","patent cocoon coat","metallic puffer","reflective technical jacket","vintage fur coat","faux fur teddy coat","sherpa jacket","fleece-lined coat","curly shearling coat","cape coat with dramatic collar","sculptural architectural coat","deconstructed oversized coat","avant-garde wrap coat","statement maxi coat"]
 };
@@ -536,11 +549,11 @@ const WEATHER = {
 
 const MOODS = ["quietly beautiful, no drama needed","nostalgic without being sad","the feeling of a Sunday afternoon with nowhere to be","something just happened or is about to","ordinary and somehow perfect","the loneliness that isn't quite loneliness","warm and slightly melancholic","the last moment before everything changes","unhurried and real","beautiful in a way that doesn't announce itself","the quality of light that makes you stop","intimately observed, like a private photograph","the texture of a life being lived","still and charged at the same time","the kind of scene a filmmaker would remember years later"];
 
-const CAMERA = ["wide angle 24mm, vast sky dominating frame","50mm lens, natural perspective, mid-distance","85mm portrait lens, shallow depth of field, background softened","long telephoto 200mm, compressed perspective","low angle looking up at sign or sky","high angle looking down at street or floor","locked-off static shot, perfectly composed","handheld, slightly unsteady, documentary feel","through a window, reflections layered with interior","silhouette against the light","extreme close-up of texture and surface detail","slow dolly move along an empty space","bird's eye view from above","rack focus from foreground detail to background"];
+const CAMERA = ["wide angle 24mm, vast sky dominating frame","50mm lens, natural perspective, mid-distance","85mm portrait lens, shallow depth of field, background softened","long telephoto 200mm, compressed perspective","low angle looking up at sign or sky","high angle looking down at street or floor","locked-off static shot, perfectly composed","handheld, slightly unsteady, documentary feel","through a window, reflections layered with interior","silhouette against the light","extreme close-up of texture and surface detail","slow dolly move along an empty space","bird's eye view from above","rack focus from foreground detail to background","Wes Anderson symmetrical dead-centre framing, flat and precise","Sofia Coppola dreamy soft focus, intimate and floating","Wong Kar-wai blurred motion, neon and longing","Terrence Malick handheld golden light, nature and human intertwined","David Lynch wide angle uncanny stillness, something wrong you cannot name","Barry Jenkins intimate close-up, eyes and light and emotion","Roger Deakins clean wide shot, landscape dwarfing the subject"];
 
 const STYLE_SCENE = ["Kodak Portra 400 film aesthetic, warm and slightly faded","35mm film grain, saturated American colours","digital cinema, warm teal and orange grade","Terrence Malick golden hour cinematography","Edward Hopper painting quality, light and stillness","Stephen Shore photography, deadpan American everyday","William Eggleston colour photography, banal and beautiful","soft focus dreamlike quality, hazy edges","crisp architectural photography, clean and precise","gritty street photography, unflinching and real","contemporary American indie film look","hyperrealistic CGI environment, photographic clarity","long lens heat haze, shimmering and compressed","bleach bypass processing, desaturated with contrast","Super 8 film aesthetic, warm grain and vignette"];
 
-const PERCEPTION = ["slight focus drift, as if the lens is struggling to settle","subtle temporal lag, movement feels delayed","soft motion blur lingering after stillness","light flickers unnaturally, barely perceptible","colours slightly misaligned, like a memory offset","depth feels inconsistent, foreground and background blending","visual noise creeping in like analog signal decay","frame feels almost still, but not completely frozen"];
+const PERCEPTION = ["slight focus drift, as if the lens is struggling to settle","subtle temporal lag, movement feels delayed","soft motion blur lingering after stillness","light flickers unnaturally, barely perceptible","colours slightly misaligned, like a memory offset","depth feels inconsistent, foreground and background blending","visual noise creeping in like analog signal decay","frame feels almost still, but not completely frozen","the horizon line is not quite level, the world slightly tilted","colour temperature shifts mid-frame, warm to cold without reason","a figure that was there a moment ago seems to have never existed","reflections do not match their sources, reversed or delayed","edges of the frame feel closer than they should be"];
 
 const CORE_FIXED = "the quiet weight of an ordinary moment";
 const CORE_VARIATION = ["something here will be remembered long after it's gone","the world going on as it always does, beautiful for no reason","as if the camera arrived just in time"];
@@ -569,6 +582,94 @@ function setFraming(f) {
   document.getElementById("frame-" + f).classList.add("active");
 }
 
+// Store current values for re-roll
+let lastVals = {};
+
+function reroll(key) {
+  const sources = {
+    style: STYLES, top: TOPS, bottom: BOTTOMS, fabric: FABRICS,
+    shoe: SHOES, loc: LOCATIONS, time: TIMES, mood: MOODS,
+    camera: CAMERA, styleScene: STYLE_SCENE, pose: BODY_POSES,
+    gesture: HAND_GESTURES, expression: FACIAL_EXPRESSIONS, light: LIGHTING,
+  };
+  if (sources[key]) {
+    lastVals[key] = pick(sources[key]);
+  } else if (key === 'color') {
+    lastVals.color = pick(COLORS[currentSeason]);
+  } else if (key === 'weather') {
+    lastVals.weather = pick(WEATHER[currentSeason]);
+  } else if (key === 'season_scene') {
+    lastVals.season_scene = pick(SEASONS_SCENE[currentSeason]);
+  } else if (key === 'acc') {
+    const baseAcc = pickN(ACCESSORIES, Math.random() < 0.5 ? 2 : 3);
+    const seasonalExtras = { spring:[], summer:[], autumn:["long knit scarf"], winter:["long knit scarf","chunky knit scarf in wool","oversized plaid scarf"] };
+    const extras = seasonalExtras[currentSeason];
+    const extraAcc = extras.length && Math.random() < 0.5 ? pick(extras) : null;
+    lastVals.acc = extraAcc ? [...baseAcc, extraAcc].join(", ") : baseAcc.join(", ");
+  } else if (key === 'outer') {
+    if (currentSeason === "summer") {
+      lastVals.outer = Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null;
+    } else {
+      lastVals.outer = Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null;
+    }
+  } else if (key === 'perception') {
+    lastVals.perception = Math.random() < 0.35 ? pick(PERCEPTION) : null;
+  }
+  rebuildPromptAndDisplay();
+}
+
+function rebuildPromptAndDisplay() {
+  const v = lastVals;
+  const framingText = { full: "full body shot", upper: "upper body shot from waist up", bust: "bust shot", close: "extreme close-up on face" }[currentFraming];
+  const parts = [
+    "young American woman", framingText, v.pose, v.gesture, v.expression, v.light,
+    `wearing ${v.style} style outfit`, v.top, v.bottom,
+    ...(v.outer ? [v.outer] : []),
+    `${v.fabric} fabric`, `color palette: ${v.color}`, `accessories: ${v.acc}`, v.shoe,
+    `location: ${v.loc}`, v.season_scene, v.time, v.weather,
+    `mood: ${v.mood}`, v.camera, v.styleScene,
+    ...(v.perception ? [v.perception] : []),
+    CORE_FIXED, ...(v.variation ? [v.variation] : []),
+    "cinematic everyday America, filmic photography, natural light, high detail"
+  ];
+  currentPrompt = parts.join(", ");
+  document.getElementById("finalPrompt").value = currentPrompt;
+  renderFields();
+}
+
+function renderFields() {
+  const v = lastVals;
+  document.getElementById("displayFields").innerHTML = [
+    { label: "Style", value: v.style, color: "#f9a8d4", key: "style" },
+    { label: "Top", value: v.top, color: "#c084fc", key: "top" },
+    { label: "Bottom", value: v.bottom, color: "#c084fc", key: "bottom" },
+    { label: "Outer", value: v.outer || "— none —", color: v.outer ? "#93c5fd" : "#2a2535", key: "outer" },
+    { label: "Fabric", value: v.fabric, color: "#fcd34d", key: "fabric" },
+    { label: "Color", value: v.color, color: "#fcd34d", key: "color" },
+    { label: "Accessories", value: v.acc, color: "#86efac", key: "acc" },
+    { label: "Shoes", value: v.shoe, color: "#67e8f9", key: "shoe" },
+    { label: "Scene", value: v.loc, color: "#fda4af", key: "loc" },
+    { label: "Season", value: v.season_scene, color: "#fcd34d", key: "season_scene" },
+    { label: "Time", value: v.time, color: "#fcd34d", key: "time" },
+    { label: "Weather", value: v.weather, color: "#a5f3fc", key: "weather" },
+    { label: "Mood", value: v.mood, color: "#d9f99d", key: "mood" },
+    { label: "Camera", value: v.camera, color: "#fed7aa", key: "camera" },
+    { label: "Figure", value: v.pose, color: "#c084fc", key: "pose" },
+    { label: "Gesture", value: v.gesture, color: "#f9a8d4", key: "gesture" },
+    { label: "Expression", value: v.expression, color: "#86efac", key: "expression" },
+    { label: "Lighting", value: v.light, color: "#fcd34d", key: "light" },
+    ...(v.perception ? [{ label: "Perception", value: v.perception, color: "#c084fc", key: "perception", rare: true }] : []),
+  ].map(f => `
+    <div class="field-row">
+      <div class="field-label">${f.label}</div>
+      <div class="field-value" style="color:${f.color}">
+        ${f.value}${f.rare ? '<span class="rare-badge" style="color:#c084fc">rare</span>' : ''}
+      </div>
+      <button class="reroll-btn" onclick="reroll('${f.key}')" title="Re-roll">🔄</button>
+    </div>
+  `).join("");
+}
+
 function generateAll() {
   generated++;
   document.getElementById("counter").textContent = `${generated} generated`;
@@ -580,16 +681,17 @@ function generateAll() {
   const style = pick(STYLES);
   const top = pick(TOPS);
   const bottom = pick(BOTTOMS);
-  const outer = (currentSeason === "summer") ? null : (Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null);
+  const outer = (currentSeason === "summer") ? (Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null) : (Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null);
   const fabric = pick(FABRICS);
   const color = pick(COLORS[currentSeason]);
   const seasonalExtras = {
-    spring: [], summer: [],
+    spring: [], summer: ["sheer kimono wrap","lightweight mesh cover-up","sheer linen duster","cropped sheer organza jacket","translucent PVC raincoat","ultra-light nylon windbreaker","sheer chiffon wrap skirt as outerwear","open-weave crochet cardigan"],
     autumn: ["long knit scarf"],
     winter: ["long knit scarf","chunky knit scarf in wool","oversized plaid scarf"]
   };
   const baseAcc = pickN(ACCESSORIES, Math.random() < 0.5 ? 2 : 3);
-  const extraAcc = Math.random() < 0.5 ? pick(seasonalExtras[currentSeason]) : null;
+  const extras = seasonalExtras[currentSeason];
+  const extraAcc = extras.length && Math.random() < 0.5 ? pick(extras) : null;
   const acc = extraAcc ? [...baseAcc, extraAcc].join(", ") : baseAcc.join(", ");
   const shoe = pick(SHOES);
 
@@ -640,35 +742,12 @@ function generateAll() {
     "cinematic everyday America, filmic photography, natural light, high detail"
   ];
 
+  // Store in lastVals for re-roll
+  lastVals = { style, top, bottom, outer, fabric, color, acc, shoe, loc, time, weather, season_scene, mood, camera, styleScene, perception, variation, pose, gesture, expression, light };
+
   currentPrompt = parts.join(", ");
-  document.getElementById("finalPrompt").textContent = currentPrompt;
-
-  // Display
-  document.getElementById("displayFields").innerHTML = [
-    { label: "Style", value: `${style}`, color: "#f9a8d4" },
-    { label: "Outfit", value: `${top} + ${bottom}${outer ? ' + ' + outer : ''}`, color: "#c084fc" },
-    { label: "Fabric / Color", value: `${fabric} · ${color}`, color: "#fcd34d" },
-    { label: "Accessories", value: acc, color: "#86efac" },
-    { label: "Shoes", value: shoe, color: "#67e8f9" },
-    { label: "Scene", value: loc, color: "#fda4af" },
-    { label: "Season / Time", value: `${season_scene} · ${time}`, color: "#fcd34d" },
-    { label: "Weather", value: weather, color: "#a5f3fc" },
-    { label: "Mood", value: mood, color: "#d9f99d" },
-    { label: "Camera", value: camera, color: "#fed7aa" },
-    { label: "Figure", value: `${pose}`, color: "#c084fc" },
-    { label: "Gesture", value: gesture, color: "#f9a8d4" },
-    { label: "Expression", value: expression, color: "#86efac" },
-    { label: "Lighting", value: light, color: "#fcd34d" },
-    ...(perception ? [{ label: "Perception", value: perception, color: "#c084fc", rare: true }] : []),
-  ].map(f => `
-    <div class="field">
-      <div class="field-label">${f.label}</div>
-      <div class="field-value" style="color:${f.color}">
-        ${f.value}${f.rare ? '<span class="rare-badge" style="color:#c084fc">rare</span>' : ''}
-      </div>
-    </div>
-  `).join("");
-
+  document.getElementById("finalPrompt").value = currentPrompt;
+  renderFields();
   document.getElementById("saveBtn").style.display = "block";
 }
 
