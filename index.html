@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja" style="background:#0c0b0e">
 <head>
 <meta charset="UTF-8">
@@ -138,7 +137,11 @@ const pickN = (arr, n) => {
 // ==================== OUTFIT DATA ====================
 const STYLES = ["dark academia","light academia","cottagecore","goblincore","fairycore","witchcore","royalcore","balletcore","streetwear","techwear","normcore","gorpcore","workwear chic","utilitarian","military surplus inspired","Y2K revival","80s power dressing","70s bohemian","60s mod","50s vintage","40s wartime glamour","Japanese Harajuku","Japanese Lolita","gyaru","mori girl","Shibuya casual","Tokyo street fashion","Kyoto modern wafuku","Parisian chic","French girl casual","Italian tailored","Scandinavian minimalist","British prep","East London street","old money","quiet luxury","coastal grandmother","trophy wife aesthetic","mob wife aesthetic","clean girl","e-girl","soft girl","VSCO girl","Pinterest girl","tumblr aesthetic","indie sleaze revival","punk","goth","cyber goth","nu-goth","pastel goth","visual kei inspired","emo revival","boho chic","festival fashion","hippie revival","earthy naturalist","forager aesthetic","ballet dancer off duty","equestrian inspired","tennis chic","ski lodge fashion","surf casual","maximalist color clash","monochromatic dressing","tonal dressing","print mixing","pattern clash","deconstructed tailoring","avant-garde editorial","high fashion editorial","runway inspired","couture casual","vintage thrift mix","granny chic","eccentric librarian","art teacher aesthetic","museum curator","romantic feminine","dark romantic","Victorian inspired","Edwardian influenced","Regency revival","athleisure luxe","elevated sporty","gym-to-street","dancer casual","pilates girl","coastal casual","Mediterranean summer","island resort","tropicana","beach club","urban explorer","city commuter chic","café regular","gallery hopper","night out downtown"];
 
-const TOPS = ["fitted ribbed turtleneck","oversized graphic tee","cropped linen shirt","sheer organza blouse","silk slip top","off-shoulder peasant blouse","structured peplum top","crochet crop top","halter neck top","bralette with blazer","vintage band tee knotted at waist","button-down shirt half-tucked","corset top","bustier","strapless tube top","long-sleeve bodysuit","mesh top over bra","knit tank top","sleeveless turtleneck","ruffle-front blouse","wrap top in floral print","denim shirt unbuttoned over white tee","striped Breton top","lace-trimmed camisole","satin bias-cut top","hoodie cropped","zip-up athletic jacket worn as top","sports bra with sheer overlay","smocked peasant top","tie-front blouse","Victorian high-neck blouse","cable knit sweater","oversized chunky knit","cropped cardigan","deep V-neck blouse","poet sleeve blouse","balloon sleeve top","cold shoulder top","one-shoulder top","asymmetric hem top","tailored waistcoat","pinstripe vest","embroidered folk blouse","hand-painted tee","acid wash crop top","fitted polo shirt","rugby stripe shirt","cycling jersey","compression long-sleeve","thermal henley","shrunken blazer as top","deconstructed shirt","raw hem crop top","leather bustier","vinyl crop top","floral print kimono top","satin bomber worn open","oversized linen button-down","broderie anglaise top","pintuck blouse","velvet top","brocade top","sequined top","metallic knit top","foil print tee","denim corset top","patchwork top","tie-dye tee","ombre knit top","geometric print blouse","organic cotton tee","hemp linen shirt","bamboo knit top","upcycled vintage top","deadstock fabric top","slip dress worn as top","vintage slip layered over tee","nightgown as daywear top","lingerie-inspired top","sheer lace top","macramé top","weave pattern top","jacquard blouse","tapestry-style top","woven cotton top","technical fabric performance top","moisture-wicking base layer","seamless knit top","ribbed athletic crop","compression sports top","folk embroidered blouse","ikat print top","batik top","block-printed cotton top","hand-loomed top","sculpted structured top","architectural pleat top","origami fold blouse","3D flower appliqué top","sculptural knit top","oversized varsity sweatshirt","ribbed quarter-zip pullover","heavyweight flannel shirt","waffle-knit thermal henley","college logo hoodie slightly faded","technical windbreaker vest","plunging V-neck silk camisole","backless halter top with thin ties","sheer lace corset top","waist-tie wrap crop top","one-shoulder cutout bodysuit","unbuttoned shirt worn over lace bra","tiny tube top in stretchy jersey"];
+const TOPS = ["oversized graphic tee","cropped linen shirt","off-shoulder peasant blouse","structured peplum top","button-down shirt half-tucked","long-sleeve bodysuit","knit tank top","sleeveless turtleneck","ruffle-front blouse","wrap top in floral print","denim shirt unbuttoned over white tee","striped Breton top","satin bias-cut top","hoodie cropped","zip-up athletic jacket worn as top","smocked peasant top","tie-front blouse","Victorian high-neck blouse","cable knit sweater","oversized chunky knit","cropped cardigan","poet sleeve blouse","balloon sleeve top","cold shoulder top","one-shoulder top","asymmetric hem top","tailored waistcoat","pinstripe vest","embroidered folk blouse","hand-painted tee","acid wash crop top","fitted polo shirt","rugby stripe shirt","cycling jersey","compression long-sleeve","thermal henley","shrunken blazer as top","deconstructed shirt","raw hem crop top","floral print kimono top","satin bomber worn open","oversized linen button-down","broderie anglaise top","pintuck blouse","velvet top","brocade top","sequined top","metallic knit top","foil print tee","patchwork top","tie-dye tee","ombre knit top","geometric print blouse","organic cotton tee","hemp linen shirt","bamboo knit top","upcycled vintage top","deadstock fabric top","nightgown as daywear top","macramé top","weave pattern top","jacquard blouse","tapestry-style top","woven cotton top","technical fabric performance top","moisture-wicking base layer","seamless knit top","folk embroidered blouse","ikat print top","batik top","block-printed cotton top","hand-loomed top","sculpted structured top","architectural pleat top","origami fold blouse","3D flower appliqué top","sculptural knit top","oversized varsity sweatshirt","ribbed quarter-zip pullover","heavyweight flannel shirt","waffle-knit thermal henley","college logo hoodie slightly faded","technical windbreaker vest"];
+
+const SEXY_TOPS = ["plunging V-neck","backless halter","sheer lace corset","bralette with blazer","tube top","mesh top","cropped tank with deep armholes","ribbed baby tee stretched tight","off-shoulder ribbed top","lace-trim camisole with thin straps","sheer organza shirt unbuttoned","bandeau top","cutout bodysuit","strappy backless top","underboob crop top","sports bra as top","vintage slip dress layered over tee","sheer mesh long sleeve","corset-style bustier","one-shoulder ruched top","halter with open back","micro crop top","plunging lace bodysuit","cowl neck satin cami","side-boob tank top","keyhole cutout top","chainmail halter top","sheer long-sleeve over bralette","deep scoop neck tee","lace bustier","open-knit sweater over bare skin","tie-front crop top showing midriff","leather tube top","velvet corset","criss-cross halter top","strapless bandage top","lace-up front top","micro bralette under open jacket","mesh crop top","backless draped top"];
+
+const FORMAL_TOPS = ["silk evening gown bodice","structured satin bustier","beaded chiffon blouse","velvet halter neck evening top","tailored tuxedo jacket with nothing underneath","sequined draped top","lace appliqué evening bodice","off-shoulder velvet wrap top","silk cowl neck camisole","organza ruffle-neck blouse","metallic jacquard peplum top","crystal-embellished crop top","draped silk crepe top","tulle layered bustier","embroidered lace evening top","satin one-shoulder top with train","pleated taffeta corset","plunging silk wrap blouse","pearl-beaded halter","brocade structured bodice"];
 
 const BOTTOMS = ["wide-leg trousers in cream","tailored cigarette trousers","high-waist flared jeans","straight-leg vintage denim","baggy carpenter jeans","pleated midi skirt","bias-cut satin slip skirt","denim mini skirt","pleated micro skirt","asymmetric hem skirt","maxi floral skirt","tiered peasant skirt","wrap skirt in linen","knit pencil skirt","A-line wool skirt","leather mini skirt","faux leather trousers","vinyl pencil skirt","patent leather skirt","moto-style trousers","cargo trousers with multiple pockets","utility pants","parachute trousers","technical hiking trousers","drawstring joggers","tailored shorts","high-waist denim shorts","linen wide shorts","pleated bermuda shorts","athletic biker shorts","flowy palazzo trousers","harem pants","draped trousers","wide silk trousers","fluid crepe trousers","corduroy flares","velvet wide-leg trousers","brocade trousers","jacquard skirt","tapestry-print skirt","distressed ripped jeans","patchwork denim","tie-dye flares","acid wash jeans","vintage washed trousers","pinstripe trousers","checked trousers","houndstooth skirt","plaid mini skirt","tartan trousers","sports shorts","track pants","yoga flares","compression leggings","athletic skort","tulle midi skirt","organza layered skirt","sheer overlay skirt","lace skirt","chiffon maxi skirt","hand-embroidered skirt","folk print skirt","ikat trousers","batik wrap skirt","block-print maxi skirt","paper bag waist trousers","gathered waist skirt","shirred skirt","smocked midi skirt","elasticated wide trousers","wrap trousers","kilt-style skirt","sarong-style skirt","draped wrap skirt","pareo-style bottom","sculpted structured skirt","architectural paneled trousers","origami skirt","pleated sculptural trousers","3D texture skirt","knit tube skirt","ribbed midi skirt","crochet skirt","knit flare skirt","open-weave skirt","cropped flared trousers","culotte","gaucho trousers","pedal pushers","capri trousers","denim skirt with raw hem","distressed mini","bleached jeans","overdyed trousers","reverse-dye skirt","high-waisted yoga leggings","nylon track shorts","double-knee work pants","faded black dungarees","plaid flannel lounge pants","loose linen drawstring trousers","micro denim shorts with frayed hems","high-slit satin maxi skirt","bodycon mini skirt in faux leather","low-rise flared trousers with hip cutouts","sheer mesh leggings layered with shorts","ultra-short pleated tennis skirt"];
 
@@ -311,7 +314,6 @@ const LOCATIONS = [
   "vintage record store aisle, crates of vinyl and posters on peeling walls",
   "skate park at sunset, concrete bowls and silhouettes of longboards",
   "diner across from the hospital, 3am, coffee cups and exhausted faces",
-  // === COLLEGE & CAMPUS ===
   "university campus quad, red brick buildings and autumn leaves, students gone for the day",
   "college town main street, vintage storefronts and bike racks, late afternoon",
   "university library reading room, green lamp shades and tall shelves, evening quiet",
@@ -320,8 +322,6 @@ const LOCATIONS = [
   "campus coffee shop, mismatched furniture and laptop screens, mid-morning",
   "outdoor amphitheater on a college campus, empty seats and a microphone stand",
   "campus parking garage stairwell, concrete and fluorescent light",
-
-  // === MUSIC & ARTS ===
   "indie music venue interior, low stage and sticky floor, before the show",
   "backstage hallway of a small concert venue, tour posters and dim light",
   "street corner with chalk drawings and a busker's empty case",
@@ -330,8 +330,6 @@ const LOCATIONS = [
   "recording studio control room, mixing board and red recording light",
   "open mic night café, small stage and nervous energy, evening",
   "used bookstore with live music corner, folding chairs and fairy lights",
-
-  // === SOUTHERN & REGIONAL ===
   "front porch of a Southern colonial house, white columns and ceiling fan",
   "bayou swamp edge, Spanish moss and still dark water, late afternoon",
   "New Orleans French Quarter alley, wrought iron balconies and gas lamps",
@@ -341,8 +339,6 @@ const LOCATIONS = [
   "Texas BBQ pit exterior, smoke rising, screen door, wooden bench",
   "Appalachian mountain road, hairpin curve and valley view, autumn",
   "tobacco barn in Virginia, weathered wood and evening light through gaps",
-
-  // === FOOD TRUCKS & OUTDOOR DINING ===
   "food truck park at golden hour, string lights and picnic tables filling up",
   "single food truck parked on an empty lot, serving window lit, late lunch",
   "taco truck at the curb, evening light, regulars waiting on the sidewalk",
@@ -351,8 +347,6 @@ const LOCATIONS = [
   "BBQ food truck in a parking lot, smoke rising, folding chairs beside it",
   "ice cream truck on a residential street, summer afternoon, no one around",
   "farmers market food vendor, cast iron and steam, early morning",
-
-  // === SUBURBAN RESIDENTIAL ===
   "suburban cul-de-sac at golden hour, sprinklers running, nobody outside",
   "backyard deck with string lights, summer evening, chairs pulled up",
   "suburban garage with door open, car half-visible, tools on the wall",
@@ -363,8 +357,6 @@ const LOCATIONS = [
   "cul-de-sac fire hydrant with chalk lines around it, summer morning",
   "HOA community park, empty playground and manicured lawn, weekday noon",
   "neighbourhood walking trail, mature trees and power lines, autumn",
-
-  // === DOMESTIC INTERIORS ===
   "suburban living room with sectional sofa, TV off, afternoon light through blinds",
   "open-plan kitchen with island counter, morning light, coffee brewing",
   "bedroom with unmade bed and clothes on the floor, morning light",
@@ -380,8 +372,6 @@ const LOCATIONS = [
   "basement rec room, old couch and foosball table, fluorescent light",
   "backyard shed interior, garden tools and potting soil, afternoon light through a small window",
   "American kitchen at midnight, only the stove hood light on",
-
-  // === URBAN DETAILS ===
   "Brooklyn waterfront, Manhattan skyline across the river, evening",
   "Chicago L train elevated platform, city below, late afternoon",
   "Miami Art Deco hotel exterior, pastel facade and palm tree shadow",
@@ -392,8 +382,6 @@ const LOCATIONS = [
   "Denver 16th Street Mall, wide pedestrian street and light rail",
   "Atlanta Beltline trail, urban greenway and mural walls",
   "Detroit abandoned factory exterior, broken windows and weeds, golden hour",
-
-  // === PARKS & NATURE DETAILS ===
   "national park trailhead parking lot at dawn, one car, ranger station dark",
   "state park picnic shelter, empty concrete tables, overcast day",
   "city park fountain, turned off for winter, leaves in the basin",
@@ -404,8 +392,6 @@ const LOCATIONS = [
   "beach parking lot at dawn, empty spaces and lifeguard tower",
   "roadside scenic overlook, railing and valley view, afternoon haze",
   "desert rest area, one picnic table, scrub brush, vast flat sky",
-
-  // === SERVICE & WORK ===
   "auto repair shop interior, lift and tools, single mechanic bay",
   "hair salon interior, styling chairs and mirrors, between clients",
   "nail salon at closing, fluorescent light and acetone smell",
@@ -416,8 +402,6 @@ const LOCATIONS = [
   "car dealership lot at night, vehicles under floodlights, nobody there",
   "gym interior, free weights and mirrors, midday quiet between rushes",
   "yoga studio, wood floor and props stacked, natural light, class just ended",
-
-  // === TRANSIT & LIMINAL ===
   "Greyhound bus interior, seats mostly empty, highway outside the window at night",
   "airport baggage carousel, empty belt spinning, last flight landed",
   "train station waiting bench, departure board above, late evening",
@@ -426,8 +410,6 @@ const LOCATIONS = [
   "ride-share pickup zone, concrete pillar and directional signs",
   "long-term parking shuttle bus stop, nobody waiting, early morning",
   "highway on-ramp at golden hour, merge lane and long shadow",
-
-  // === SEASONAL & HOLIDAY ===
   "Halloween decorated porch, string lights and carved pumpkins, dusk",
   "Christmas tree lot at night, lights and empty spaces, last trees standing",
   "July 4th parade route the morning after, flags and litter on the sidewalk",
@@ -435,7 +417,6 @@ const LOCATIONS = [
   "Thanksgiving grocery store parking lot, morning of, everyone rushing",
   "New Year's Eve bar exterior, line already forming at 9pm",
   "Memorial Day weekend beach access, traffic cones and portable signs",
-  // === 住宅・生活エリア ===
   "quiet suburban residential street lined with two-story colonial houses, American flags on porches",
   "modest single-family ranch house with attached garage and basketball hoop in driveway",
   "older neighborhood with mature oak trees, cracked sidewalks and blooming crepe myrtles",
@@ -461,8 +442,6 @@ const LOCATIONS = [
   "front porch with rocking chair and folded American flag",
   "suburban backyard at dawn, dew on the grass and lawnmower tracks",
   "neighborhood with one streetlight flickering at 2am, completely silent",
-
-  // === 公共・日常施設 ===
   "small town post office with faded blue paint and American flag at half-mast",
   "public library exterior with brick facade and bike rack out front",
   "elementary school playground at dusk, empty swings and basketball court",
@@ -483,8 +462,6 @@ const LOCATIONS = [
   "city hall lobby with marble floors and American flag",
   "recreation center parking lot at dusk, last cars leaving",
   "public park fountain with coins on the bottom, overcast day",
-
-  // === 商業・サービス施設 ===
   "supermarket parking lot at 7am with employees arriving and carts scattered",
   "24-hour convenience store with bright fluorescent glow at 3am",
   "home improvement store parking lot full of pickup trucks on a Saturday",
@@ -505,8 +482,6 @@ const LOCATIONS = [
   "nail salon with neon open sign and pink lighting, closing time",
   "pawn shop interior, crowded shelves and glass cases, afternoon",
   "grocery store produce aisle, early morning stocking before opening",
-
-  // === 交通・インフラ ===
   "Greyhound bus station waiting area at 2am, plastic orange seats and vending machines",
   "small town train platform with one bench and ticket machine, nobody waiting",
   "highway rest area with vending machines and picnic tables, midday",
@@ -526,12 +501,64 @@ const LOCATIONS = [
   "small town welcome sign on the side of the highway, afternoon light",
   "underground parking garage exit ramp, harsh yellow lighting",
   "airport baggage claim area, empty carousel spinning at 5am",
-  "highway overpass pedestrian walkway, city visible below at dusk"
-
+  "highway overpass pedestrian walkway, city visible below at dusk",
+  // === NEW NIGHT & SEXY EVERYDAY ===
+  "24-hour gym front desk",
+  "midnight convenience store parking lot",
+  "apartment pool side at night",
+  "drive-thru car interior",
+  "car wash at night",
+  "bowling alley bar counter",
+  "ice skating rink rest area",
+  "college dorm communal kitchen",
+  "tattoo shop waiting area",
+  "nail salon chair",
+  "neon-lit laundromat at 2am",
+  "gas station pump under harsh canopy light",
+  "dimly lit dive bar bathroom mirror",
+  "motel balcony overlooking highway at night",
+  "empty subway car late at night",
+  "rooftop party with string lights at midnight",
+  "empty diner booth at 3am",
+  "all-night diner counter",
+  "stadium bleachers after the game",
+  "parking garage rooftop at twilight",
+  "movie theater lobby at midnight",
+  "pool hall corner at night",
+  "street food cart line at 1am",
+  "liquor store aisle under fluorescent light",
+  "motel ice machine alcove",
+  "empty beach boardwalk at night",
+  "suburban driveway basketball hoop illuminated by car headlights",
+  "casino floor at 4am",
+  "highway rest stop bathroom mirror",
+  "24-hour pharmacy aisle",
+  // === NEW FORMAL LOCATIONS ===
+  "hotel ballroom",
+  "country club dining room",
+  "wedding venue chapel",
+  "art gallery opening night",
+  "opera house lobby",
+  "high-end steakhouse private room",
+  "charity gala venue",
+  "university graduation hall",
+  "city hall grand staircase",
+  "rooftop wedding reception",
+  "symphony hall foyer",
+  "luxury hotel lobby",
+  "upscale rooftop cocktail lounge",
+  "museum benefit dinner",
+  "botanical garden evening reception",
+  "historic mansion ballroom",
+  "exclusive members-only club entrance",
+  "red carpet event entrance",
+  "five-star restaurant dining room",
+  "embassy reception hall"
 ];
 
-const TIMES = ["golden hour at sunset, long warm shadows stretching east","harsh midday sun, deep short shadows, bleached colour","early morning, low sun casting long diagonal shadows","late afternoon, amber light turning everything golden","just after sunrise, soft directional light, dew still on surfaces","blue hour just after sunset, sky deepening to indigo","mid-morning, crisp clear light, day fully underway","noon with almost no shadow, everything exposed","late evening, day cooling, light going soft and warm","3am under sodium streetlights, orange cast on everything","pre-dawn, sky barely lightening, one bird already calling","twilight, shapes losing definition, lights starting to matter","overcast midday, flat diffused light, no shadows at all","dusk, the last ten minutes before dark","morning rush hour, strong raking light, everyone in motion"];
+const FORMAL_LOC_KEYWORDS = ["hotel", "gallery", "ballroom", "chapel", "opera house", "steakhouse", "gala", "graduation", "city hall", "wedding", "symphony", "museum", "mansion", "members-only", "red carpet", "country club"];
 
+const TIMES = ["golden hour at sunset, long warm shadows stretching east","harsh midday sun, deep short shadows, bleached colour","early morning, low sun casting long diagonal shadows","late afternoon, amber light turning everything golden","just after sunrise, soft directional light, dew still on surfaces","blue hour just after sunset, sky deepening to indigo","mid-morning, crisp clear light, day fully underway","noon with almost no shadow, everything exposed","late evening, day cooling, light going soft and warm","3am under sodium streetlights, orange cast on everything","pre-dawn, sky barely lightening, one bird already calling","twilight, shapes losing definition, lights starting to matter","overcast midday, flat diffused light, no shadows at all","dusk, the last ten minutes before dark","morning rush hour, strong raking light, everyone in motion"];
 
 const SEASONS_SCENE = {
   spring: ["spring bloom, everything green and new","April, rain and new growth","early spring, trees just budding","May, warm and bright, flowers everywhere","late spring, lush and mild","March, cold fading but still present","spring evening, long daylight stretching out"],
@@ -587,13 +614,24 @@ let lastVals = {};
 
 function reroll(key) {
   const sources = {
-    style: STYLES, top: TOPS, bottom: BOTTOMS, fabric: FABRICS,
+    style: STYLES, bottom: BOTTOMS, fabric: FABRICS,
     shoe: SHOES, loc: LOCATIONS, time: TIMES, mood: MOODS,
     camera: CAMERA, styleScene: STYLE_SCENE, pose: BODY_POSES,
     gesture: HAND_GESTURES, expression: FACIAL_EXPRESSIONS, light: LIGHTING,
   };
+  
   if (sources[key]) {
     lastVals[key] = pick(sources[key]);
+  } else if (key === 'top') {
+    // Top logic depends on the current location
+    const isFormalLocation = lastVals.loc && FORMAL_LOC_KEYWORDS.some(k => lastVals.loc.includes(k));
+    if (isFormalLocation && Math.random() < 0.7) {
+      lastVals.top = pick(FORMAL_TOPS);
+    } else if (Math.random() < 0.25) {
+      lastVals.top = pick(SEXY_TOPS);
+    } else {
+      lastVals.top = pick(TOPS);
+    }
   } else if (key === 'color') {
     lastVals.color = pick(COLORS[currentSeason]);
   } else if (key === 'weather') {
@@ -677,9 +715,31 @@ function generateAll() {
   document.getElementById("displayFields").style.display = "flex";
   document.getElementById("promptBox").style.display = "block";
 
+  // Scene (Needs to be picked first for Top logic)
+  const loc = pick(LOCATIONS);
+  const time = pick(TIMES);
+  const weather = pick(WEATHER[currentSeason]);
+  const season_scene = pick(SEASONS_SCENE[currentSeason]);
+  const mood = pick(MOODS);
+  const camera = pick(CAMERA);
+  const styleScene = pick(STYLE_SCENE);
+  const perception = Math.random() < 0.35 ? pick(PERCEPTION) : null;
+  const variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
+
   // Outfit
   const style = pick(STYLES);
-  const top = pick(TOPS);
+  
+  // TPO Logic for Top
+  const isFormalLocation = FORMAL_LOC_KEYWORDS.some(k => loc.includes(k));
+  let top;
+  if (isFormalLocation && Math.random() < 0.7) {
+    top = pick(FORMAL_TOPS);
+  } else if (Math.random() < 0.25) {
+    top = pick(SEXY_TOPS);
+  } else {
+    top = pick(TOPS);
+  }
+  
   const bottom = pick(BOTTOMS);
   const outer = (currentSeason === "summer") ? (Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null) : (Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null);
   const fabric = pick(FABRICS);
@@ -694,17 +754,6 @@ function generateAll() {
   const extraAcc = extras.length && Math.random() < 0.5 ? pick(extras) : null;
   const acc = extraAcc ? [...baseAcc, extraAcc].join(", ") : baseAcc.join(", ");
   const shoe = pick(SHOES);
-
-  // Scene
-  const loc = pick(LOCATIONS);
-  const time = pick(TIMES);
-  const weather = pick(WEATHER[currentSeason]);
-  const season_scene = pick(SEASONS_SCENE[currentSeason]);
-  const mood = pick(MOODS);
-  const camera = pick(CAMERA);
-  const styleScene = pick(STYLE_SCENE);
-  const perception = Math.random() < 0.35 ? pick(PERCEPTION) : null;
-  const variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
 
   // Figure
   const framingText = { full: "full body shot", upper: "upper body shot from waist up", bust: "bust shot", close: "extreme close-up on face" }[currentFraming];
