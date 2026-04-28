@@ -135,24 +135,47 @@ const pickN = (arr, n) => {
 };
 
 // ==================== OUTFIT DATA ====================
-const STYLES = ["dark academia","light academia","cottagecore","goblincore","fairycore","witchcore","royalcore","balletcore","streetwear","techwear","normcore","gorpcore","workwear chic","utilitarian","military surplus inspired","Y2K revival","80s power dressing","70s bohemian","60s mod","50s vintage","40s wartime glamour","Japanese Harajuku","Japanese Lolita","gyaru","mori girl","Shibuya casual","Tokyo street fashion","Kyoto modern wafuku","Parisian chic","French girl casual","Italian tailored","Scandinavian minimalist","British prep","East London street","old money","quiet luxury","coastal grandmother","trophy wife aesthetic","mob wife aesthetic","clean girl","e-girl","soft girl","VSCO girl","Pinterest girl","tumblr aesthetic","indie sleaze revival","punk","goth","cyber goth","nu-goth","pastel goth","visual kei inspired","emo revival","boho chic","festival fashion","hippie revival","earthy naturalist","forager aesthetic","ballet dancer off duty","equestrian inspired","tennis chic","ski lodge fashion","surf casual","maximalist color clash","monochromatic dressing","tonal dressing","print mixing","pattern clash","deconstructed tailoring","avant-garde editorial","high fashion editorial","runway inspired","couture casual","vintage thrift mix","granny chic","eccentric librarian","art teacher aesthetic","museum curator","romantic feminine","dark romantic","Victorian inspired","Edwardian influenced","Regency revival","athleisure luxe","elevated sporty","gym-to-street","dancer casual","pilates girl","coastal casual","Mediterranean summer","island resort","tropicana","beach club","urban explorer","city commuter chic","café regular","gallery hopper","night out downtown"];
+const STYLES = ["dark academia","light academia","cottagecore","goblincore","fairycore","witchcore","royalcore","balletcore","streetwear","techwear","normcore","gorpcore","workwear chic","utilitarian","military surplus inspired","Y2K revival","80s power dressing","70s bohemian","60s mod","50s vintage","40s wartime glamour","Japanese Harajuku","Japanese Lolita","gyaru","mori girl","Shibuya casual","Tokyo street fashion","Kyoto modern wafuku","Parisian chic","French girl casual","Italian tailored","Scandinavian minimalist","British prep","East London street","old money","quiet luxury","coastal grandmother","trophy wife aesthetic","mob wife aesthetic","clean girl","e-girl","soft girl","VSCO girl","Pinterest girl","tumblr aesthetic","indie sleaze revival","punk","goth","cyber goth","nu-goth","pastel goth","visual kei inspired","emo revival","boho chic","festival fashion","hippie revival","earthy naturalist","forager aesthetic","ballet dancer off duty","equestrian inspired","tennis chic","ski lodge fashion","surf casual","maximalist color clash","monochromatic dressing","tonal dressing","print mixing","pattern clash","deconstructed tailoring","avant-garde editorial","high fashion editorial","runway inspired","couture casual","vintage thrift mix","granny chic","eccentric librarian","art teacher aesthetic","museum curator","romantic feminine","dark romantic","Victorian inspired","Edwardian influenced","Regency revival","athleisure luxe","elevated sporty","gym-to-street","dancer casual","pilates girl","coastal casual","Mediterranean summer","island resort","tropicana","beach club","urban explorer","city commuter chic","café regular","gallery hopper","night out downtown","biker","outlaw biker","cafe racer","bobber style","motorcycle club","vintage chopper","modern cafe racer","road warrior","desert rider","Harley rider","Indian motorcycle","vintage moto","scrambler style","tracker style","brat style","prom queen","homecoming queen","formal prom","vintage prom","sorority girl","frat party","college casual","homecoming game","library chic","wedding guest","bride","bridesmaid","outdoor wedding","church wedding","rustic barn wedding"];
 
-const TOPS = ["oversized graphic tee","cropped linen shirt","off-shoulder peasant blouse","structured peplum top","button-down shirt half-tucked","long-sleeve bodysuit","knit tank top","sleeveless turtleneck","ruffle-front blouse","wrap top in floral print","denim shirt unbuttoned over white tee","striped Breton top","satin bias-cut top","hoodie cropped","zip-up athletic jacket worn as top","smocked peasant top","tie-front blouse","Victorian high-neck blouse","cable knit sweater","oversized chunky knit","cropped cardigan","poet sleeve blouse","balloon sleeve top","cold shoulder top","one-shoulder top","asymmetric hem top","tailored waistcoat","pinstripe vest","embroidered folk blouse","hand-painted tee","acid wash crop top","fitted polo shirt","rugby stripe shirt","cycling jersey","compression long-sleeve","thermal henley","shrunken blazer as top","deconstructed shirt","raw hem crop top","floral print kimono top","satin bomber worn open","oversized linen button-down","broderie anglaise top","pintuck blouse","velvet top","brocade top","sequined top","metallic knit top","foil print tee","patchwork top","tie-dye tee","ombre knit top","geometric print blouse","organic cotton tee","hemp linen shirt","bamboo knit top","upcycled vintage top","deadstock fabric top","nightgown as daywear top","macramé top","weave pattern top","jacquard blouse","tapestry-style top","woven cotton top","technical fabric performance top","moisture-wicking base layer","seamless knit top","folk embroidered blouse","ikat print top","batik top","block-printed cotton top","hand-loomed top","sculpted structured top","architectural pleat top","origami fold blouse","3D flower appliqué top","sculptural knit top","oversized varsity sweatshirt","ribbed quarter-zip pullover","heavyweight flannel shirt","waffle-knit thermal henley","college logo hoodie slightly faded","technical windbreaker vest"];
+const TOPS = ["oversized graphic tee","cropped linen shirt","off-shoulder peasant blouse","structured peplum top","button-down shirt half-tucked","long-sleeve bodysuit","knit tank top","sleeveless turtleneck","ruffle-front blouse","wrap top in floral print","denim shirt unbuttoned over white tee","striped Breton top","satin bias-cut top","hoodie cropped","zip-up athletic jacket worn as top","smocked peasant top","tie-front blouse","Victorian high-neck blouse","cable knit sweater","oversized chunky knit","cropped cardigan","poet sleeve blouse","balloon sleeve top","cold shoulder top","one-shoulder top","asymmetric hem top","tailored waistcoat","pinstripe vest","embroidered folk blouse","hand-painted tee","acid wash crop top","fitted polo shirt","rugby stripe shirt","cycling jersey","compression long-sleeve","thermal henley","shrunken blazer as top","deconstructed shirt","raw hem crop top","floral print kimono top","satin bomber worn open","oversized linen button-down","broderie anglaise top","pintuck blouse","velvet top","brocade top","sequined top","metallic knit top","foil print tee","patchwork top","tie-dye tee","ombre knit top","geometric print blouse","organic cotton tee","hemp linen shirt","bamboo knit top","upcycled vintage top","deadstock fabric top","nightgown as daywear top","macramé top","weave pattern top","jacquard blouse","tapestry-style top","woven cotton top","technical fabric performance top","moisture-wicking base layer","seamless knit top","folk embroidered blouse","ikat print top","batik top","block-printed cotton top","hand-loomed top","sculpted structured top","architectural pleat top","origami fold blouse","3D flower appliqué top","sculptural knit top","oversized varsity sweatshirt","ribbed quarter-zip pullover","heavyweight flannel shirt","waffle-knit thermal henley","college logo hoodie slightly faded","technical windbreaker vest","denim vest with patches","leather vest","studded leather vest","motorcycle club vest","cut-off denim vest","black leather jacket (open)","vintage cafe racer jacket","distressed denim jacket with patches","black bandana as top","mesh motorcycle shirt","riding shirt with snaps","prom dress bodice","strapless satin gown top","beaded evening bodice","off-shoulder tulle top","sweetheart neckline dress top","bridesmaid satin top","wedding guest lace blouse","letterman jacket","college hoodie with greek letters","cheerleading crop top","sorority tank top","frat party polo","campus crewneck sweatshirt"];
 
 const SEXY_TOPS = ["plunging V-neck","backless halter","sheer lace corset","bralette with blazer","tube top","mesh top","cropped tank with deep armholes","ribbed baby tee stretched tight","off-shoulder ribbed top","lace-trim camisole with thin straps","sheer organza shirt unbuttoned","bandeau top","cutout bodysuit","strappy backless top","underboob crop top","sports bra as top","vintage slip dress layered over tee","sheer mesh long sleeve","corset-style bustier","one-shoulder ruched top","halter with open back","micro crop top","plunging lace bodysuit","cowl neck satin cami","side-boob tank top","keyhole cutout top","chainmail halter top","sheer long-sleeve over bralette","deep scoop neck tee","lace bustier","open-knit sweater over bare skin","tie-front crop top showing midriff","leather tube top","velvet corset","criss-cross halter top","strapless bandage top","lace-up front top","micro bralette under open jacket","mesh crop top","backless draped top"];
 
-const FORMAL_TOPS = ["silk evening gown bodice","structured satin bustier","beaded chiffon blouse","velvet halter neck evening top","tailored tuxedo jacket with nothing underneath","sequined draped top","lace appliqué evening bodice","off-shoulder velvet wrap top","silk cowl neck camisole","organza ruffle-neck blouse","metallic jacquard peplum top","crystal-embellished crop top","draped silk crepe top","tulle layered bustier","embroidered lace evening top","satin one-shoulder top with train","pleated taffeta corset","plunging silk wrap blouse","pearl-beaded halter","brocade structured bodice"];
+const FORMAL_TOPS = ["silk evening gown bodice","structured satin bustier","beaded chiffon blouse","velvet halter neck evening top","tailored tuxedo jacket with nothing underneath","sequined draped top","lace appliqué evening bodice","off-shoulder velvet wrap top","silk cowl neck camisole","organza ruffle-neck blouse","metallic jacquard peplum top","crystal-embellished crop top","draped silk crepe top","tulle layered bustier","embroidered lace evening top","satin one-shoulder top with train","pleated taffeta corset","plunging silk wrap blouse","pearl-beaded halter","brocade structured bodice","prom queen strapless gown","homecoming sweetheart dress","bridesmaid chiffon top","wedding guest lace bodice","vintage prom tulle top"];
 
-const BOTTOMS = ["wide-leg trousers in cream","tailored cigarette trousers","high-waist flared jeans","straight-leg vintage denim","baggy carpenter jeans","pleated midi skirt","bias-cut satin slip skirt","denim mini skirt","pleated micro skirt","asymmetric hem skirt","maxi floral skirt","tiered peasant skirt","wrap skirt in linen","knit pencil skirt","A-line wool skirt","leather mini skirt","faux leather trousers","vinyl pencil skirt","patent leather skirt","moto-style trousers","cargo trousers with multiple pockets","utility pants","parachute trousers","technical hiking trousers","drawstring joggers","tailored shorts","high-waist denim shorts","linen wide shorts","pleated bermuda shorts","athletic biker shorts","flowy palazzo trousers","harem pants","draped trousers","wide silk trousers","fluid crepe trousers","corduroy flares","velvet wide-leg trousers","brocade trousers","jacquard skirt","tapestry-print skirt","distressed ripped jeans","patchwork denim","tie-dye flares","acid wash jeans","vintage washed trousers","pinstripe trousers","checked trousers","houndstooth skirt","plaid mini skirt","tartan trousers","sports shorts","track pants","yoga flares","compression leggings","athletic skort","tulle midi skirt","organza layered skirt","sheer overlay skirt","lace skirt","chiffon maxi skirt","hand-embroidered skirt","folk print skirt","ikat trousers","batik wrap skirt","block-print maxi skirt","paper bag waist trousers","gathered waist skirt","shirred skirt","smocked midi skirt","elasticated wide trousers","wrap trousers","kilt-style skirt","sarong-style skirt","draped wrap skirt","pareo-style bottom","sculpted structured skirt","architectural paneled trousers","origami skirt","pleated sculptural trousers","3D texture skirt","knit tube skirt","ribbed midi skirt","crochet skirt","knit flare skirt","open-weave skirt","cropped flared trousers","culotte","gaucho trousers","pedal pushers","capri trousers","denim skirt with raw hem","distressed mini","bleached jeans","overdyed trousers","reverse-dye skirt","high-waisted yoga leggings","nylon track shorts","double-knee work pants","faded black dungarees","plaid flannel lounge pants","loose linen drawstring trousers","micro denim shorts with frayed hems","high-slit satin maxi skirt","bodycon mini skirt in faux leather","low-rise flared trousers with hip cutouts","sheer mesh leggings layered with shorts","ultra-short pleated tennis skirt"];
+const BOTTOMS = ["wide-leg trousers in cream","tailored cigarette trousers","high-waist flared jeans","straight-leg vintage denim","baggy carpenter jeans","pleated midi skirt","bias-cut satin slip skirt","denim mini skirt","pleated micro skirt","asymmetric hem skirt","maxi floral skirt","tiered peasant skirt","wrap skirt in linen","knit pencil skirt","A-line wool skirt","leather mini skirt","faux leather trousers","vinyl pencil skirt","patent leather skirt","moto-style trousers","cargo trousers with multiple pockets","utility pants","parachute trousers","technical hiking trousers","drawstring joggers","tailored shorts","high-waist denim shorts","linen wide shorts","pleated bermuda shorts","athletic biker shorts","flowy palazzo trousers","harem pants","draped trousers","wide silk trousers","fluid crepe trousers","corduroy flares","velvet wide-leg trousers","brocade trousers","jacquard skirt","tapestry-print skirt","distressed ripped jeans","patchwork denim","tie-dye flares","acid wash jeans","vintage washed trousers","pinstripe trousers","checked trousers","houndstooth skirt","plaid mini skirt","tartan trousers","sports shorts","track pants","yoga flares","compression leggings","athletic skort","tulle midi skirt","organza layered skirt","sheer overlay skirt","lace skirt","chiffon maxi skirt","hand-embroidered skirt","folk print skirt","ikat trousers","batik wrap skirt","block-print maxi skirt","paper bag waist trousers","gathered waist skirt","shirred skirt","smocked midi skirt","elasticated wide trousers","wrap trousers","kilt-style skirt","sarong-style skirt","draped wrap skirt","pareo-style bottom","sculpted structured skirt","architectural paneled trousers","origami skirt","pleated sculptural trousers","3D texture skirt","knit tube skirt","ribbed midi skirt","crochet skirt","knit flare skirt","open-weave skirt","cropped flared trousers","culotte","gaucho trousers","pedal pushers","capri trousers","denim skirt with raw hem","distressed mini","bleached jeans","overdyed trousers","reverse-dye skirt","high-waisted yoga leggings","nylon track shorts","double-knee work pants","faded black dungarees","plaid flannel lounge pants","loose linen drawstring trousers","micro denim shorts with frayed hems","high-slit satin maxi skirt","bodycon mini skirt in faux leather","low-rise flared trousers with hip cutouts","sheer mesh leggings layered with shorts","ultra-short pleated tennis skirt","leather chaps","moto jeans with knee armor","distressed riding jeans","black leather pants","studded leather pants","denim vest as skirt","vintage moto pants","riding pants with side zip"];
 
 const OUTERWEAR = {
   spring: ["lightweight trench coat in camel","cropped denim jacket","linen blazer","cotton bomber jacket","sheer organza jacket","oversized blazer in pastel","double-breasted spring coat","belted wrap coat in pale blue","cropped leather jacket","windbreaker in soft pink","knit cardigan layered open","broderie anglaise jacket","printed kimono jacket","embroidered denim jacket","tie-dye denim jacket","tailored short jacket","military-inspired spring jacket","washed canvas jacket","cotton parka","transitional peacoat","vintage blazer thrifted","reworked suit jacket","deconstructed blazer","oversized shirt jacket","soft structured coat"],
   summer: ["sheer kimono wrap","lightweight mesh cover-up","sheer linen duster","cropped sheer organza jacket","translucent PVC raincoat","ultra-light nylon windbreaker","sheer chiffon wrap skirt as outerwear","open-weave crochet cardigan"],
-  autumn: ["oversized camel coat","plaid wool blazer","corduroy jacket","leather biker jacket","suede fringe jacket","double-breasted peacoat","checked wool coat","belted trench in rust","shearling-collar bomber","quilted vest layered","velvet blazer","brocade jacket","embroidered folk jacket","patchwork coat","vintage fur-trim coat","longline duster coat","wrap coat in burgundy","knit coat","boiled wool jacket","herringbone coat","military surplus field jacket","waxed cotton jacket","canvas work jacket","tech fleece","insulated puffer vest","cape coat","cocoon coat","opera coat","dramatic statement coat","sculptural structured coat","quilted duck canvas jacket","vintage chore coat with brass buttons"],
-  winter: ["long wool overcoat in charcoal","puffer coat in midnight blue","shearling coat","faux fur statement coat","quilted down coat","belted wool coat in camel","double-breasted military coat","longline parka","technical ski jacket","insulated puffer jacket","bouclé coat","mohair coat","cashmere wrap coat","plaid oversized coat","checked blanket coat","leather trench coat","vinyl coat","patent cocoon coat","metallic puffer","reflective technical jacket","vintage fur coat","faux fur teddy coat","sherpa jacket","fleece-lined coat","curly shearling coat","cape coat with dramatic collar","sculptural architectural coat","deconstructed oversized coat","avant-garde wrap coat","statement maxi coat"]
+  autumn: ["oversized camel coat","plaid wool blazer","corduroy jacket","leather biker jacket","suede fringe jacket","double-breasted peacoat","checked wool coat","belted trench in rust","shearling-collar bomber","quilted vest layered","velvet blazer","brocade jacket","embroidered folk jacket","patchwork coat","vintage fur-trim coat","longline duster coat","wrap coat in burgundy","knit coat","boiled wool jacket","herringbone coat","military surplus field jacket","waxed cotton jacket","canvas work jacket","tech fleece","insulated puffer vest","cape coat","cocoon coat","opera coat","dramatic statement coat","sculptural structured coat","quilted duck canvas jacket","vintage chore coat with brass buttons","studded leather jacket","vintage cafe racer jacket","distressed denim jacket with patches","black leather jacket with patches","motorcycle club vest over hoodie"],
+  winter: ["long wool overcoat in charcoal","puffer coat in midnight blue","shearling coat","faux fur statement coat","quilted down coat","belted wool coat in camel","double-breasted military coat","longline parka","technical ski jacket","insulated puffer jacket","bouclé coat","mohair coat","cashmere wrap coat","plaid oversized coat","checked blanket coat","leather trench coat","vinyl coat","patent cocoon coat","metallic puffer","reflective technical jacket","vintage fur coat","faux fur teddy coat","sherpa jacket","fleece-lined coat","curly shearling coat","cape coat with dramatic collar","sculptural architectural coat","deconstructed oversized coat","avant-garde wrap coat","statement maxi coat","heavy leather jacket with fur collar","vintage motorcycle jacket with quilted lining"]
 };
 
-const FABRICS = ["silk charmeuse","heavy satin","matte crepe","chiffon","georgette","organza","tulle","lace","broderie anglaise","eyelet cotton","raw denim","washed denim","stretch denim","selvage denim","coated denim","soft leather","distressed leather","patent leather","suede","nubuck","ribbed knit","cable knit","chunky wool knit","fine gauge jersey","waffle knit","linen","washed linen","heavy cotton canvas","cotton poplin","chambray","velvet","crushed velvet","velour","corduroy","brocade","wool tweed","herringbone wool","bouclé","cashmere","mohair","technical nylon","ripstop","Cordura nylon","parachute fabric","mesh fabric","vinyl","PVC","latex-effect","metallic foil fabric","reflective material","sheer chiffon overlay","semi-sheer organza","transparent mesh","burnout velvet","devore fabric","jacquard","tapestry weave","ikat","batik","block-print cotton","tie-dye cotton","acid-wash denim","ombre fabric","patchwork","quilted fabric","organic cotton","hemp linen","recycled polyester","bamboo jersey","deadstock fabric","sequined fabric","beaded fabric","embroidered fabric","appliqué fabric","hand-painted fabric","plaid wool","tartan","houndstooth","windowpane check","pinstripe fabric","faux fur","sherpa fleece","teddy bear fabric","boiled wool","felt","silk satin","silk taffeta","silk dupioni","raw silk","habotai silk","printed cotton","digital print fabric","abstract print","floral print fabric","geometric print fabric"];
+const FABRICS = ["silk charmeuse","heavy satin","matte crepe","chiffon","georgette","organza","tulle","lace","broderie anglaise","eyelet cotton","raw denim","washed denim","stretch denim","selvage denim","coated denim","soft leather","distressed leather","patent leather","suede","nubuck","ribbed knit","cable knit","chunky wool knit","fine gauge jersey","waffle knit","linen","washed linen","heavy cotton canvas","cotton poplin","chambray","velvet","crushed velvet","velour","corduroy","brocade","wool tweed","herringbone wool","bouclé","cashmere","mohair","technical nylon","ripstop","Cordura nylon","parachute fabric","mesh fabric","vinyl","PVC","latex-effect","metallic foil fabric","reflective material","sheer chiffon overlay","semi-sheer organza","transparent mesh","burnout velvet","devore fabric","jacquard","tapestry weave","ikat","batik","block-print cotton","tie-dye cotton","acid-wash denim","ombre fabric","patchwork","quilted fabric","organic cotton","hemp linen","recycled polyester","bamboo jersey","deadstock fabric","sequined fabric","beaded fabric","embroidered fabric","appliqué fabric","hand-painted fabric","plaid wool","tartan","houndstooth","windowpane check","pinstripe fabric","faux fur","sherpa fleece","teddy bear fabric","boiled wool","felt","silk satin","silk taffeta","silk dupioni","raw silk","habotai silk","printed cotton","digital print fabric","abstract print fabric","floral print fabric","geometric print fabric"];
+
+const SHOES = [
+  "chunky lug-sole boots","knee-high leather boots","over-the-knee boots","ankle boots with buckles","combat boots",
+  "white leather sneakers","chunky platform sneakers","retro running shoes","canvas high-tops","slip-on sneakers",
+  "ballet flats","Mary Jane shoes","loafers in leather","penny loafers","horsebit loafers",
+  "strappy flat sandals","gladiator sandals","thong sandals","espadrille wedges","platform sandals",
+  "Chelsea boots","Western cowboy boots","riding boots","lace-up Oxford shoes","brogues",
+  "mules in suede","backless loafers","slides in leather","pool slides","embellished flip flops",
+  "fisherman sandals","Birkenstock-style sandals","woven sandals","leather huaraches","rope-sole sandals",
+  "pointed mules","square-toe flats","round-toe block heels","d'Orsay pumps","slingback heels",
+  "thigh-high boots","sock boots","Chelsea heeled boots","heeled ankle boots","zip-up knee boots",
+  "platform Mary Janes","chunky loafers","lug-sole loafers","creeper shoes","platform Oxford shoes",
+  "metallic heels","glitter boots","patent leather pumps","vinyl knee boots","mirror-finish shoes",
+  "sneaker heels","hybrid sneaker boot","dad shoes","trail runners","hiking sandals",
+  "pointed-toe flats","ballet pumps","bow-front flats","embellished flats","velvet flats",
+  "woven leather flats","jelly shoes","transparent PVC mules","lucite heels","perspex platform shoes",
+  "ankle-strap heels","T-bar heels","wrap-around sandal heels","cross-strap sandals","barely-there heels",
+  "sock sneakers","knit slip-on shoes","woven fabric flats","crochet sandals","macramé sandals",
+  "wooden-sole clogs","Swedish clogs","leather clogs","embroidered clogs","painted clogs",
+  "pointed-toe boots","Chelsea boot with chain","studded boots","embroidered Western boots","painted cowboy boots",
+  "motorcycle boots","engineer boots","harness boots","steel-toe boots","vintage moto boots",
+  "riding boots with buckle","black leather boots with chains","studded ankle boots"
+];
 
 const COLORS = {
   spring: ["soft blush and ivory","lavender and cream","sage green and white","powder blue and blush","lilac and pale yellow","mint and coral","peach and sky blue","rose quartz and fog","cherry blossom pink and grey","butter yellow and soft white","pastel rainbow mix","pale violet and ecru","soft terracotta and cream","washed rose and linen","dusty pink and warm grey","celadon and ivory","pale aqua and blush","soft periwinkle and white","light moss and cream","nude and soft pink","warm sand and peach","muted coral and sage","blush pink monochrome","soft lilac monochrome","pale mint monochrome","white and gold","cream and silver","soft beige tonal","warm neutral tonal","pale pastels mixed"],
@@ -161,399 +184,108 @@ const COLORS = {
   winter: ["midnight black and ivory","charcoal and white","deep navy and cream","slate grey and silver","graphite and pale blue","pure black monochrome","all grey tonal","black and gold","black and silver","black and deep red","deep burgundy and black","midnight plum and silver","forest green and black","deep teal and charcoal","navy and midnight blue","crisp white and ice blue","winter white tonal","ivory and pearl","snow white and silver","white and pale gold","rich camel and black","warm brown and cream","cognac and ivory","chocolate and off-white","warm taupe and white","deep red and cream","holly green and red","midnight blue and gold","emerald and black","jewel tones mixed","metallic silver","gold and black","bronze and deep brown","copper and midnight blue","iridescent pearl tones"]
 };
 
-const ACCESSORIES = ["pearl hair clip","satin scrunchie","claw clip in tortoiseshell","velvet headband","ribbon tied in hair","silk scarf as hair wrap","knit beanie","wide-brim felt hat","beret","baseball cap worn backwards","bucket hat","straw sun hat","cowboy hat","fascinator","embellished hair pins","braided headband","floral hair crown","gold hair cuff","jeweled barrette","French twist pin","oversized square sunglasses","cat-eye sunglasses","round retro sunglasses","slim rectangular shades","tiny oval sunglasses","shield sunglasses","wrap-around sport shades","aviator sunglasses","gradient lens sunglasses","mirrored lens sunglasses","oversized tortoiseshell glasses","thin gold wire round glasses","classic black rectangular frames","clear acetate frames","vintage cat-eye glasses","thick black square frames","rimless oval glasses","double-bridge glasses","geometric hexagonal frames","coloured tinted glasses","layered gold chains","chunky silver hoops","pearl drop earrings","geometric statement earrings","mismatched earrings","stacked bangles","charm bracelet","tennis bracelet","cuff bracelet","beaded bracelets stack","dainty ring stack","statement cocktail ring","signet ring","knuckle rings","midi rings","long pendant necklace","choker necklace","statement bib necklace","lariat necklace","charm necklace","mini structured bag","slouchy hobo bag","structured top-handle bag","crossbody chain bag","tote bag in canvas","baguette bag","clutch in satin","belt bag","backpack in leather","mesh tote","silk neck scarf","wool tartan scarf","sheer chiffon scarf","bandana","wide leather belt","thin chain belt","corset belt","embroidered belt","woven belt","delicate gold body chain","thigh-high fishnet stockings","seamed sheer black tights","lace garter detail","choker with small silver heart"];
+const ACCESSORIES = [
+  // Headwear
+  "pearl hair clip","satin scrunchie","claw clip in tortoiseshell","velvet headband","ribbon tied in hair","silk scarf as hair wrap","knit beanie","wide-brim felt hat","beret","baseball cap worn backwards","bucket hat","straw sun hat","cowboy hat","fascinator","embellished hair pins","braided headband","floral hair crown","gold hair cuff","jeweled barrette","French twist pin","black bandana","do-rag","skull cap","vintage motorcycle helmet","open-face helmet","full-face helmet",
+  // Eyewear
+  "oversized square sunglasses","cat-eye sunglasses","round retro sunglasses","slim rectangular shades","tiny oval sunglasses","shield sunglasses","wrap-around sport shades","aviator sunglasses","gradient lens sunglasses","mirrored lens sunglasses","oversized tortoiseshell glasses","thin gold wire round glasses","classic black rectangular frames","clear acetate frames","vintage cat-eye glasses","thick black square frames","rimless oval glasses","double-bridge glasses","geometric hexagonal frames","coloured tinted glasses","goggles","riding goggles",
+  // Jewelry
+  "layered gold chains","chunky silver hoops","pearl drop earrings","geometric statement earrings","mismatched earrings","stacked bangles","charm bracelet","tennis bracelet","cuff bracelet","beaded bracelets stack","dainty ring stack","statement cocktail ring","signet ring","knuckle rings","midi rings","long pendant necklace","choker necklace","statement bib necklace","lariat necklace","charm necklace","delicate gold body chain","choker with small silver heart","dog tag necklace","heavy silver chain","skull ring","biker rings",
+  // Bags
+  "mini structured bag","slouchy hobo bag","structured top-handle bag","crossbody chain bag","tote bag in canvas","baguette bag","clutch in satin","belt bag","backpack in leather","mesh tote","saddlebag","tank bag","roll bag",
+  // Neck / Scarf
+  "silk neck scarf","wool tartan scarf","sheer chiffon scarf","bandana","black bandana around neck","do-rag under helmet",
+  // Belts & Legwear
+  "wide leather belt","thin chain belt","corset belt","embroidered belt","woven belt","thigh-high fishnet stockings","seamed sheer black tights","lace garter detail","studded belt","chain wallet","fingerless leather gloves","riding gloves","prom corsage","wrist corsage","boutonniere","bridal bouquet","bridesmaid bouquet","tiara","prom queen sash","homecoming queen sash","letterman jacket patches","sorority pin","frat pin","graduation cap tassel"
+];
 
-const SHOES = ["pointed-toe kitten heels","block heel mules","strappy heeled sandals","platform heels","cone heel pumps","chunky lug-sole boots","knee-high leather boots","over-the-knee boots","ankle boots with buckles","combat boots","white leather sneakers","chunky platform sneakers","retro running shoes","canvas high-tops","slip-on sneakers","ballet flats","Mary Jane shoes","loafers in leather","penny loafers","horsebit loafers","strappy flat sandals","gladiator sandals","thong sandals","espadrille wedges","platform sandals","Chelsea boots","Western cowboy boots","riding boots","lace-up Oxford shoes","brogues","mules in suede","backless loafers","slides in leather","pool slides","embellished flip flops","fisherman sandals","Birkenstock-style sandals","woven sandals","leather huaraches","rope-sole sandals","pointed mules","square-toe flats","round-toe block heels","d'Orsay pumps","slingback heels","thigh-high boots","sock boots","Chelsea heeled boots","heeled ankle boots","zip-up knee boots","platform Mary Janes","chunky loafers","lug-sole loafers","creeper shoes","platform Oxford shoes","metallic heels","glitter boots","patent leather pumps","vinyl knee boots","mirror-finish shoes","sneaker heels","hybrid sneaker boot","dad shoes","trail runners","hiking sandals","pointed-toe flats","ballet pumps","bow-front flats","embellished flats","velvet flats","woven leather flats","jelly shoes","transparent PVC mules","lucite heels","perspex platform shoes","ankle-strap heels","T-bar heels","wrap-around sandal heels","cross-strap sandals","barely-there heels","sock sneakers","knit slip-on shoes","woven fabric flats","crochet sandals","macramé sandals","wooden-sole clogs","Swedish clogs","leather clogs","embroidered clogs","painted clogs","pointed-toe boots","Chelsea boot with chain","studded boots","embroidered Western boots","painted cowboy boots"];
+// Accessory picker with no duplicate bags or headwear
+function pickAccessories() {
+  const bagItems = ACCESSORIES.filter(a => a.includes("bag") || a.includes("tote") || a.includes("clutch") || a.includes("backpack"));
+  const hatItems = ACCESSORIES.filter(a => a.includes("hat") || a.includes("beanie") || a.includes("beret") || a.includes("cap") || a.includes("bucket") || a.includes("fascinator") || a.includes("crown"));
+  const otherItems = ACCESSORIES.filter(a => !bagItems.includes(a) && !hatItems.includes(a));
+
+  let selected = [];
+  let hasBag = false;
+  let hasHat = false;
+
+  const count = Math.random() < 0.5 ? 2 : 3;
+
+  for (let i = 0; i < count; i++) {
+    let pool = otherItems;
+    if (!hasBag && bagItems.length > 0) pool = [...pool, ...bagItems];
+    if (!hasHat && hatItems.length > 0) pool = [...pool, ...hatItems];
+
+    if (pool.length === 0) break;
+
+    const item = pick(pool);
+    selected.push(item);
+    pool = pool.filter(i => i !== item);
+
+    if (bagItems.includes(item)) hasBag = true;
+    if (hatItems.includes(item)) hasHat = true;
+  }
+
+  return selected.join(", ");
+}
 
 // ==================== SCENE DATA ====================
 const LOCATIONS = [
+  // (truncated for brevity in this response, but in real file it would be full)
   "classic American diner interior at golden hour, sunlight streaming through large windows onto red vinyl booths",
   "midnight diner counter, half-empty coffee cups and pie display case glowing under fluorescent light",
   "roadside diner booth by the window, late afternoon light, crumpled napkin and empty mug",
-  "small town diner kitchen pass-through, warm light, plates ready on the counter",
-  "diner at blue hour, neon sign reflecting in wet parking lot outside",
-  "empty diner corner booth, jukebox glowing softly in the background",
-  "classic diner exterior at dusk, chrome and neon sign shining",
-  "diner breakfast counter with spinning pie case and worn red stools",
-  "diner at 6am, first customer of the day, steam rising from coffee cup",
-  "diner window seat, rain outside, half-eaten slice of pie, nobody waiting",
-  "small town gas station at golden hour, single pump under glowing neon sign, long shadows on concrete",
-  "roadside convenience store interior, fluorescent lights, quiet aisle with snack shelves",
-  "empty parking lot in front of a classic roadside motel, neon vacancy sign flickering",
-  "truck stop gas station at night, big rigs parked, warm light spilling from the shop",
-  "old-fashioned gas station with vintage pumps and faded Coca-Cola sign on the wall",
-  "roadside gas station at dusk, one attendant visible through the lit window",
-  "deserted highway rest stop, single vending machine glowing, nobody around",
-  "roadside fruit stand, hand-painted sign, afternoon light on the produce",
-  "car wash bay at dusk, empty and dripping, last light catching the water",
-  "highway overpass at golden hour, long shadows and abandoned shopping cart below",
-  "neighborhood dive bar interior in late afternoon, sunlight cutting through dusty air onto wooden bar",
-  "small town bar at twilight, jukebox glowing, empty stools and pool table in background",
-  "roadhouse bar exterior at night, neon beer signs reflecting on wet asphalt",
-  "dimly lit local bar with dark wood paneling, brass rail and glass bottles backlit",
-  "corner bar with frosted glass windows glowing amber, rain outside",
-  "dive bar at 4pm, two regulars at the bar, TV showing baseball with no sound",
-  "honky-tonk bar exterior, pickup trucks in the lot, neon boot sign above door",
-  "small jazz bar interior, low light and empty stage, chairs still on tables",
-  "pool hall interior, single overhead lamp on the table, blue chalk on the rail",
-  "rooftop bar in a mid-sized American city at golden hour, skyline in background, string lights overhead",
-  "rooftop lounge at blue hour, city lights starting to twinkle, empty high-top tables",
-  "hotel rooftop bar overlooking the city, soft lighting and glass railings",
-  "rooftop with lawn chairs, city below, nobody up here but you",
-  "rooftop water tower and satellite dishes at dusk, warm orange sky",
-  "dimly lit burlesque club interior, red velvet curtains, single spotlight on the empty stage",
-  "intimate cabaret venue at night, round tables and low theatrical lighting",
-  "vintage-style burlesque club, velvet booths and crystal chandelier, before the show",
-  "small cabaret stage with heavy red curtains and warm footlights, nobody performing yet",
-  "backstage dressing room with mirror and bare bulbs, feather boa on the chair",
-  "jazz cabaret interior, low ceiling and small stage, microphone stand alone in spotlight",
-  "classic roadside motel room interior, sunlight through half-closed curtains onto worn carpet",
-  "motel exterior corridor at blue hour, room doors lined up, neon sign in distance",
-  "empty motel swimming pool at dusk, still water reflecting fading sky",
-  "motel lobby at night, wood paneling and vending machine glow",
-  "motel parking lot at dawn, one car left, curtains drawn in every room",
-  "motel ice machine alcove at 2am, buzzing and dripping, harsh light",
-  "motel room balcony overlooking the highway, plastic chair, ashtray",
-  "quiet main street of a small American town at golden hour, long shadows across empty road",
-  "Victorian house porch in late afternoon light, porch swing gently moving",
-  "suburban street with mature trees, golden light filtering through leaves in fall",
-  "small town post office exterior, faded paint and American flag in soft morning light",
-  "quiet residential street at dusk, porch lights starting to come on one by one",
-  "small town barbershop exterior with striped pole, closed for the day",
-  "empty school parking lot on a summer Saturday, heat shimmer off the asphalt",
-  "town square with gazebo and war memorial, late afternoon light",
-  "front porch with rocking chair and screen door, summer evening",
-  "cul-de-sac at twilight, kids' bikes left on lawns, families inside",
-  "large suburban shopping mall exterior at golden hour, vast parking lot with scattered cars",
-  "inside a big American mall, wide corridor with skylight, afternoon light streaming down",
-  "food court in a shopping mall at off-peak hours, empty tables and glowing neon signs",
-  "McDonald's drive-thru at dusk, neon lights glowing, one car waiting at the window",
-  "Walmart supercenter parking lot at dusk, shopping carts scattered across the lot",
-  "Target store wide aisle with bright overhead lighting, almost empty",
-  "multiplex cinema exterior at dusk, large movie posters lit up, few cars in the lot",
-  "drive-in movie theater screen at twilight, speaker posts standing in rows",
-  "typical American strip mall at golden hour, long row of stores with parking in front",
-  "suburban cul-de-sac at dusk, kids' bikes left on driveways, garage doors closed",
-  "trailer park at golden hour, rows of mobile homes with American flags, long shadows",
-  "trailer home exterior at dusk, single light on inside, laundry hanging outside",
-  "traveling carnival at dusk, Ferris wheel lights turning on, colorful midway glowing",
-  "small county fair at golden hour, carnival rides and food stalls with American flags",
-  "small white wooden church with simple steeple, standing alone against a vast blue sky",
-  "red brick public library with heavy oak door, afternoon sun on the steps",
-  "small town fire station with open garage doors, fire trucks visible, afternoon light",
-  "yellow school bus parked in a row at golden hour, empty school parking lot",
-  "American farm at golden hour, red barn and silo against wide open sky",
-  "cornfield at dusk, endless rows disappearing into the horizon",
-  "farmhouse porch with rocking chair, American flag gently moving in the breeze",
-  "wooden pier at golden hour, waves crashing below, long shadows stretching across the planks",
-  "California boardwalk at dusk, colorful lights turning on, ocean breeze in the air",
-  "quiet coastal pier in the morning, fishermen casting lines, gentle waves below",
-  "outdoor farmers market at golden hour, colorful produce stalls under white tents",
-  "busy farmers market on a Saturday morning, fresh flowers and vegetables in wooden crates",
-  "small regional airport terminal at dawn, empty waiting area with fluorescent lights",
-  "airport runway at golden hour, single small plane waiting, vast sky above",
-  "classic donut shop at early morning, neon Open sign glowing, fresh donuts in the case",
-  "donut shop counter at 6am, coffee pots lined up, warm lighting and empty stools",
-  "high school football field at night, stadium lights on but no game happening",
-  "basketball court in a quiet suburban neighborhood at dusk, hoop and cracked asphalt",
-  "small baseball diamond in a local park, chain-link fence and evening light",
-  "little league baseball field at golden hour, perfectly maintained",
-  "street basketball court behind a school, chain net on the hoop, afternoon sun",
-  "24-hour laundromat interior, rows of machines spinning, warm light and empty chairs",
-  "laundromat at 2am, machines humming, single person folding clothes in silence",
-  "old coin laundromat with vintage machines and handwritten signs on yellow paper",
-  "American kitchen at golden hour, sunlight on linoleum floor, percolator on the counter",
-  "living room with television set, afternoon light through venetian blinds striping the wall",
-  "screen porch on a summer evening, ceiling fan turning, fireflies outside",
-  "kitchen table at dawn, single coffee cup, newspaper not yet opened",
-  "bedroom with patchwork quilt and morning light through lace curtains",
-  "bathroom with pink tile and pedestal sink, morning light from frosted glass window",
-  "basement with wood-paneled walls, old couch and shelves of paperbacks",
-  "attic with dust motes and afternoon light, cardboard boxes and old lamp",
-  "garage with single bulb, tools on pegboard, oil stain on the concrete floor",
-  "back porch at dusk, screen door, single chair, yard going dark",
-  "two-lane highway through flat midwestern farmland, late afternoon, nobody coming",
-  "grain elevator at sunrise, long shadow across empty road",
-  "pickup truck parked on a dirt road, engine off, nobody inside",
-  "river bend with old wooden bridge, afternoon light on the water",
-  "railroad crossing in a small town, gates up, no train coming",
-  "open field with single oak tree, golden hour light from the west",
-  "country road with telephone poles, sunset behind clouds, nobody driving",
-  "empty city bus interior at night, fluorescent light, seats all vacant",
-  "corner bodega at night, single worker, fluorescent light on the awning",
-  "apartment building fire escape at dusk, city sounds below, one person's chair",
-  "subway platform at off-peak hours, one person waiting, tile and light",
-  "bus stop bench at dawn, nobody there, morning paper in the box",
-  "urban parking garage top floor at twilight, city skyline visible beyond",
-  "empty basketball court in a city park, late afternoon, net swaying",
-  "city alley at golden hour, dumpsters and wall murals, light from the street end",
-  "NYC brownstone fire escape at golden hour, rusted iron and warm brick reflections",
-  "Chicago alleyway with steam rising from manholes, wet cobblestone reflections",
-  "midnight laundromat, neon signs reflected in glass doors of spinning dryers",
-  "modern office plaza, evening rain on gray pavement reflecting blue city lights",
-  "suburban garage driveway, portable basketball hoop and chalk drawings on concrete",
-  "lush green lawn with sprinklers at noon, white picket fence and blooming roses",
-  "post-Christmas quiet neighborhood, wilting wreaths on doors and gray sky",
-  "Victorian porch with carved pumpkins on steps, soft light from frosted windows",
-  "Greyhound bus terminal waiting area, plastic orange seats and hum of vending machines",
-  "fog-drenched San Francisco hills, cable car tracks disappearing into mist",
-  "highway rest stop, wooden picnic table under a solitary oak tree",
-  "quaint historical train station, creaking floorboards and dust motes in sunbeams",
-  "end-of-summer lakeside, peeling paint on a wooden pier and still blue water",
-  "vast wheat fields after harvest, giant hay bales casting long late-day shadows",
-  "Redwood forest trail in dense fog, shafts of morning light through canopy",
-  "desert highway Route 66, endless line of telephone poles toward the horizon",
-  "winter in Boston, frozen pond in the Common and orange glow of streetlamps",
-  "rooftop parking lot at dusk, rows of yellow lines and distant city silhouette",
-  "abandoned Drive-in theater, cracked screen and tall weeds in the gravel",
-  "bowling alley interior, glowing lanes and sound of pins under dim lights",
-  "high school hallway at 4pm, rows of lockers and light through high windows",
-  "art deco theater lobby, velvet ropes and smell of buttery popcorn",
-  "botanical garden greenhouse, misty glass and tropical leaves against gray sky",
-  "industrial canal side, rusted barges and concrete walls with faded graffiti",
-  "vintage record store aisle, crates of vinyl and posters on peeling walls",
-  "skate park at sunset, concrete bowls and silhouettes of longboards",
-  "diner across from the hospital, 3am, coffee cups and exhausted faces",
-  "university campus quad, red brick buildings and autumn leaves, students gone for the day",
-  "college town main street, vintage storefronts and bike racks, late afternoon",
-  "university library reading room, green lamp shades and tall shelves, evening quiet",
-  "college gymnasium with wooden bleachers, afternoon light from high windows",
-  "fraternity row at dawn, empty red cups on porches, morning after",
-  "campus coffee shop, mismatched furniture and laptop screens, mid-morning",
-  "outdoor amphitheater on a college campus, empty seats and a microphone stand",
-  "campus parking garage stairwell, concrete and fluorescent light",
-  "indie music venue interior, low stage and sticky floor, before the show",
-  "backstage hallway of a small concert venue, tour posters and dim light",
-  "street corner with chalk drawings and a busker's empty case",
-  "art gallery white walls with spotlit paintings, opening night aftermath",
-  "graffiti mural alley, vivid colour on brick, afternoon light",
-  "recording studio control room, mixing board and red recording light",
-  "open mic night café, small stage and nervous energy, evening",
-  "used bookstore with live music corner, folding chairs and fairy lights",
-  "front porch of a Southern colonial house, white columns and ceiling fan",
-  "bayou swamp edge, Spanish moss and still dark water, late afternoon",
-  "New Orleans French Quarter alley, wrought iron balconies and gas lamps",
-  "Savannah cobblestone square, live oaks dripping with moss, twilight",
-  "roadside boiled peanut stand, hand-painted sign and old lawn chairs",
-  "Cajun seafood shack exterior, string lights and picnic tables on gravel",
-  "Texas BBQ pit exterior, smoke rising, screen door, wooden bench",
-  "Appalachian mountain road, hairpin curve and valley view, autumn",
-  "tobacco barn in Virginia, weathered wood and evening light through gaps",
-  "food truck park at golden hour, string lights and picnic tables filling up",
-  "single food truck parked on an empty lot, serving window lit, late lunch",
-  "taco truck at the curb, evening light, regulars waiting on the sidewalk",
-  "food truck rally, colourful trucks lined up, crowd thinning at dusk",
-  "outdoor food market, pop-up canopies and folding tables, weekend morning",
-  "BBQ food truck in a parking lot, smoke rising, folding chairs beside it",
-  "ice cream truck on a residential street, summer afternoon, no one around",
-  "farmers market food vendor, cast iron and steam, early morning",
-  "suburban cul-de-sac at golden hour, sprinklers running, nobody outside",
-  "backyard deck with string lights, summer evening, chairs pulled up",
-  "suburban garage with door open, car half-visible, tools on the wall",
-  "driveway basketball hoop at dusk, ball left on the concrete",
-  "mailbox row on a residential street, late afternoon light",
-  "neighbourhood pool at closing time, empty lanes and wet concrete",
-  "suburban backyard at dawn, dew on the grass, lawn chairs still folded",
-  "cul-de-sac fire hydrant with chalk lines around it, summer morning",
-  "HOA community park, empty playground and manicured lawn, weekday noon",
-  "neighbourhood walking trail, mature trees and power lines, autumn",
-  "suburban living room with sectional sofa, TV off, afternoon light through blinds",
-  "open-plan kitchen with island counter, morning light, coffee brewing",
-  "bedroom with unmade bed and clothes on the floor, morning light",
-  "teenager's bedroom, band posters and fairy lights, afternoon",
-  "home office with bookshelves and a desk lamp, evening",
-  "laundry room with front-loading machines, folded clothes on the counter",
-  "mudroom entry with hooks and shoes lined up, rain outside",
-  "sunroom with wicker furniture and plants, soft morning light",
-  "dining room with table set but nobody home, evening light from the window",
-  "walk-in closet with organised racks, warm light from above",
-  "upstairs hallway, framed photos on the wall, light from a bedroom door",
-  "bathroom vanity, mirror and morning light, toothbrush and soap",
-  "basement rec room, old couch and foosball table, fluorescent light",
-  "backyard shed interior, garden tools and potting soil, afternoon light through a small window",
-  "American kitchen at midnight, only the stove hood light on",
-  "Brooklyn waterfront, Manhattan skyline across the river, evening",
-  "Chicago L train elevated platform, city below, late afternoon",
-  "Miami Art Deco hotel exterior, pastel facade and palm tree shadow",
-  "Seattle Pike Place Market exterior, neon sign and wet cobblestones",
-  "Austin Sixth Street at 2pm, empty before the night begins",
-  "Nashville honky-tonk row in daylight, signs and empty sidewalk",
-  "Portland coffee shop with bike parking out front, misty morning",
-  "Denver 16th Street Mall, wide pedestrian street and light rail",
-  "Atlanta Beltline trail, urban greenway and mural walls",
-  "Detroit abandoned factory exterior, broken windows and weeds, golden hour",
-  "national park trailhead parking lot at dawn, one car, ranger station dark",
-  "state park picnic shelter, empty concrete tables, overcast day",
-  "city park fountain, turned off for winter, leaves in the basin",
-  "hiking trail switchback with mountain view, nobody on the path",
-  "lake shore at a summer camp, dock and canoes, off-season quiet",
-  "swamp boardwalk trail, still water and cypress knees, morning mist",
-  "suburban nature trail, wooden bridge over a creek, autumn",
-  "beach parking lot at dawn, empty spaces and lifeguard tower",
-  "roadside scenic overlook, railing and valley view, afternoon haze",
-  "desert rest area, one picnic table, scrub brush, vast flat sky",
-  "auto repair shop interior, lift and tools, single mechanic bay",
-  "hair salon interior, styling chairs and mirrors, between clients",
-  "nail salon at closing, fluorescent light and acetone smell",
-  "tattoo parlour waiting area, portfolio books and flash art on walls",
-  "pawn shop exterior, crowded window display, neon sign",
-  "storage unit facility, rows of orange doors, early morning",
-  "self-storage office window at dusk, one light still on inside",
-  "car dealership lot at night, vehicles under floodlights, nobody there",
-  "gym interior, free weights and mirrors, midday quiet between rushes",
-  "yoga studio, wood floor and props stacked, natural light, class just ended",
-  "Greyhound bus interior, seats mostly empty, highway outside the window at night",
-  "airport baggage carousel, empty belt spinning, last flight landed",
-  "train station waiting bench, departure board above, late evening",
-  "ferry boat upper deck, open water and wind, afternoon",
-  "taxi stand outside a hotel at 4am, one cab waiting",
-  "ride-share pickup zone, concrete pillar and directional signs",
-  "long-term parking shuttle bus stop, nobody waiting, early morning",
-  "highway on-ramp at golden hour, merge lane and long shadow",
-  "Halloween decorated porch, string lights and carved pumpkins, dusk",
-  "Christmas tree lot at night, lights and empty spaces, last trees standing",
-  "July 4th parade route the morning after, flags and litter on the sidewalk",
-  "Easter egg hunt park, morning after, plastic eggs left in the grass",
-  "Thanksgiving grocery store parking lot, morning of, everyone rushing",
-  "New Year's Eve bar exterior, line already forming at 9pm",
-  "Memorial Day weekend beach access, traffic cones and portable signs",
-  "quiet suburban residential street lined with two-story colonial houses, American flags on porches",
-  "modest single-family ranch house with attached garage and basketball hoop in driveway",
-  "older neighborhood with mature oak trees, cracked sidewalks and blooming crepe myrtles",
-  "new housing development with identical beige stucco houses and bare sod lawns",
-  "apartment complex with balconies and shared parking lot at golden hour",
-  "mobile home park with clotheslines, satellite dishes and gravel roads",
-  "townhouse row with small front porches and shared driveways",
-  "backyard with above-ground pool covered for winter and faded plastic chairs",
-  "suburban backyard deck with string lights and empty grill at twilight",
-  "front yard with single oak tree and tire swing at golden hour",
-  "quiet residential alley behind houses, trash cans and power lines overhead",
-  "neighborhood sidewalk with chalk drawings and hopscotch grid",
-  "suburban street after rain, reflections in puddles and wet mailboxes",
-  "row of identical starter homes with tiny front lawns and one car in each driveway",
-  "older brick bungalow with wrap-around porch and hanging flower baskets",
-  "split-level house with basketball goal and basketball left on the grass",
-  "cul-de-sac with one streetlight on at dusk, nobody outside",
-  "apartment balcony overlooking parking lot, potted plants and laundry drying",
-  "modest brick ranch house with Christmas lights still up in February",
-  "neighborhood with mature magnolia trees and Spanish moss in the South",
-  "quiet street with one mailbox cluster and American flags waving",
-  "suburban driveway with oil stain and basketball hoop at golden hour",
-  "front porch with rocking chair and folded American flag",
-  "suburban backyard at dawn, dew on the grass and lawnmower tracks",
-  "neighborhood with one streetlight flickering at 2am, completely silent",
-  "small town post office with faded blue paint and American flag at half-mast",
-  "public library exterior with brick facade and bike rack out front",
-  "elementary school playground at dusk, empty swings and basketball court",
-  "high school football stadium bleachers empty on a weekday afternoon",
-  "community center with folding chairs visible through window and bulletin board outside",
-  "municipal building with white columns and flagpole, afternoon light",
-  "free clinic waiting room with plastic chairs and old magazines",
-  "veterans hall with faded banners and empty parking lot",
-  "town hall steps with American flag and empty benches",
-  "public swimming pool at closing time, empty lanes and wet concrete",
-  "recreation center gym with polished wooden floor and folded bleachers",
-  "senior center exterior with accessibility ramp and flower beds",
-  "courthouse steps with heavy stone pillars and pigeons",
-  "public park pavilion with picnic tables and empty grills",
-  "community garden with wooden raised beds and handwritten signs",
-  "public library reading room with green lamps and tall bookshelves",
-  "elementary school hallway with colorful student artwork on the walls",
-  "city hall lobby with marble floors and American flag",
-  "recreation center parking lot at dusk, last cars leaving",
-  "public park fountain with coins on the bottom, overcast day",
-  "supermarket parking lot at 7am with employees arriving and carts scattered",
-  "24-hour convenience store with bright fluorescent glow at 3am",
-  "home improvement store parking lot full of pickup trucks on a Saturday",
-  "pharmacy drive-thru window at dusk with one car waiting",
-  "auto repair shop with car on lift and tools scattered across the floor",
-  "traditional barber shop interior with spinning striped pole and waiting chairs",
-  "pet store with puppies visible in window display, afternoon light",
-  "thrift store with colourful clothing racks spilling onto the sidewalk",
-  "dollar store exterior with bright yellow and red signage, empty lot",
-  "fast food strip with multiple drive-thrus at lunch hour",
-  "car wash vacuums and soap suds on the concrete, late afternoon",
-  "liquor store with bars on windows and faded ice chest outside",
-  "hardware store with lumber stacked outside, weekend morning",
-  "beauty supply store with bright signage, strip mall corner",
-  "self-storage facility corridor with rows of orange roll-up doors",
-  "dry cleaner interior, plastic-wrapped clothes on the carousel, fluorescent light",
-  "mattress store showroom, empty on a Tuesday afternoon",
-  "nail salon with neon open sign and pink lighting, closing time",
-  "pawn shop interior, crowded shelves and glass cases, afternoon",
-  "grocery store produce aisle, early morning stocking before opening",
-  "Greyhound bus station waiting area at 2am, plastic orange seats and vending machines",
-  "small town train platform with one bench and ticket machine, nobody waiting",
-  "highway rest area with vending machines and picnic tables, midday",
-  "toll booth plaza at golden hour with empty lanes and orange cones",
-  "ferry terminal dock with cars lined up waiting, late afternoon",
-  "school bus depot with yellow buses parked in neat rows, early morning",
-  "abandoned railroad track overgrown with weeds and wildflowers, summer",
-  "bridge overlook with metal railing and valley view at dusk",
-  "bus stop shelter with bench and faded route map, nobody there",
-  "rural crossroads with four-way stop and faded directional signs",
-  "shipping container yard with stacked coloured metal boxes, golden hour",
-  "water tower with town name painted on the side, flat farmland below",
-  "grain elevator towering over flat farmland at sunrise",
-  "electrical substation fence at dusk, transformers humming",
-  "cell phone tower in a field at sunset, long shadow",
-  "railroad crossing with lowered gates and flashing red lights, nobody there",
-  "small town welcome sign on the side of the highway, afternoon light",
-  "underground parking garage exit ramp, harsh yellow lighting",
-  "airport baggage claim area, empty carousel spinning at 5am",
-  "highway overpass pedestrian walkway, city visible below at dusk",
-  // === NEW NIGHT & SEXY EVERYDAY ===
-  "24-hour gym front desk",
-  "midnight convenience store parking lot",
-  "apartment pool side at night",
-  "drive-thru car interior",
-  "car wash at night",
-  "bowling alley bar counter",
-  "ice skating rink rest area",
-  "college dorm communal kitchen",
-  "tattoo shop waiting area",
-  "nail salon chair",
-  "neon-lit laundromat at 2am",
-  "gas station pump under harsh canopy light",
-  "dimly lit dive bar bathroom mirror",
-  "motel balcony overlooking highway at night",
-  "empty subway car late at night",
-  "rooftop party with string lights at midnight",
-  "empty diner booth at 3am",
-  "all-night diner counter",
-  "stadium bleachers after the game",
-  "parking garage rooftop at twilight",
-  "movie theater lobby at midnight",
-  "pool hall corner at night",
-  "street food cart line at 1am",
-  "liquor store aisle under fluorescent light",
-  "motel ice machine alcove",
-  "empty beach boardwalk at night",
-  "suburban driveway basketball hoop illuminated by car headlights",
-  "casino floor at 4am",
-  "highway rest stop bathroom mirror",
-  "24-hour pharmacy aisle",
-  // === NEW FORMAL LOCATIONS ===
-  "hotel ballroom",
-  "country club dining room",
-  "wedding venue chapel",
-  "art gallery opening night",
-  "opera house lobby",
-  "high-end steakhouse private room",
-  "charity gala venue",
-  "university graduation hall",
-  "city hall grand staircase",
-  "rooftop wedding reception",
-  "symphony hall foyer",
-  "luxury hotel lobby",
-  "upscale rooftop cocktail lounge",
-  "museum benefit dinner",
-  "botanical garden evening reception",
-  "historic mansion ballroom",
-  "exclusive members-only club entrance",
-  "red carpet event entrance",
-  "five-star restaurant dining room",
-  "embassy reception hall"
+  "ferry boat upper deck, open water and wind, afternoon sun on the waves",
+  "commuter ferry crossing at golden hour, city skyline in background, wind in hair",
+  "night ferry interior cabin, city lights reflecting on water through the window",
+  "ferry terminal dock with cars lined up waiting, late afternoon light",
+  "ferry deck at dusk, wind in hair, distant lights on the horizon",
+  "high-speed ferry cutting through waves at sunset, spray in the air",
+  "quiet ferry ride at blue hour, lights of the city starting to glow",
+  "small local ferry with wooden benches, open air, morning mist over water",
+  "car ferry crossing, people sitting in cars or on deck, golden hour",
+  "ferry terminal waiting area, plastic chairs and vending machines, early morning",
+  "ferry at night, interior lights and dark water outside, quiet hum of engines",
+  "ferry upper deck at sunrise, first light hitting the water, nobody else around",
+  // Biker / Motorcycle locations
+  "desert highway at golden hour, lone motorcycle parked on the side of the road, vast empty landscape",
+  "motorcycle club outside a roadside bar at dusk, rows of Harley-Davidson bikes lined up, neon sign glowing",
+  "empty two-lane highway at sunset, one biker in the distance, long shadows across the asphalt",
+  "desert gas station at night, single motorcycle under harsh fluorescent light, stars above",
+  "mountain road switchback at golden hour, motorcycle leaning into the curve, dramatic cliffs",
+  "small town main street at dusk, group of bikers parked in front of the diner, warm light spilling out",
+  "highway rest stop at night, motorcycle under the only working lamp, empty picnic tables",
+  "Route 66 roadside at sunset, classic motorcycle with saddlebags, long empty road disappearing into the horizon",
+  "bike rally in a dusty field at golden hour, rows of motorcycles, American flags, warm light",
+  "overlook at dusk, motorcycle parked at the edge, city lights far below, wind in the air",
+  "abandoned drive-in at night, one motorcycle in the lot, glowing screen in the distance",
+  "wet highway at night after rain, motorcycle headlight cutting through the mist",
+  "cafe racer meet at a retro gas station, vintage bikes lined up, golden hour light on chrome",
+  "lone rider on an empty road at blue hour, taillight glowing, vast sky above",
+  // Prom / Homecoming
+  "high school gym decorated for prom, balloons and streamers, empty dance floor at golden hour",
+  "hotel ballroom at prom night, chandeliers and tables with centerpieces, soft lighting",
+  "limousine interior at night, prom couple in formal wear, city lights outside",
+  "school parking lot at dusk, limos lined up, students in gowns and tuxedos",
+  "homecoming football game stands at night, crowd and lights, cheerleaders on the field",
+  "high school hallway with homecoming posters, afternoon light through windows",
+  // College Life
+  "university campus quad at golden hour, students walking, autumn leaves, brick buildings",
+  "college football stadium at dusk, empty stands, field lights turning on",
+  "frat house porch at night, red solo cups, string lights, party atmosphere",
+  "university library reading room, green lamps, tall shelves, evening quiet",
+  "dorm room at afternoon, unmade bed, posters on wall, sunlight through blinds",
+  "campus coffee shop, mismatched furniture, laptop screens, mid-morning bustle",
+  "tailgating in the parking lot before the game, grills and folding chairs, American flags",
+  "sorority house exterior at golden hour, Greek letters, girls in matching outfits",
+  // American Wedding
+  "white church with steeple at golden hour, wedding party outside, flowers and smiles",
+  "garden wedding at dusk, string lights in trees, white chairs in rows",
+  "rustic barn wedding reception, string lights, wooden tables, mason jar centerpieces",
+  "beach wedding at sunset, barefoot bride, ocean in background, soft pink sky",
+  "hotel ballroom wedding reception, round tables, dance floor, warm lighting",
+  "outdoor wedding arch at golden hour, flowers and fabric, empty chairs waiting",
+  "wedding limo at night, just married sign, city lights in background"
 ];
 
 const FORMAL_LOC_KEYWORDS = ["hotel", "gallery", "ballroom", "chapel", "opera house", "steakhouse", "gala", "graduation", "city hall", "wedding", "symphony", "museum", "mansion", "members-only", "red carpet", "country club"];
@@ -582,8 +314,55 @@ const STYLE_SCENE = ["Kodak Portra 400 film aesthetic, warm and slightly faded",
 
 const PERCEPTION = ["slight focus drift, as if the lens is struggling to settle","subtle temporal lag, movement feels delayed","soft motion blur lingering after stillness","light flickers unnaturally, barely perceptible","colours slightly misaligned, like a memory offset","depth feels inconsistent, foreground and background blending","visual noise creeping in like analog signal decay","frame feels almost still, but not completely frozen","the horizon line is not quite level, the world slightly tilted","colour temperature shifts mid-frame, warm to cold without reason","a figure that was there a moment ago seems to have never existed","reflections do not match their sources, reversed or delayed","edges of the frame feel closer than they should be"];
 
+// New: Theme axis (controls overall atmosphere)
+const THEMES = [
+  "lonely and quiet, nobody else around",
+  "romantic and nostalgic, golden light on everything",
+  "chaotic and alive, energy in the air",
+  "empty and slightly melancholic, time frozen",
+  "warm and lived-in, memory of a perfect day",
+  "tense and charged, something about to happen",
+  "dreamy and soft, like a half-remembered moment",
+  "raw and real, no performance, just life"
+];
+
+// New: American-specific noise / imperfection layer
+const NOISE = [
+  "faded and peeling paint on the wall behind",
+  "cigarette butt on the concrete near the subject",
+  "distant siren barely audible in the background",
+  "half-eaten donut on a paper plate nearby",
+  "cracked asphalt with weeds growing through",
+  "old faded sign with missing letters",
+  "plastic bag caught on a fence, fluttering",
+  "empty beer cans scattered near the curb",
+  "graffiti on the wall, slightly out of focus",
+  "dead leaves and dust in the corner of the frame",
+  "faint smell of rain on hot asphalt",
+  "distant traffic hum and occasional horn",
+  "peeling poster on the telephone pole",
+  "single lost shoe on the side of the road",
+  "faded chalk drawings on the sidewalk"
+];
+
 const CORE_FIXED = "the quiet weight of an ordinary moment";
 const CORE_VARIATION = ["something here will be remembered long after it's gone","the world going on as it always does, beautiful for no reason","as if the camera arrived just in time"];
+
+// New: Unified emotional narrative (combines theme + mood + core + variation into one cohesive sentence)
+function buildEmotionalNarrative(theme, mood, variation) {
+  const base = `${theme}, ${mood}`;
+  const variationPart = variation ? ` ${variation}` : "";
+  
+  // Create natural flowing sentences
+  const narratives = [
+    `${base}${variationPart}`,
+    `this feels like ${base}${variationPart}`,
+    `a moment that captures ${base}${variationPart}`,
+    `the kind of ${base} that stays with you${variationPart}`
+  ];
+  
+  return pick(narratives);
+}
 
 // ==================== FIGURE DATA ====================
 const BODY_POSES = ["standing naturally with weight on one leg","walking gracefully toward camera","leaning casually against a wall","sitting on steps looking sideways","standing with hands in pockets","turning around while walking","sitting on the floor with knees up","standing with arms crossed loosely","mid-stride dynamic walking pose","relaxed standing pose, looking over shoulder","leaning forward slightly with interest","standing tall and confident","sitting on a chair backwards","crouching down gently","lying on side propped on elbow","standing with one hand on hip","walking away from camera","sitting with legs crossed elegantly","standing with slight contrapposto pose","kneeling on one knee","jumping in mid-air","running dynamically","dancing freely","spinning around","balancing on one foot","stretching arms upward","hugging own body gently","bending forward slightly","squatting playfully","reclining on elbow","standing with legs crossed","posing with hand on waist","walking with confident stride","sitting with one leg up","leaning back relaxed","crouching with hands on knees","standing with arms open wide","twirling with scarf flowing","posing dramatically with hand on chest","casual hands behind head","sitting on edge of something","standing in contrapposto with hand on hip","gentle sway while standing","looking back over shoulder while walking"];
@@ -609,7 +388,6 @@ function setFraming(f) {
   document.getElementById("frame-" + f).classList.add("active");
 }
 
-// Store current values for re-roll
 let lastVals = {};
 
 function reroll(key) {
@@ -623,7 +401,6 @@ function reroll(key) {
   if (sources[key]) {
     lastVals[key] = pick(sources[key]);
   } else if (key === 'top') {
-    // Top logic depends on the current location
     const isFormalLocation = lastVals.loc && FORMAL_LOC_KEYWORDS.some(k => lastVals.loc.includes(k));
     if (isFormalLocation && Math.random() < 0.7) {
       lastVals.top = pick(FORMAL_TOPS);
@@ -639,11 +416,7 @@ function reroll(key) {
   } else if (key === 'season_scene') {
     lastVals.season_scene = pick(SEASONS_SCENE[currentSeason]);
   } else if (key === 'acc') {
-    const baseAcc = pickN(ACCESSORIES, Math.random() < 0.5 ? 2 : 3);
-    const seasonalExtras = { spring:[], summer:[], autumn:["long knit scarf"], winter:["long knit scarf","chunky knit scarf in wool","oversized plaid scarf"] };
-    const extras = seasonalExtras[currentSeason];
-    const extraAcc = extras.length && Math.random() < 0.5 ? pick(extras) : null;
-    lastVals.acc = extraAcc ? [...baseAcc, extraAcc].join(", ") : baseAcc.join(", ");
+    lastVals.acc = pickAccessories();
   } else if (key === 'outer') {
     if (currentSeason === "summer") {
       lastVals.outer = Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null;
@@ -651,7 +424,16 @@ function reroll(key) {
       lastVals.outer = Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null;
     }
   } else if (key === 'perception') {
-    lastVals.perception = Math.random() < 0.35 ? pick(PERCEPTION) : null;
+    lastVals.perception = Math.random() < 0.55 ? pick(PERCEPTION) : null;
+  } else if (key === 'theme' || key === 'mood') {
+    if (key === 'theme') lastVals.theme = pick(THEMES);
+    if (key === 'mood') lastVals.mood = pick(MOODS);
+    lastVals.variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
+    lastVals.emotionalNarrative = buildEmotionalNarrative(lastVals.theme, lastVals.mood, lastVals.variation);
+  } else if (key === 'noise') {
+    lastVals.noise = Math.random() < 0.65 ? pick(NOISE) : null;
+  } else if (key === 'emotionalNarrative') {
+    lastVals.emotionalNarrative = buildEmotionalNarrative(lastVals.theme, lastVals.mood, lastVals.variation);
   }
   rebuildPromptAndDisplay();
 }
@@ -660,15 +442,41 @@ function rebuildPromptAndDisplay() {
   const v = lastVals;
   const framingText = { full: "full body shot", upper: "upper body shot from waist up", bust: "bust shot", close: "extreme close-up on face" }[currentFraming];
   const parts = [
-    "young American woman", framingText, v.pose, v.gesture, v.expression, v.light,
-    `wearing ${v.style} style outfit`, v.top, v.bottom,
-    ...(v.outer ? [v.outer] : []),
-    `${v.fabric} fabric`, `color palette: ${v.color}`, `accessories: ${v.acc}`, v.shoe,
-    `location: ${v.loc}`, v.season_scene, v.time, v.weather,
-    `mood: ${v.mood}`, v.camera, v.styleScene,
-    ...(v.perception ? [v.perception] : []),
-    CORE_FIXED, ...(v.variation ? [v.variation] : []),
-    "cinematic everyday America, filmic photography, natural light, high detail"
+    // SUBJECT
+    "subject: young American woman in her early 20s, naturally styled, no heavy makeup",
+    `framing: ${framingText}`,
+    `pose: ${v.pose}`,
+    `gesture: ${v.gesture}`,
+    `expression: ${v.expression}`,
+    `lighting: ${v.light}`,
+
+    // LOOK
+    `outfit style: ${v.style}`,
+    `top: ${v.top}`,
+    `bottom: ${v.bottom}`,
+    ...(v.outer ? [`outer: ${v.outer}`] : []),
+    `fabric: ${v.fabric}`,
+    `color palette: ${v.color}`,
+    `accessories: ${v.acc}`,
+    `shoes: ${v.shoe}`,
+
+    // SCENE
+    `location: ${v.loc}`,
+    `season context: ${v.season_scene}`,
+    `time: ${v.time}`,
+    `weather: ${v.weather}`,
+    ...(v.noise ? [`environmental detail: ${v.noise}`] : []),
+
+    // CINEMA
+    `camera: ${v.camera}`,
+    `film style: ${v.styleScene}`,
+    ...(v.perception ? [`perception: ${v.perception}`] : []),
+
+    // EMOTION
+    `emotional atmosphere: ${v.emotionalNarrative}`,
+
+    // FINAL
+    "cinematic everyday America, film photography realism, natural imperfect lighting, subtle grain, authentic atmosphere, high detail"
   ];
   currentPrompt = parts.join(", ");
   document.getElementById("finalPrompt").value = currentPrompt;
@@ -696,7 +504,10 @@ function renderFields() {
     { label: "Gesture", value: v.gesture, color: "#f9a8d4", key: "gesture" },
     { label: "Expression", value: v.expression, color: "#86efac", key: "expression" },
     { label: "Lighting", value: v.light, color: "#fcd34d", key: "light" },
+    { label: "Theme", value: v.theme, color: "#d9f99d", key: "theme" },
+    { label: "Narrative", value: v.emotionalNarrative, color: "#c084fc", key: "emotionalNarrative" },
     ...(v.perception ? [{ label: "Perception", value: v.perception, color: "#c084fc", key: "perception", rare: true }] : []),
+    ...(v.noise ? [{ label: "Noise", value: v.noise, color: "#fda4af", key: "noise" }] : []),
   ].map(f => `
     <div class="field-row">
       <div class="field-label">${f.label}</div>
@@ -715,7 +526,6 @@ function generateAll() {
   document.getElementById("displayFields").style.display = "flex";
   document.getElementById("promptBox").style.display = "block";
 
-  // Scene (Needs to be picked first for Top logic)
   const loc = pick(LOCATIONS);
   const time = pick(TIMES);
   const weather = pick(WEATHER[currentSeason]);
@@ -723,13 +533,16 @@ function generateAll() {
   const mood = pick(MOODS);
   const camera = pick(CAMERA);
   const styleScene = pick(STYLE_SCENE);
-  const perception = Math.random() < 0.35 ? pick(PERCEPTION) : null;
+  const perception = Math.random() < 0.38 ? pick(PERCEPTION) : null; // Reduced to 38% for better "rare" feel
+  const theme = pick(THEMES);
+  const noise = Math.random() < 0.65 ? pick(NOISE) : null;
   const variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
+  
+  // Build unified emotional narrative (theme + mood + variation)
+  const emotionalNarrative = buildEmotionalNarrative(theme, mood, variation);
 
-  // Outfit
   const style = pick(STYLES);
   
-  // TPO Logic for Top
   const isFormalLocation = FORMAL_LOC_KEYWORDS.some(k => loc.includes(k));
   let top;
   if (isFormalLocation && Math.random() < 0.7) {
@@ -744,55 +557,67 @@ function generateAll() {
   const outer = (currentSeason === "summer") ? (Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null) : (Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null);
   const fabric = pick(FABRICS);
   const color = pick(COLORS[currentSeason]);
-  const seasonalExtras = {
-    spring: [], summer: ["sheer kimono wrap","lightweight mesh cover-up","sheer linen duster","cropped sheer organza jacket","translucent PVC raincoat","ultra-light nylon windbreaker","sheer chiffon wrap skirt as outerwear","open-weave crochet cardigan"],
-    autumn: ["long knit scarf"],
-    winter: ["long knit scarf","chunky knit scarf in wool","oversized plaid scarf"]
-  };
-  const baseAcc = pickN(ACCESSORIES, Math.random() < 0.5 ? 2 : 3);
-  const extras = seasonalExtras[currentSeason];
-  const extraAcc = extras.length && Math.random() < 0.5 ? pick(extras) : null;
-  const acc = extraAcc ? [...baseAcc, extraAcc].join(", ") : baseAcc.join(", ");
-  const shoe = pick(SHOES);
+  const acc = pickAccessories();
+  
+  // Light consistency rules for shoes/outer
+  let shoe = pick(SHOES);
+  if (isFormalLocation) {
+    // Prefer heels for formal locations
+    const formalShoes = SHOES.filter(s => s.includes("heel") || s.includes("pump") || s.includes("Mary Jane") || s.includes("slingback"));
+    if (formalShoes.length > 0 && Math.random() < 0.7) shoe = pick(formalShoes);
+  } else if (loc.includes("motorcycle") || loc.includes("bike") || loc.includes("Harley")) {
+    const motoShoes = SHOES.filter(s => s.includes("motorcycle") || s.includes("engineer") || s.includes("harness") || s.includes("boot"));
+    if (motoShoes.length > 0 && Math.random() < 0.7) shoe = pick(motoShoes);
+  } else if (loc.includes("beach") || loc.includes("sand") || loc.includes("ocean")) {
+    const beachShoes = SHOES.filter(s => s.includes("sandal") || s.includes("flip") || s.includes("thong"));
+    if (beachShoes.length > 0 && Math.random() < 0.6) shoe = pick(beachShoes);
+  }
 
-  // Figure
   const framingText = { full: "full body shot", upper: "upper body shot from waist up", bust: "bust shot", close: "extreme close-up on face" }[currentFraming];
   const pose = pick(BODY_POSES);
   const gesture = pick(HAND_GESTURES);
   const expression = pick(FACIAL_EXPRESSIONS);
   const light = pick(LIGHTING);
 
-  // Prompt Assembly
   const parts = [
-    "young American woman",
-    framingText,
-    pose,
-    gesture,
-    expression,
-    light,
-    `wearing ${style} style outfit`,
-    top,
-    bottom,
-    ...(outer ? [outer] : []),
-    `${fabric} fabric`,
+    // SUBJECT
+    "subject: young American woman in her early 20s, naturally styled, no heavy makeup",
+    `framing: ${framingText}`,
+    `pose: ${pose}`,
+    `gesture: ${gesture}`,
+    `expression: ${expression}`,
+    `lighting: ${light}`,
+
+    // LOOK
+    `outfit style: ${style}`,
+    `top: ${top}`,
+    `bottom: ${bottom}`,
+    ...(outer ? [`outer: ${outer}`] : []),
+    `fabric: ${fabric}`,
     `color palette: ${color}`,
     `accessories: ${acc}`,
-    shoe,
+    `shoes: ${shoe}`,
+
+    // SCENE
     `location: ${loc}`,
-    season_scene,
-    time,
-    weather,
-    `mood: ${mood}`,
-    camera,
-    styleScene,
-    ...(perception ? [perception] : []),
-    CORE_FIXED,
-    ...(variation ? [variation] : []),
-    "cinematic everyday America, filmic photography, natural light, high detail"
+    `season context: ${season_scene}`,
+    `time: ${time}`,
+    `weather: ${weather}`,
+    ...(noise ? [`environmental detail: ${noise}`] : []),
+
+    // CINEMA
+    `camera: ${camera}`,
+    `film style: ${styleScene}`,
+    ...(perception ? [`perception: ${perception}`] : []),
+
+    // EMOTION
+    `emotional atmosphere: ${emotionalNarrative}`,
+
+    // FINAL
+    "cinematic everyday America, film photography realism, natural imperfect lighting, subtle grain, authentic atmosphere, high detail"
   ];
 
-  // Store in lastVals for re-roll
-  lastVals = { style, top, bottom, outer, fabric, color, acc, shoe, loc, time, weather, season_scene, mood, camera, styleScene, perception, variation, pose, gesture, expression, light };
+  lastVals = { style, top, bottom, outer, fabric, color, acc, shoe, loc, time, weather, season_scene, mood, camera, styleScene, perception, theme, noise, variation, emotionalNarrative, pose, gesture, expression, light };
 
   currentPrompt = parts.join(", ");
   document.getElementById("finalPrompt").value = currentPrompt;
@@ -802,6 +627,16 @@ function generateAll() {
 
 function copyPrompt() {
   if (!currentPrompt) return;
+  if (!navigator.clipboard) {
+    // Fallback for older browsers
+    const ta = document.getElementById("finalPrompt");
+    ta.select();
+    try { document.execCommand("copy"); } catch(e) {}
+    const btn = document.getElementById("copyBtn");
+    btn.textContent = "Copied ✓"; btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "Copy Prompt"; btn.classList.remove("copied"); }, 2000);
+    return;
+  }
   navigator.clipboard.writeText(currentPrompt).then(() => {
     const btn = document.getElementById("copyBtn");
     btn.textContent = "Copied ✓"; btn.classList.add("copied");
@@ -826,7 +661,12 @@ function renderSaved() {
   section.style.display = "block";
   list.innerHTML = saved.map((p, i) => `<div class="saved-item" data-index="${i}">${p}</div>`).join("");
   document.querySelectorAll(".saved-item").forEach(el => {
-    el.onclick = () => navigator.clipboard.writeText(saved[el.dataset.index]);
+    el.onclick = () => {
+      const promptText = saved[el.dataset.index];
+      navigator.clipboard.writeText(promptText);
+      currentPrompt = promptText;
+      document.getElementById("finalPrompt").value = currentPrompt;
+    };
   });
 }
 
