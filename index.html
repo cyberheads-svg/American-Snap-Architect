@@ -627,21 +627,31 @@ function generateAll() {
 
 function copyPrompt() {
   if (!currentPrompt) return;
-  if (!navigator.clipboard) {
-    // Fallback for older browsers
-    const ta = document.getElementById("finalPrompt");
-    ta.select();
-    try { document.execCommand("copy"); } catch(e) {}
-    const btn = document.getElementById("copyBtn");
-    btn.textContent = "Copied ✓"; btn.classList.add("copied");
-    setTimeout(() => { btn.textContent = "Copy Prompt"; btn.classList.remove("copied"); }, 2000);
-    return;
+
+  // Most reliable method: use temporary textarea + execCommand
+  const textarea = document.createElement("textarea");
+  textarea.value = currentPrompt;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  try {
+    const successful = document.execCommand("copy");
+    if (successful) {
+      const btn = document.getElementById("copyBtn");
+      btn.textContent = "Copied ✓";
+      btn.classList.add("copied");
+      setTimeout(() => {
+        btn.textContent = "Copy Prompt";
+        btn.classList.remove("copied");
+      }, 2000);
+    }
+  } catch (err) {
+    console.error("Copy failed:", err);
   }
-  navigator.clipboard.writeText(currentPrompt).then(() => {
-    const btn = document.getElementById("copyBtn");
-    btn.textContent = "Copied ✓"; btn.classList.add("copied");
-    setTimeout(() => { btn.textContent = "Copy Prompt"; btn.classList.remove("copied"); }, 2000);
-  });
+
+  document.body.removeChild(textarea);
 }
 
 function savePrompt() {
