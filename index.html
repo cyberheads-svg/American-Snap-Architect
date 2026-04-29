@@ -1049,10 +1049,10 @@ function generateAll() {
   const season_scene = pick(SEASONS_SCENE[currentSeason]);
   const mood = pick(MOODS);
   const camera = getOpticalCamera(currentFraming);
+  const theme = pick(THEMES);
   let styleScene = pick(STYLE_SCENE);
   styleScene = getThemedStyleScene(theme, styleScene);
   const perception = Math.random() < 0.38 ? pick(PERCEPTION) : null; // Reduced to 38% for better "rare" feel
-  const theme = pick(THEMES);
   const noise = Math.random() < 0.65 ? getContextualNoise(loc) : null;
   const variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
   
