@@ -229,37 +229,42 @@ function pickAccessories() {
   return selected.join(", ");
 }
 
-// Light contextual bias: reduce "field mismatch" (e.g. film crew in normal diner, powwow dancer in prom)
+// Light contextual bias: reduce "field mismatch" while keeping randomness
 function getStyleBias(loc, style) {
   const isEveryday = /diner|high school|university|campus|prom|homecoming|wedding|library|bookstore|coffee shop|dorm|quad|lecture hall/.test(loc);
   const isFilmSet = /film set|sound stage|actor.*trailer|craft services|makeup trailer|costume department|editing suite|sound mixing|location scout/.test(loc);
   const isCultural = /navajo|hawaii|alaska|arctic|powwow|inupiat|yupik|native hawaiian/.test(loc);
 
-  // Film crew styles should be rare in everyday locations
   const filmCrewStyles = ["film director","cinematographer","1st AD","2nd AD","script supervisor","production assistant","gaffer","best boy","key grip","dolly grip","boom operator","sound mixer","camera operator","focus puller","clapper loader","makeup artist on set","hair stylist on set","costume supervisor","wardrobe assistant","prop master","set decorator","production designer","location manager","casting director visiting set","unit publicist","stills photographer","film producer","line producer","film student intern","method actor","exhausted actor between takes","stunt coordinator","special effects technician","VFX supervisor on set","editor visiting set","colorist on set","film composer visiting set"];
   
-  if (isEveryday && filmCrewStyles.includes(style)) {
-    return 0.15; // strongly reduce
-  }
-  
-  // Cultural styles should be rare outside cultural locations
   const culturalStyles = ["navajo","cherokee","sioux","powwow dancer","desert reservation","inupiat","yupik","polar night","aurora","alaska fishing village","snowmobile","native hawaiian","hula","lei","plantation","surf culture roots"];
+
+  // Slightly boost normal styles in everyday locations
+  if (isEveryday && !filmCrewStyles.includes(style) && !culturalStyles.includes(style)) {
+    return 1.3;
+  }
   
+  // Reduce film crew in everyday locations (but not too harshly)
+  if (isEveryday && filmCrewStyles.includes(style)) {
+    return 0.35;
+  }
+  
+  // Reduce cultural styles outside cultural locations
   if (!isCultural && culturalStyles.includes(style)) {
-    return 0.2; // reduce
+    return 0.4;
   }
   
-  // Boost film crew in film set locations
+  // Mild boost for film crew in film set locations
   if (isFilmSet && filmCrewStyles.includes(style)) {
-    return 2.5; // strongly boost
+    return 1.6;
   }
   
-  // Boost cultural styles in cultural locations
+  // Mild boost for cultural styles in cultural locations
   if (isCultural && culturalStyles.includes(style)) {
-    return 2.0;
+    return 1.5;
   }
   
-  return 1.0; // normal
+  return 1.0;
 }
 
 // ==================== SCENE DATA ====================
