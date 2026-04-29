@@ -199,34 +199,223 @@ const ACCESSORIES = [
   "wide leather belt","thin chain belt","corset belt","embroidered belt","woven belt","thigh-high fishnet stockings","seamed sheer black tights","lace garter detail","studded belt","chain wallet","fingerless leather gloves","riding gloves","prom corsage","wrist corsage","boutonniere","bridal bouquet","bridesmaid bouquet","tiara","prom queen sash","homecoming queen sash","letterman jacket patches","sorority pin","frat pin","graduation cap tassel","thick black glasses","round wireframe glasses","book locket necklace","vintage fountain pen","leather-bound notebook","stack of books as prop","canvas tote with art prints","polaroid camera","headphones around neck","clapperboard with scene number","walkie-talkie clipped to belt","light meter hanging from neck","thick script binder with colored tabs","coffee cup with film crew logo","folding director's chair with name","boom mic held above head","slate with dry-erase marker","film camera viewfinder hanging from neck","headset with mic","multi-tool Leatherman","tape measure","flashlight for night shoots","earplugs for loud scenes","sunscreen outdoor location","bug spray forest location","hand sanitizer crew habit","notebook labeled SHOT LIST","energy drink cans scattered","walkie-talkie earpiece","film loader changing bag","continuity photo album Polaroids","megaphone for crowd scenes","stopwatch 1st AD timing takes","turquoise jewelry","native american beadwork","lei","hula skirt","snowmobile helmet","fishing gear","polar parka","mukluks"
 ];
 
-// Accessory picker with no duplicate bags or headwear
-function pickAccessories() {
-  const bagItems = ACCESSORIES.filter(a => a.includes("bag") || a.includes("tote") || a.includes("clutch") || a.includes("backpack"));
-  const hatItems = ACCESSORIES.filter(a => a.includes("hat") || a.includes("beanie") || a.includes("beret") || a.includes("cap") || a.includes("bucket") || a.includes("fascinator") || a.includes("crown"));
-  const otherItems = ACCESSORIES.filter(a => !bagItems.includes(a) && !hatItems.includes(a));
+// Accessory picker with location-aware filtering (Gemini proposal #1)
+function pickAccessories(loc = "") {
+  const isFilmSet = /film set|sound stage|actor.*trailer|craft services|makeup trailer|costume department|editing suite|sound mixing|location scout/.test(loc);
+  const isCultural = /navajo|hawaii|alaska|arctic|powwow|inupiat|yupik|native hawaiian/.test(loc);
+  const isBiker = /motorcycle|bike|harley|biker|cafe racer|road warrior/.test(loc);
+  const isWedding = /wedding|bride|bridesmaid/.test(loc);
+  const isPromOrHomecoming = /prom|homecoming/.test(loc);
+
+  // Category definitions
+  const bagItems = ACCESSORIES.filter(a => a.includes("bag") || a.includes("tote") || a.includes("clutch") || a.includes("backpack") || a.includes("saddlebag") || a.includes("tank bag") || a.includes("roll bag"));
+  const hatItems = ACCESSORIES.filter(a => a.includes("hat") || a.includes("beanie") || a.includes("beret") || a.includes("cap") || a.includes("bucket") || a.includes("fascinator") || a.includes("crown") || a.includes("headband") || a.includes("scrunchie") || a.includes("clip") || a.includes("ribbon") || a.includes("braided headband") || a.includes("floral hair crown"));
+  const neckItems = ACCESSORIES.filter(a => a.includes("scarf") || a.includes("muffler") || a.includes("choker") || a.includes("necklace") || a.includes("pendant") || a.includes("lariat") || a.includes("bandana") || a.includes("do-rag") || a.includes("collar") || a.includes("body chain"));
+  const wristItems = ACCESSORIES.filter(a => a.includes("bracelet") || a.includes("bangle") || a.includes("cuff") || a.includes("wrist") || a.includes("garter"));
+  const fingerItems = ACCESSORIES.filter(a => a.includes("ring") || a.includes("knuckle"));
+  const eyewearItems = ACCESSORIES.filter(a => a.includes("glasses") || a.includes("frames") || a.includes("sunglasses") || a.includes("shades"));
+  const sunglassesItems = ACCESSORIES.filter(a => a.includes("sunglasses") || a.includes("shades"));
+  const regularGlassesItems = ACCESSORIES.filter(a => (a.includes("glasses") || a.includes("frames")) && !a.includes("sunglasses") && !a.includes("shades"));
+
+  // Context-specific items to exclude in normal scenes
+  const filmSetAccessories = ["clapperboard with scene number","megaphone for crowd scenes","boom mic held above head","light meter hanging from neck","thick script binder with colored tabs","coffee cup with film crew logo","folding director's chair with name","slate with dry-erase marker","film camera viewfinder hanging from neck","headset with mic","multi-tool Leatherman","tape measure","flashlight for night shoots","earplugs for loud scenes","walkie-talkie clipped to belt","walkie-talkie earpiece","film loader changing bag","continuity photo album Polaroids","stopwatch 1st AD timing takes"];
+  const culturalAccessories = ["turquoise jewelry","native american beadwork","lei","hula skirt","snowmobile helmet","polar parka","mukluks"];
+  const bikerAccessories = ["chain wallet","fingerless leather gloves","riding gloves","studded belt","biker rings"];
+  const weddingAccessories = ["bridal bouquet","bridesmaid bouquet","boutonniere","prom corsage","wrist corsage"];
+  const eventAccessories = ["tiara","prom queen sash","homecoming queen sash"];
+
+  // Build filtered pool based on context
+  let pool = [...ACCESSORIES];
+
+  if (!isFilmSet) {
+    pool = pool.filter(a => !filmSetAccessories.includes(a));
+  }
+  if (!isCultural) {
+    pool = pool.filter(a => !culturalAccessories.includes(a));
+  }
+  if (!isBiker) {
+    pool = pool.filter(a => !bikerAccessories.includes(a));
+  }
+  if (!isWedding) {
+    pool = pool.filter(a => !weddingAccessories.includes(a));
+  }
+  if (!isPromOrHomecoming) {
+    pool = pool.filter(a => !eventAccessories.includes(a));
+  }
+
+  // Rebuild category lists from filtered pool
+  const filteredBags = pool.filter(a => bagItems.includes(a));
+  const filteredHats = pool.filter(a => hatItems.includes(a));
+  const filteredNecks = pool.filter(a => neckItems.includes(a));
+  const filteredWrists = pool.filter(a => wristItems.includes(a));
+  const filteredFingers = pool.filter(a => fingerItems.includes(a));
+  const filteredEyewear = pool.filter(a => eyewearItems.includes(a));
+  const filteredSunglasses = pool.filter(a => sunglassesItems.includes(a));
+  const filteredRegularGlasses = pool.filter(a => regularGlassesItems.includes(a));
+  const filteredOthers = pool.filter(a => 
+    !bagItems.includes(a) && !hatItems.includes(a) && !neckItems.includes(a) && 
+    !wristItems.includes(a) && !fingerItems.includes(a) && !eyewearItems.includes(a)
+  );
 
   let selected = [];
   let hasBag = false;
   let hasHat = false;
+  let hasNeck = false;
+  let hasWrist = false;
+  let hasFinger = false;
+  let hasEyewear = false;
 
   const count = Math.random() < 0.5 ? 2 : 3;
 
   for (let i = 0; i < count; i++) {
-    let pool = otherItems;
-    if (!hasBag && bagItems.length > 0) pool = [...pool, ...bagItems];
-    if (!hasHat && hatItems.length > 0) pool = [...pool, ...hatItems];
+    let currentPool = filteredOthers;
+    
+    if (!hasBag && filteredBags.length > 0 && Math.random() < 0.6) currentPool = [...currentPool, ...filteredBags];
+    if (!hasHat && filteredHats.length > 0 && Math.random() < 0.5) currentPool = [...currentPool, ...filteredHats];
+    if (!hasNeck && filteredNecks.length > 0 && Math.random() < 0.4) currentPool = [...currentPool, ...filteredNecks];
+    if (!hasWrist && filteredWrists.length > 0 && Math.random() < 0.35) currentPool = [...currentPool, ...filteredWrists];
+    if (!hasFinger && filteredFingers.length > 0 && Math.random() < 0.3) currentPool = [...currentPool, ...filteredFingers];
+    
+    if (!hasEyewear && filteredEyewear.length > 0 && Math.random() < 0.3) {
+      if (filteredRegularGlasses.length > 0 && Math.random() < 0.65) {
+        currentPool = [...currentPool, ...filteredRegularGlasses];
+      } else if (filteredSunglasses.length > 0) {
+        currentPool = [...currentPool, ...filteredSunglasses];
+      }
+    }
 
-    if (pool.length === 0) break;
+    if (currentPool.length === 0) break;
 
-    const item = pick(pool);
+    const item = pick(currentPool);
     selected.push(item);
-    pool = pool.filter(i => i !== item);
+    currentPool = currentPool.filter(i => i !== item);
 
-    if (bagItems.includes(item)) hasBag = true;
-    if (hatItems.includes(item)) hasHat = true;
+    if (filteredBags.includes(item)) hasBag = true;
+    if (filteredHats.includes(item)) hasHat = true;
+    if (filteredNecks.includes(item)) hasNeck = true;
+    if (filteredWrists.includes(item)) hasWrist = true;
+    if (filteredFingers.includes(item)) hasFinger = true;
+    if (filteredEyewear.includes(item)) hasEyewear = true;
   }
 
   return selected.join(", ");
+}
+
+// New: Location-aware noise filtering (Gemini proposal #2)
+function getContextualNoise(loc) {
+  const isFilmSet = /film set|sound stage|actor.*trailer|craft services|makeup trailer|costume department|editing suite|sound mixing|location scout/.test(loc);
+  const isCultural = /navajo|hawaii|alaska|arctic|powwow|inupiat|yupik|native hawaiian/.test(loc);
+  const isBiker = /motorcycle|bike|harley|biker|cafe racer|road warrior/.test(loc);
+  const isDiner = /diner/.test(loc);
+  const isBeach = /beach|ocean|sand/.test(loc);
+  const isWinter = /winter|snow|arctic|polar/.test(loc);
+  const isDesert = /desert|navajo/.test(loc);
+
+  let pool = [...NOISE];
+
+  // Film set noise
+  const filmSetNoise = ["coiled cables and wires snaking across the floor","lighting stands and sandbags everywhere","half-eaten craft services food, bagels, donuts, fruit, coffee cups","script pages scattered on the ground, wind-blown","fog machine residue hanging in the air","walkie-talkie chatter and static in the background","generator hum, constant low drone","fake blood splatter on the ground, horror action set","period costume fabric rustling and dragging","camera dolly tracks visible on the floor","makeup brushes and products scattered on a table","sewing machine running in the background, costume dept","extras chatting and laughing between takes","director yelling Rolling! and Cut! through megaphone","sound of old film cameras rolling, mechanical whir","quiet tension before Action!, everyone holding breath","post-take silence, relief and immediate chatter","Bluetooth speaker playing music between takes, crew playlist","takeout containers and coffee cups piled up","sandbags and apple boxes used as makeshift furniture"];
+  
+  if (!isFilmSet) {
+    pool = pool.filter(n => !filmSetNoise.includes(n));
+  }
+
+  // Cultural noise
+  const culturalNoise = ["desert wind, sand blowing, extreme dryness","aurora crackling in the sky, extreme silence","ocean waves, palm trees rustling, tropical humidity","traditional drumming in the distance","fishing boat engine, cold wind, ice cracking","snow crunching under boots, extreme cold silence"];
+  
+  if (!isCultural) {
+    pool = pool.filter(n => !culturalNoise.includes(n));
+  }
+
+  // Biker noise
+  const bikerNoise = ["distant motorcycle engine roar","tire marks on asphalt","oil stains on the ground"];
+  if (!isBiker) {
+    pool = pool.filter(n => !bikerNoise.includes(n));
+  }
+
+  // Diner-specific noise
+  const dinerNoise = ["half-eaten donut on a paper plate nearby","coffee cup rings on the table","crumpled napkin on the floor"];
+  if (!isDiner) {
+    pool = pool.filter(n => !dinerNoise.includes(n));
+  }
+
+  // Beach noise
+  const beachNoise = ["sand in shoes","salt smell in the air","seagulls in the distance"];
+  if (!isBeach) {
+    pool = pool.filter(n => !beachNoise.includes(n));
+  }
+
+  // Winter noise
+  const winterNoise = ["snow crunching under boots","breath visible in cold air","frost on surfaces"];
+  if (!isWinter) {
+    pool = pool.filter(n => !winterNoise.includes(n));
+  }
+
+  // Desert noise
+  const desertNoise = ["desert wind, sand blowing, extreme dryness","heat shimmer on the horizon"];
+  if (!isDesert) {
+    pool = pool.filter(n => !desertNoise.includes(n));
+  }
+
+  return pool.length > 0 ? pick(pool) : null;
+}
+
+// New: Season and TPO-aware bottom correction (Gemini proposal #3)
+function getContextualBottom(season, loc) {
+  const isWinter = season === "winter";
+  const isFormal = /wedding|prom|homecoming|ballroom|opera|formal|church/.test(loc);
+  const isBeach = /beach|ocean|sand|hawaii/.test(loc);
+  const isBiker = /motorcycle|bike|harley|biker/.test(loc);
+
+  let pool = [...BOTTOMS];
+
+  // Winter: reduce extremely revealing bottoms
+  if (isWinter) {
+    const revealingBottoms = pool.filter(b => 
+      b.includes("micro") || b.includes("ultra-short") || b.includes("bodycon mini") || 
+      b.includes("high-slit") || b.includes("thong") || b.includes("barely-there")
+    );
+    if (revealingBottoms.length > 0 && Math.random() < 0.7) {
+      pool = pool.filter(b => !revealingBottoms.includes(b));
+    }
+  }
+
+  // Formal locations: reduce casual bottoms
+  if (isFormal) {
+    const casualBottoms = pool.filter(b => 
+      b.includes("sweat") || b.includes("jogger") || b.includes("cargo") || 
+      b.includes("track") || b.includes("yoga") || b.includes("athletic") ||
+      b.includes("denim shorts") || b.includes("micro denim")
+    );
+    if (casualBottoms.length > 0 && Math.random() < 0.8) {
+      pool = pool.filter(b => !casualBottoms.includes(b));
+    }
+  }
+
+  // Beach: boost light/summer bottoms
+  if (isBeach) {
+    const beachBottoms = pool.filter(b => 
+      b.includes("shorts") || b.includes("skirt") || b.includes("sarong") || 
+      b.includes("pareo") || b.includes("wrap") || b.includes("thong") ||
+      b.includes("high-slit")
+    );
+    if (beachBottoms.length > 0 && Math.random() < 0.6) {
+      pool = [...pool, ...beachBottoms]; // increase chance
+    }
+  }
+
+  // Biker: boost leather/denim
+  if (isBiker) {
+    const bikerBottoms = pool.filter(b => 
+      b.includes("leather") || b.includes("denim") || b.includes("moto") || 
+      b.includes("riding") || b.includes("distressed")
+    );
+    if (bikerBottoms.length > 0 && Math.random() < 0.5) {
+      pool = [...pool, ...bikerBottoms];
+    }
+  }
+
+  return pick(pool);
 }
 
 // Light contextual bias: reduce "field mismatch" while keeping randomness
@@ -234,13 +423,28 @@ function getStyleBias(loc, style) {
   const isEveryday = /diner|high school|university|campus|prom|homecoming|wedding|library|bookstore|coffee shop|dorm|quad|lecture hall/.test(loc);
   const isFilmSet = /film set|sound stage|actor.*trailer|craft services|makeup trailer|costume department|editing suite|sound mixing|location scout/.test(loc);
   const isCultural = /navajo|hawaii|alaska|arctic|powwow|inupiat|yupik|native hawaiian/.test(loc);
+  const isPromOrHomecoming = /prom|homecoming/.test(loc);
+  const isWedding = /wedding|bride|bridesmaid/.test(loc);
+  const isBiker = /motorcycle|bike|harley|biker|cafe racer|road warrior/.test(loc);
+  const isGreekLife = /sorority|frat|fraternity/.test(loc);
+  const isGraduation = /graduation/.test(loc);
 
   const filmCrewStyles = ["film director","cinematographer","1st AD","2nd AD","script supervisor","production assistant","gaffer","best boy","key grip","dolly grip","boom operator","sound mixer","camera operator","focus puller","clapper loader","makeup artist on set","hair stylist on set","costume supervisor","wardrobe assistant","prop master","set decorator","production designer","location manager","casting director visiting set","unit publicist","stills photographer","film producer","line producer","film student intern","method actor","exhausted actor between takes","stunt coordinator","special effects technician","VFX supervisor on set","editor visiting set","colorist on set","film composer visiting set"];
   
   const culturalStyles = ["navajo","cherokee","sioux","powwow dancer","desert reservation","inupiat","yupik","polar night","aurora","alaska fishing village","snowmobile","native hawaiian","hula","lei","plantation","surf culture roots"];
+  
+  const eventSashStyles = ["prom queen sash","homecoming queen sash"];
+  
+  const weddingStyles = ["bridal bouquet","bridesmaid bouquet","boutonniere","prom corsage","wrist corsage"];
+  
+  const bikerStyles = ["chain wallet","fingerless leather gloves","riding gloves","studded belt","biker rings"];
+  
+  const filmSetAccessories = ["clapperboard with scene number","megaphone for crowd scenes","boom mic held above head","light meter hanging from neck","thick script binder with colored tabs","coffee cup with film crew logo","folding director's chair with name","slate with dry-erase marker","film camera viewfinder hanging from neck","headset with mic","multi-tool Leatherman","tape measure","flashlight for night shoots","earplugs for loud scenes","walkie-talkie clipped to belt","walkie-talkie earpiece","film loader changing bag","continuity photo album Polaroids","stopwatch 1st AD timing takes"];
+  
+  const eventSpecificStyles = ["tiara","graduation cap tassel","letterman jacket patches","sorority pin","frat pin"];
 
   // Slightly boost normal styles in everyday locations
-  if (isEveryday && !filmCrewStyles.includes(style) && !culturalStyles.includes(style)) {
+  if (isEveryday && !filmCrewStyles.includes(style) && !culturalStyles.includes(style) && !eventSashStyles.includes(style) && !weddingStyles.includes(style) && !bikerStyles.includes(style) && !filmSetAccessories.includes(style) && !eventSpecificStyles.includes(style)) {
     return 1.3;
   }
   
@@ -254,6 +458,31 @@ function getStyleBias(loc, style) {
     return 0.4;
   }
   
+  // Event sashes (prom/homecoming) should only appear in prom/homecoming locations
+  if (!isPromOrHomecoming && eventSashStyles.includes(style)) {
+    return 0.1;
+  }
+  
+  // Wedding items should only appear in wedding locations
+  if (!isWedding && weddingStyles.includes(style)) {
+    return 0.1;
+  }
+  
+  // Biker items should only appear in biker locations
+  if (!isBiker && bikerStyles.includes(style)) {
+    return 0.2;
+  }
+  
+  // Film set accessories should only appear in film set locations
+  if (!isFilmSet && filmSetAccessories.includes(style)) {
+    return 0.1;
+  }
+  
+  // Event-specific items (tiara, graduation, letterman, Greek life)
+  if (!isPromOrHomecoming && !isWedding && !isGraduation && !isGreekLife && eventSpecificStyles.includes(style)) {
+    return 0.15;
+  }
+  
   // Mild boost for film crew in film set locations
   if (isFilmSet && filmCrewStyles.includes(style)) {
     return 1.6;
@@ -264,10 +493,178 @@ function getStyleBias(loc, style) {
     return 1.5;
   }
   
+  // Mild boost for biker styles in biker locations
+  if (isBiker && bikerStyles.includes(style)) {
+    return 1.8;
+  }
+  
+  // Mild boost for film set accessories in film set locations
+  if (isFilmSet && filmSetAccessories.includes(style)) {
+    return 2.0;
+  }
+  
   return 1.0;
 }
 
-// ==================== SCENE DATA ====================
+// ============================================
+// Gemini's Precision & Intent Update (5 features)
+// ============================================
+
+// 1. Temporal Lighting Sync - Time-based lighting filter
+function getTemporalLighting(time) {
+  const isNight = /night|midnight|3am|sodium|streetlight/.test(time);
+  const isGoldenHour = /golden hour|sunset|sunrise|dusk|dawn/.test(time);
+  const isOvercast = /overcast|cloudy|flat|grey/.test(time);
+  const isWinter = /winter|cold|snow/.test(time);
+
+  let pool = [...LIGHTING];
+
+  if (isNight) {
+    // Night: neon, streetlights, headlights, indoor lights only
+    const nightLighting = pool.filter(l => 
+      l.includes("neon") || l.includes("street lamp") || l.includes("headlight") || 
+      l.includes("indoor") || l.includes("lamp") || l.includes("bulb") || 
+      l.includes("fluorescent") || l.includes("sodium") || l.includes("moonlight")
+    );
+    if (nightLighting.length > 0) pool = nightLighting;
+  } else if (isGoldenHour) {
+    // Golden hour: side light, rim light, backlight
+    const goldenLighting = pool.filter(l => 
+      l.includes("golden") || l.includes("side") || l.includes("rim") || 
+      l.includes("backlight") || l.includes("warm") || l.includes("sunset") || 
+      l.includes("sunrise") || l.includes("dawn") || l.includes("dusk")
+    );
+    if (goldenLighting.length > 0) pool = goldenLighting;
+  } else if (isOvercast || isWinter) {
+    // Overcast/Winter: flat, soft, diffused light
+    const softLighting = pool.filter(l => 
+      l.includes("overcast") || l.includes("diffused") || l.includes("soft") || 
+      l.includes("flat") || l.includes("even") || l.includes("pale") || 
+      l.includes("thin") || l.includes("cloud")
+    );
+    if (softLighting.length > 0) pool = softLighting;
+  }
+
+  return pool.length > 0 ? pick(pool) : pick(LIGHTING);
+}
+
+// 2. Optical Integrity Logic - Framing-aware camera selection
+function getOpticalCamera(framing) {
+  let pool = [...CAMERA];
+
+  if (framing === "close") {
+    // Close-up: prefer portrait lenses (85mm, macro)
+    const closeupCameras = pool.filter(c => 
+      c.includes("85mm") || c.includes("portrait") || c.includes("macro") || 
+      c.includes("close-up") || c.includes("intimate") || c.includes("shallow depth")
+    );
+    if (closeupCameras.length > 0 && Math.random() < 0.7) {
+      pool = [...pool, ...closeupCameras, ...closeupCameras]; // boost
+    }
+  } else if (framing === "full") {
+    // Full body: prefer wide angle (24mm) or telephoto (200mm)
+    const fullbodyCameras = pool.filter(c => 
+      c.includes("24mm") || c.includes("wide") || c.includes("200mm") || 
+      c.includes("telephoto") || c.includes("compressed") || c.includes("bird's eye")
+    );
+    if (fullbodyCameras.length > 0 && Math.random() < 0.6) {
+      pool = [...pool, ...fullbodyCameras];
+    }
+  } else if (framing === "bust") {
+    // Bust shot: balanced, natural perspective (50mm)
+    const bustCameras = pool.filter(c => 
+      c.includes("50mm") || c.includes("natural perspective") || c.includes("mid-distance")
+    );
+    if (bustCameras.length > 0 && Math.random() < 0.5) {
+      pool = [...pool, ...bustCameras];
+    }
+  }
+
+  return pick(pool);
+}
+
+// 3. Environment Boundary - Indoor/Outdoor detection
+function isIndoorLocation(loc) {
+  return /interior|inside|room|cafe|diner|pub|bar|library|bookstore|workshop|studio|church|chapel|ballroom|theatre|cinema|museum|gallery|shop|store|office|bedroom|kitchen|bathroom|hallway|corridor|basement|attic|garage|warehouse|factory|gym|school|university|dorm|frat|sorority/.test(loc);
+}
+
+function getEnvironmentalWeather(loc, weather) {
+  const isIndoor = isIndoorLocation(loc);
+  
+  if (isIndoor) {
+    // Indoor: convert weather to light/atmosphere description
+    if (weather.includes("rain")) return "soft rain visible through window, gentle light";
+    if (weather.includes("snow")) return "snow falling outside window, cozy indoor warmth";
+    if (weather.includes("wind")) return "wind visible through window, curtains moving slightly";
+    if (weather.includes("storm")) return "distant thunder, dim indoor lighting";
+    if (weather.includes("sun")) return "bright sunlight streaming through window";
+    return "soft indoor ambient light, window view in background";
+  }
+  
+  return weather; // Outdoor: keep original weather
+}
+
+// 4. Negative Constraint Enforcement - Hard validation rules
+function hasNegativeConstraint(season, loc, bottom, outer) {
+  const isSummer = season === "summer";
+  const isWinter = season === "winter";
+  const isFormal = /wedding|prom|homecoming|ballroom|opera|formal|church/.test(loc);
+  const isBeach = /beach|ocean|sand|hawaii/.test(loc);
+
+  // Summer + heavy winter clothing
+  if (isSummer && outer && (outer.includes("wool") || outer.includes("puffer") || outer.includes("shearling") || outer.includes("fur"))) {
+    return true;
+  }
+
+  // Winter + swimwear/revealing
+  if (isWinter && bottom && (bottom.includes("swim") || bottom.includes("bikini") || bottom.includes("shorts") || bottom.includes("micro"))) {
+    return true;
+  }
+
+  // Formal + heavy distressed/casual
+  if (isFormal && bottom && (bottom.includes("distressed") || bottom.includes("ripped") || bottom.includes("cargo") || bottom.includes("sweat"))) {
+    return true;
+  }
+
+  // Beach + heavy winter clothing
+  if (isBeach && outer && (outer.includes("wool") || outer.includes("puffer") || outer.includes("coat"))) {
+    return true;
+  }
+
+  return false;
+}
+
+// 5. Emotional Tone Deepening - Theme to film style linking
+function getThemedStyleScene(theme, styleScene) {
+  const nostalgicThemes = ["nostalgic", "bittersweet", "memory", "half-remembered", "golden light"];
+  const rawThemes = ["raw and real", "no performance", "just life", "unflinching", "gritty"];
+  const dreamyThemes = ["dreamy", "soft", "ethereal", "hazy", "floating"];
+  const tenseThemes = ["tense", "charged", "something about to happen", "uneasy"];
+
+  let pool = [styleScene];
+
+  if (nostalgicThemes.some(t => theme.includes(t))) {
+    // Nostalgic: Portra, Super 8, warm faded
+    const nostalgicStyles = ["Kodak Portra 400 film aesthetic, warm and slightly faded", "Super 8 film aesthetic, warm grain and vignette", "35mm film grain, saturated American colours"];
+    pool = [...pool, ...nostalgicStyles];
+  } else if (rawThemes.some(t => theme.includes(t))) {
+    // Raw/Real: deadpan, 35mm grain, unflinching
+    const rawStyles = ["gritty street photography, unflinching and real", "35mm film grain, saturated American colours", "William Eggleston colour photography, banal and beautiful"];
+    pool = [...pool, ...rawStyles];
+  } else if (dreamyThemes.some(t => theme.includes(t))) {
+    // Dreamy: soft focus, hazy
+    const dreamyStyles = ["soft focus dreamlike quality, hazy edges", "Sofia Coppola dreamy soft focus, intimate and floating"];
+    pool = [...pool, ...dreamyStyles];
+  } else if (tenseThemes.some(t => theme.includes(t))) {
+    // Tense: high contrast, dramatic
+    const tenseStyles = ["bleach bypass processing, desaturated with contrast", "David Lynch wide angle uncanny stillness, something wrong you cannot name"];
+    pool = [...pool, ...tenseStyles];
+  }
+
+  return pick(pool);
+}
+
+// Light contextual bias: reduce "field mismatch" while keeping randomness
 const LOCATIONS = [
   // (truncated for brevity in this response, but in real file it would be full)
   "classic American diner interior at golden hour, sunlight streaming through large windows onto red vinyl booths",
@@ -532,8 +929,10 @@ function reroll(key) {
     lastVals.weather = pick(WEATHER[currentSeason]);
   } else if (key === 'season_scene') {
     lastVals.season_scene = pick(SEASONS_SCENE[currentSeason]);
+  } else if (key === 'bottom') {
+    lastVals.bottom = getContextualBottom(currentSeason, lastVals.loc);
   } else if (key === 'acc') {
-    lastVals.acc = pickAccessories();
+    lastVals.acc = pickAccessories(lastVals.loc);
   } else if (key === 'outer') {
     if (currentSeason === "summer") {
       lastVals.outer = Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null;
@@ -548,7 +947,7 @@ function reroll(key) {
     lastVals.variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
     lastVals.emotionalNarrative = buildEmotionalNarrative(lastVals.theme, lastVals.mood, lastVals.variation);
   } else if (key === 'noise') {
-    lastVals.noise = Math.random() < 0.65 ? pick(NOISE) : null;
+    lastVals.noise = Math.random() < 0.65 ? getContextualNoise(lastVals.loc) : null;
   } else if (key === 'emotionalNarrative') {
     lastVals.emotionalNarrative = buildEmotionalNarrative(lastVals.theme, lastVals.mood, lastVals.variation);
   }
@@ -645,14 +1044,16 @@ function generateAll() {
 
   const loc = pick(LOCATIONS);
   const time = pick(TIMES);
-  const weather = pick(WEATHER[currentSeason]);
+  let weather = pick(WEATHER[currentSeason]);
+  weather = getEnvironmentalWeather(loc, weather);
   const season_scene = pick(SEASONS_SCENE[currentSeason]);
   const mood = pick(MOODS);
-  const camera = pick(CAMERA);
-  const styleScene = pick(STYLE_SCENE);
+  const camera = getOpticalCamera(currentFraming);
+  let styleScene = pick(STYLE_SCENE);
+  styleScene = getThemedStyleScene(theme, styleScene);
   const perception = Math.random() < 0.38 ? pick(PERCEPTION) : null; // Reduced to 38% for better "rare" feel
   const theme = pick(THEMES);
-  const noise = Math.random() < 0.65 ? pick(NOISE) : null;
+  const noise = Math.random() < 0.65 ? getContextualNoise(loc) : null;
   const variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
   
   // Build unified emotional narrative (theme + mood + variation)
@@ -676,11 +1077,11 @@ function generateAll() {
     top = pick(TOPS);
   }
   
-  const bottom = pick(BOTTOMS);
+  const bottom = getContextualBottom(currentSeason, loc);
   const outer = (currentSeason === "summer") ? (Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null) : (Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null);
   const fabric = pick(FABRICS);
   const color = pick(COLORS[currentSeason]);
-  const acc = pickAccessories();
+  const acc = pickAccessories(loc);
   
   // Light consistency rules for shoes/outer
   let shoe = pick(SHOES);
@@ -700,7 +1101,7 @@ function generateAll() {
   const pose = pick(BODY_POSES);
   const gesture = pick(HAND_GESTURES);
   const expression = pick(FACIAL_EXPRESSIONS);
-  const light = pick(LIGHTING);
+  const light = getTemporalLighting(time);
 
   const parts = [
     // SUBJECT
@@ -739,6 +1140,14 @@ function generateAll() {
     // FINAL
     "cinematic everyday America, film photography realism, natural imperfect lighting, subtle grain, authentic atmosphere, high detail"
   ];
+
+  // 4. Negative Constraint Enforcement - auto-reroll if invalid
+  let retryCount = 0;
+  while (hasNegativeConstraint(currentSeason, loc, bottom, outer) && retryCount < 5) {
+    bottom = getContextualBottom(currentSeason, loc);
+    outer = (currentSeason === "summer") ? (Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null) : (Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null);
+    retryCount++;
+  }
 
   lastVals = { style, top, bottom, outer, fabric, color, acc, shoe, loc, time, weather, season_scene, mood, camera, styleScene, perception, theme, noise, variation, emotionalNarrative, pose, gesture, expression, light };
 
