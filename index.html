@@ -229,6 +229,39 @@ function pickAccessories() {
   return selected.join(", ");
 }
 
+// Light contextual bias: reduce "field mismatch" (e.g. film crew in normal diner, powwow dancer in prom)
+function getStyleBias(loc, style) {
+  const isEveryday = /diner|high school|university|campus|prom|homecoming|wedding|library|bookstore|coffee shop|dorm|quad|lecture hall/.test(loc);
+  const isFilmSet = /film set|sound stage|actor.*trailer|craft services|makeup trailer|costume department|editing suite|sound mixing|location scout/.test(loc);
+  const isCultural = /navajo|hawaii|alaska|arctic|powwow|inupiat|yupik|native hawaiian/.test(loc);
+
+  // Film crew styles should be rare in everyday locations
+  const filmCrewStyles = ["film director","cinematographer","1st AD","2nd AD","script supervisor","production assistant","gaffer","best boy","key grip","dolly grip","boom operator","sound mixer","camera operator","focus puller","clapper loader","makeup artist on set","hair stylist on set","costume supervisor","wardrobe assistant","prop master","set decorator","production designer","location manager","casting director visiting set","unit publicist","stills photographer","film producer","line producer","film student intern","method actor","exhausted actor between takes","stunt coordinator","special effects technician","VFX supervisor on set","editor visiting set","colorist on set","film composer visiting set"];
+  
+  if (isEveryday && filmCrewStyles.includes(style)) {
+    return 0.15; // strongly reduce
+  }
+  
+  // Cultural styles should be rare outside cultural locations
+  const culturalStyles = ["navajo","cherokee","sioux","powwow dancer","desert reservation","inupiat","yupik","polar night","aurora","alaska fishing village","snowmobile","native hawaiian","hula","lei","plantation","surf culture roots"];
+  
+  if (!isCultural && culturalStyles.includes(style)) {
+    return 0.2; // reduce
+  }
+  
+  // Boost film crew in film set locations
+  if (isFilmSet && filmCrewStyles.includes(style)) {
+    return 2.5; // strongly boost
+  }
+  
+  // Boost cultural styles in cultural locations
+  if (isCultural && culturalStyles.includes(style)) {
+    return 2.0;
+  }
+  
+  return 1.0; // normal
+}
+
 // ==================== SCENE DATA ====================
 const LOCATIONS = [
   // (truncated for brevity in this response, but in real file it would be full)
@@ -620,7 +653,13 @@ function generateAll() {
   // Build unified emotional narrative (theme + mood + variation)
   const emotionalNarrative = buildEmotionalNarrative(theme, mood, variation);
 
-  const style = pick(STYLES);
+  // Use contextual bias to reduce field mismatch
+  let style = pick(STYLES);
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const bias = getStyleBias(loc, style);
+    if (Math.random() < bias) break;
+    style = pick(STYLES);
+  }
   
   const isFormalLocation = FORMAL_LOC_KEYWORDS.some(k => loc.includes(k));
   let top;
