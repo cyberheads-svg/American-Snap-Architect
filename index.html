@@ -1,1218 +1,1328 @@
 <!DOCTYPE html>
-<html lang="ja" style="background:#0c0b0e">
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>American Snap Architect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8小節 UKジャズファンク Groovebox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap');
   :root{
-    --bg:#0c0b0e;--panel:#131118;--border:#22202a;--border2:#332f40;
-    --text:#d4cee0;--muted:#6a6278;--dim:#2a2535;
-    --spring:#f9a8d4;--summer:#86efac;--autumn:#fcd34d;--winter:#93c5fd;
-    --accent:#c084fc;--mono:'DM Mono',monospace;--serif:'DM Serif Display',serif;
+    --wood-dark: #17110c;
+    --wood: #241a12;
+    --wood-light: #2f2116;
+    --panel: #1c150e;
+    --brass: #d9a84e;
+    --brass-bright: #f0c877;
+    --teal: #4f8079;
+    --rust: #bf5233;
+    --cream: #efe4cf;
+    --muted: #8f7f6a;
+    --led-off: #3a2f22;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{background:#0c0b0e}
-  body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px}
-  header{text-align:center;margin-bottom:32px}
-  .eyebrow{font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-  h1{font-family:var(--serif);font-style:italic;font-size:clamp(28px,5vw,46px);color:#fff;font-weight:400;line-height:1.1;margin-bottom:4px}
-  h1 span{color:var(--spring)}
-  .subtitle{font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.15em}
-  .counter{font-size:10px;color:var(--dim);margin-top:8px;letter-spacing:.2em}
-  .selector-group{width:100%;max-width:680px;margin-bottom:12px}
-  .selector-label{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-  .selector{display:flex;gap:8px;width:100%}
-  .selector-btn{flex:1;padding:11px 0;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .2s}
-  .selector-btn:hover{border-color:var(--border2);color:var(--text)}
-  .selector-btn.active-spring{border-color:var(--spring);color:var(--spring);background:#1a0f14}
-  .selector-btn.active-summer{border-color:var(--summer);color:var(--summer);background:#0f1a12}
-  .selector-btn.active-autumn{border-color:var(--autumn);color:var(--autumn);background:#1a1710}
-  .selector-btn.active-winter{border-color:var(--winter);color:var(--winter);background:#0f1218}
-  .frame-btn.active{border-color:var(--accent);color:var(--accent);background:#16101a}
-  .card{width:100%;max-width:680px;background:var(--panel);border:1px solid var(--border);padding:32px;margin-bottom:20px}
-  .empty-state{text-align:center;padding:40px 0;color:var(--dim);font-size:12px;letter-spacing:.05em;line-height:1.7}
-  .fields{display:flex;flex-direction:column;gap:0}
-  .field{display:grid;grid-template-columns:110px 1fr;gap:15px;align-items:start;padding:12px 0;border-bottom:1px solid var(--border)}
-  .field:last-child{border-bottom:none}
-  .field-label{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding-top:4px}
-  .field-value{font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.4}
-  .rare-badge{font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;padding:1px 6px;border:1px solid currentColor;opacity:.6;margin-left:8px;vertical-align:middle;font-style:normal}
-  .divider{border:none;border-top:1px solid var(--border);margin:20px 0}
-  .prompt-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-  .prompt-text{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.9;margin-bottom:14px;word-break:break-word}
-  .copy-btn{background:transparent;border:1px solid var(--border2);color:var(--muted);padding:8px 20px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;font-family:var(--mono);transition:all .2s}
-  .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
-  .copy-btn.copied{border-color:var(--summer);color:var(--summer)}
-  .generate-btn{width:100%;max-width:680px;background:var(--accent);color:#000;font-weight:700;border:none;padding:20px;font-size:12px;letter-spacing:.4em;text-transform:uppercase;cursor:pointer;font-family:var(--mono);transition:all .2s;margin-bottom:12px}
-  .generate-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
-  .generate-btn:active{transform:translateY(0)}
-  .save-btn{width:100%;max-width:680px;background:transparent;border:1px solid var(--border);color:var(--muted);padding:12px;font-size:10px;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;font-family:var(--mono);transition:all .2s;margin-bottom:40px}
-  .save-btn:hover{border-color:var(--border2);color:var(--text)}
-  .saved-section{width:100%;max-width:680px}
-  .saved-title{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-  .saved-item{background:var(--panel);border:1px solid var(--border);padding:12px 16px;margin-bottom:8px;font-size:11px;color:var(--muted);line-height:1.7;cursor:pointer;transition:border-color .15s}
-  .saved-item:hover{border-color:var(--border2);color:var(--text)}
-  footer{margin-top:20px;font-size:9px;color:var(--dim);letter-spacing:.2em;text-align:center}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-  .animate-in{animation:fadeIn .3s ease forwards}
-  .reroll-btn{background:transparent;border:none;color:var(--muted);font-size:13px;cursor:pointer;padding:2px 6px;line-height:1;transition:color .15s;flex-shrink:0}
-  .reroll-btn:hover{color:var(--accent)}
-  .field-row{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:start;padding:12px 0;border-bottom:1px solid var(--border)}
-  .field-row:last-child{border-bottom:none}
-  .prompt-textarea{width:100%;background:#0a0808;border:1px solid var(--border2);color:var(--muted);font-family:var(--mono);font-size:11px;line-height:1.9;padding:12px;resize:vertical;min-height:120px;margin-bottom:14px;word-break:break-word}
-  .prompt-textarea:focus{outline:none;border-color:var(--accent)}
+  *{ box-sizing: border-box; }
+  body{
+    margin:0; padding:18px 14px 40px;
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.10) 0px, rgba(0,0,0,0.10) 1px, transparent 1px, transparent 34px),
+      radial-gradient(ellipse at 30% -10%, #2a1e13 0%, var(--wood-dark) 55%);
+    color: var(--cream);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .plate{
+    background: linear-gradient(180deg, var(--wood-light), var(--wood));
+    border: 1px solid rgba(0,0,0,0.5);
+    border-radius: 14px;
+    padding: 18px 16px 14px;
+    margin-bottom: 14px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 6px 18px rgba(0,0,0,0.45);
+    text-align:center;
+    position: relative;
+  }
+  .plate::before{
+    content:"";
+    position:absolute; inset: 6px;
+    border: 1px solid rgba(217,168,78,0.15);
+    border-radius: 10px;
+    pointer-events:none;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-style:italic;
+    font-size: 24px;
+    letter-spacing: 0.3px;
+    margin: 2px 0 2px;
+    color: var(--brass-bright);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.5);
+  }
+  .subtitle{
+    font-family:'Space Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .power-dot{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    background: var(--rust); margin-right:6px; vertical-align:middle;
+    box-shadow: 0 0 6px var(--rust);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+  #main-controls{
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center;
+    margin-bottom: 14px;
+  }
+  button{
+    font-family:'Inter', sans-serif;
+    font-weight:600;
+    font-size: 12.5px;
+    letter-spacing: 0.3px;
+    padding: 11px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.4);
+    cursor: pointer;
+    color: var(--cream);
+    background: linear-gradient(180deg, #3a2c1c, #241a10);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+    transition: transform 0.05s ease;
+  }
+  button:active{ transform: translateY(2px); box-shadow: 0 0 0 rgba(0,0,0,0.5); }
+
+  #playBtn{ background: linear-gradient(180deg, #5c9187, var(--teal)); color:#0d1512; border-color: rgba(0,0,0,0.5); }
+  #recordBtn{ background: linear-gradient(180deg, #d1684a, var(--rust)); color:#1c0d07; }
+  #generateBtn{ background: linear-gradient(180deg, var(--brass-bright), var(--brass)); color:#241708; }
+  #vinylBtn{ background: linear-gradient(180deg, #4a3c2a, #2c2216); }
+  #vinylBtn.on{ background: linear-gradient(180deg, var(--brass-bright), var(--brass)); color:#241708; }
+  #clearBtn{ background: linear-gradient(180deg, #4a4038, #2c2620); }
+
+  .bpm-readout{
+    font-family:'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--brass-bright);
+    background: #0d0a06;
+    border: 1px solid rgba(0,0,0,0.6);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display:flex; align-items:center; gap:8px;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+  }
+  .bpm-readout button{
+    padding: 3px 8px; font-size: 12px; border-radius:5px;
+    background: #241a10; box-shadow:none;
+  }
+
+  .section{
+    background: var(--panel);
+    border: 1px solid rgba(0,0,0,0.5);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .section-title{
+    font-family:'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  #pattern-tabs{ display:flex; gap:5px; flex-wrap:wrap; }
+  .pattern-tab{
+    font-family:'Space Mono', monospace;
+    padding: 7px 10px; font-size: 11.5px;
+    background:#241a10; color: var(--muted);
+    border-radius: 5px; cursor:pointer;
+    border: 1px solid rgba(0,0,0,0.5);
+    text-align: center; line-height: 1.3;
+  }
+  .pattern-tab .role-name{ display:block; font-size:8.5px; opacity:0.75; }
+  .pattern-tab.active{
+    background: var(--brass); color:#241708; font-weight:700;
+    box-shadow: 0 0 8px rgba(217,168,78,0.5);
+  }
+
+  #arrangement{ display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+  .bar-slot{
+    width: 54px; height: 54px;
+    background: #100c08;
+    border: 2px solid var(--led-off);
+    border-radius: 8px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    cursor:pointer;
+    font-family:'Space Mono', monospace;
+    color: var(--cream);
+    position: relative;
+    transition: border-color 0.1s, box-shadow 0.1s;
+  }
+  .bar-slot:hover{ border-color: var(--teal); }
+  .bar-slot .barnum{ font-size:8px; color: var(--muted); position:absolute; top:4px; left:6px; }
+  .bar-slot .patname{ font-size:16px; font-weight:700; color: var(--brass-bright); }
+  .bar-slot.playing{
+    border-color: var(--brass-bright);
+    box-shadow: 0 0 14px rgba(240,200,119,0.65);
+    background: #1e1608;
+  }
+
+  #sequencer{ }
+  .step-labels{ display:flex; margin-left: 98px; margin-bottom:6px; }
+  .step-labels > div{ width: 24px; text-align:center; font-size:9px; color: var(--muted); font-family:'Space Mono', monospace; }
+  .step-labels > div.beat{ color: var(--brass); }
+  .track-row{ display:flex; align-items:center; margin-bottom: 9px; gap: 10px; }
+  .track-label{ width: 88px; font-size: 12.5px; font-weight:600; font-family:'Inter',sans-serif; }
+  .track-sub{ display:block; font-size:9px; font-weight:400; color: var(--muted); font-family:'Space Mono', monospace; letter-spacing: 0.5px; }
+  .steps{ display:grid; grid-template-columns: repeat(16, 24px); gap: 4px; }
+  .step{
+    width: 24px; height: 24px;
+    background: #100c08;
+    border: 2px solid var(--led-off);
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .step.beat-line{ border-left: 2px solid rgba(217,168,78,0.35); }
+  .step.active{
+    border-color: #fff;
+    background: var(--active-color);
+    box-shadow: 0 0 8px var(--active-color);
+  }
+  .step.playing{
+    transform: scale(1.18);
+    box-shadow: 0 0 14px #fff, 0 0 4px var(--active-color);
+  }
+
+  /* ベース専用：音程の高さを縦位置で見せるミニ・ピアノロール表示 */
+  .step.bass-step{ position: relative; background: #100c08; border-color: var(--led-off); }
+  .step.bass-step .bass-dot{
+    display:none;
+    position:absolute; left:50%; width: 12px; height: 6px;
+    border-radius: 3px; transform: translate(-50%, -50%);
+    background: var(--active-color, #7986cb);
+    box-shadow: 0 0 6px var(--active-color, #7986cb);
+  }
+  .step.bass-step.active .bass-dot{ display:block; }
+  .step.bass-step.active{ border-color: rgba(121,134,203,0.35); }
+  .step.bass-step .root-line{
+    position:absolute; left:2px; right:2px; top:50%; height:1px;
+    background: rgba(217,168,78,0.18); pointer-events:none;
+  }
+  .step.bass-step .bass-dot.bass-ghost{
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--muted); box-shadow: none; opacity: 0.55;
+  }
+  .step.bass-step .bass-dot.bass-jump{
+    width: 14px; height: 8px; border-radius: 2px;
+    background: var(--rust); box-shadow: 0 0 8px var(--rust);
+  }
+  .step.bass-step .bass-dot.bass-approach{
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--teal); box-shadow: 0 0 6px var(--teal);
+  }
+
+  /* ハイハット専用：オープン/ハーフ/ゴーストの表情 */
+  .step.hihat-step.hat-open{ box-shadow: 0 0 12px #fff, 0 0 6px var(--active-color); border-color:#fff; }
+  .step.hihat-step.hat-half{ opacity: 0.72; }
+  .step.hihat-step.hat-ghost{ opacity: 0.4; }
+
+  .status{
+    text-align:center; margin-top: 10px;
+    font-family:'Space Mono', monospace;
+    font-size: 11.5px; color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+
+  @media (max-width: 480px){
+    .steps{ grid-template-columns: repeat(16, 18px); }
+    .step{ width:18px; height:18px; }
+    .step-labels{ margin-left: 78px; }
+    .step-labels > div{ width:18px; }
+    .track-label{ width: 70px; font-size: 11px; }
+    .bar-slot{ width:42px; height:42px; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="eyebrow">AI Prompt Suite</div>
-  <h1>American Snap <span>Architect</span></h1>
-  <div class="subtitle">Outfit · Scene · Figure · Definitive Edition</div>
-  <div class="counter" id="counter">— generated</div>
-</header>
+<div class="plate">
+  <div class="subtitle"><span class="power-dot"></span>LIVE BAND GROOVE ENGINE</div>
+  <h1>8小節 UKジャズファンク Groovebox</h1>
+  <div class="subtitle">リフ駆動ベース &middot; Clavinet 16分カッティング &middot; Rhodes &middot; 2小節コードホールド</div>
+</div>
 
-<div class="selector-group">
-  <div class="selector-label">Season</div>
-  <div class="selector">
-    <button class="selector-btn active-spring" data-season="spring" onclick="setSeason('spring')">🌸 Spring</button>
-    <button class="selector-btn" data-season="summer" onclick="setSeason('summer')">☀️ Summer</button>
-    <button class="selector-btn" data-season="autumn" onclick="setSeason('autumn')">🍂 Autumn</button>
-    <button class="selector-btn" data-season="winter" onclick="setSeason('winter')">❄️ Winter</button>
+<div id="main-controls">
+  <button id="playBtn">▶ 8小節再生</button>
+  <button id="recordBtn">● 録音して保存</button>
+  <button id="formatToggleBtn">形式: WAV</button>
+  <button id="generateBtn">UKジャズファンク風 生成</button>
+  <button id="vinylBtn" class="on">◉ ヴィンテージ質感</button>
+  <button id="clearBtn">全部クリア</button>
+  <div class="bpm-readout">
+    <button id="bpmDown">−</button>
+    <span id="bpmValue">95</span> BPM
+    <button id="bpmUp">+</button>
+    <span id="swingReadout" style="margin-left:6px; color: var(--muted);"></span>
   </div>
 </div>
 
-<div class="selector-group">
-  <div class="selector-label">Framing</div>
-  <div class="selector">
-    <button class="selector-btn frame-btn active" onclick="setFraming('full')" id="frame-full">Full Body</button>
-    <button class="selector-btn frame-btn" onclick="setFraming('upper')" id="frame-upper">Upper Body</button>
-    <button class="selector-btn frame-btn" onclick="setFraming('bust')" id="frame-bust">Bust Up</button>
-    <button class="selector-btn frame-btn" onclick="setFraming('close')" id="frame-close">Face Close-up</button>
+<div class="section">
+  <div class="section-title">コード進行（2小節ホールド）</div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+    <button id="chordRandomBtn">🎲 コード進行をランダム生成</button>
   </div>
+  <p id="chordLabel" style="font-family:'Space Mono', monospace; font-size:12px; color: var(--brass-bright); margin: 10px 2px 0;">—</p>
 </div>
 
-<div class="card">
-  <div class="empty-state" id="emptyState">
-    <div style="font-size:32px;margin-bottom:12px;opacity:.4">✦</div>
-    Season と Framing を選んでボタンを押してください<br>衣装・シーン・人物が一度に生成されます
-  </div>
-  <div id="displayFields" class="fields animate-in" style="display:none"></div>
-  <div id="promptBox" style="display:none">
-    <hr class="divider">
-    <div class="prompt-label">画像AIにコピー</div>
-    <textarea class="prompt-textarea" id="finalPrompt" onInput="currentPrompt=this.value"></textarea>
-    <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">Copy Prompt</button>
-  </div>
+<div class="section">
+  <div class="section-title">編集中のパターン（クリックで切り替え／各パターンは演奏上の役割が異なります）</div>
+  <div id="pattern-tabs"></div>
 </div>
 
-<button class="generate-btn" onclick="generateAll()">GENERATE ARCHITECT</button>
-<button class="save-btn" onclick="savePrompt()" id="saveBtn" style="display:none">SAVE THIS PROMPT</button>
-
-<div class="saved-section" id="savedSection" style="display:none">
-  <div class="saved-title">Saved Prompts</div>
-  <div id="savedList"></div>
+<div class="section">
+  <div class="section-title">8小節のアレンジメント（クリックでパターンを切り替え）</div>
+  <div id="arrangement"></div>
 </div>
 
-<footer>1000+ DATA POINTS · MILLIONS OF COMBINATIONS · GitHub Pages Ready</footer>
+<div class="section" id="sequencer-section">
+  <div class="section-title">ステップグリッド（16分音符 × 1小節）</div>
+  <div id="sequencer"></div>
+</div>
+
+<p class="status" id="status">パターンを編集 → アレンジメントで配置 → 再生で8小節のグルーヴが流れます</p>
 
 <script>
-let currentSeason = "spring";
-let currentFraming = "full";
-let generated = 0;
-let currentPrompt = "";
-
-const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-const pickN = (arr, n) => {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a.slice(0, Math.min(n, a.length));
-};
-
-// ==================== OUTFIT DATA ====================
-const STYLES = ["dark academia","light academia","cottagecore","goblincore","fairycore","witchcore","royalcore","balletcore","streetwear","techwear","normcore","gorpcore","workwear chic","utilitarian","military surplus inspired","Y2K revival","80s power dressing","70s bohemian","60s mod","50s vintage","40s wartime glamour","Japanese Harajuku","Japanese Lolita","gyaru","mori girl","Shibuya casual","Tokyo street fashion","Kyoto modern wafuku","Parisian chic","French girl casual","Italian tailored","Scandinavian minimalist","British prep","East London street","old money","quiet luxury","coastal grandmother","trophy wife aesthetic","mob wife aesthetic","clean girl","e-girl","soft girl","VSCO girl","Pinterest girl","tumblr aesthetic","indie sleaze revival","punk","goth","cyber goth","nu-goth","pastel goth","visual kei inspired","emo revival","boho chic","festival fashion","hippie revival","earthy naturalist","forager aesthetic","ballet dancer off duty","equestrian inspired","tennis chic","ski lodge fashion","surf casual","maximalist color clash","monochromatic dressing","tonal dressing","print mixing","pattern clash","deconstructed tailoring","avant-garde editorial","high fashion editorial","runway inspired","couture casual","vintage thrift mix","granny chic","eccentric librarian","art teacher aesthetic","museum curator","romantic feminine","dark romantic","Victorian inspired","Edwardian influenced","Regency revival","athleisure luxe","elevated sporty","gym-to-street","dancer casual","pilates girl","coastal casual","Mediterranean summer","island resort","tropicana","beach club","urban explorer","city commuter chic","café regular","gallery hopper","night out downtown","biker","outlaw biker","cafe racer","bobber style","motorcycle club","vintage chopper","modern cafe racer","road warrior","desert rider","Harley rider","Indian motorcycle","vintage moto","scrambler style","tracker style","brat style","prom queen","homecoming queen","formal prom","vintage prom","sorority girl","frat party","college casual","homecoming game","library chic","wedding guest","bride","bridesmaid","outdoor wedding","church wedding","rustic barn wedding","dark academia","light academia","bookish","library girl","art student","stem girl","indie nerd","gothic nerd","tumblr nerd","vintage bookworm","coffee shop intellectual","film director","cinematographer","1st AD","2nd AD","script supervisor","production assistant","gaffer","best boy","key grip","dolly grip","boom operator","sound mixer","camera operator","focus puller","clapper loader","makeup artist on set","hair stylist on set","costume supervisor","wardrobe assistant","prop master","set decorator","production designer","location manager","casting director visiting set","unit publicist","stills photographer","film producer","line producer","film student intern","method actor","exhausted actor between takes","stunt coordinator","special effects technician","VFX supervisor on set","editor visiting set","colorist on set","film composer visiting set","navajo","cherokee","sioux","powwow dancer","turquoise jewelry","desert reservation","inupiat","yupik","polar night","aurora","alaska fishing village","snowmobile","native hawaiian","hula","lei","plantation","surf culture roots"];
-
-const TOPS = ["oversized graphic tee","cropped linen shirt","off-shoulder peasant blouse","structured peplum top","button-down shirt half-tucked","long-sleeve bodysuit","knit tank top","sleeveless turtleneck","ruffle-front blouse","wrap top in floral print","denim shirt unbuttoned over white tee","striped Breton top","satin bias-cut top","hoodie cropped","zip-up athletic jacket worn as top","smocked peasant top","tie-front blouse","Victorian high-neck blouse","cable knit sweater","oversized chunky knit","cropped cardigan","poet sleeve blouse","balloon sleeve top","cold shoulder top","one-shoulder top","asymmetric hem top","tailored waistcoat","pinstripe vest","embroidered folk blouse","hand-painted tee","acid wash crop top","fitted polo shirt","rugby stripe shirt","cycling jersey","compression long-sleeve","thermal henley","shrunken blazer as top","deconstructed shirt","raw hem crop top","floral print kimono top","satin bomber worn open","oversized linen button-down","broderie anglaise top","pintuck blouse","velvet top","brocade top","sequined top","metallic knit top","foil print tee","patchwork top","tie-dye tee","ombre knit top","geometric print blouse","organic cotton tee","hemp linen shirt","bamboo knit top","upcycled vintage top","deadstock fabric top","nightgown as daywear top","macramé top","weave pattern top","jacquard blouse","tapestry-style top","woven cotton top","technical fabric performance top","moisture-wicking base layer","seamless knit top","folk embroidered blouse","ikat print top","batik top","block-printed cotton top","hand-loomed top","sculpted structured top","architectural pleat top","origami fold blouse","3D flower appliqué top","sculptural knit top","oversized varsity sweatshirt","ribbed quarter-zip pullover","heavyweight flannel shirt","waffle-knit thermal henley","college logo hoodie slightly faded","technical windbreaker vest","denim vest with patches","leather vest","studded leather vest","motorcycle club vest","cut-off denim vest","black leather jacket (open)","vintage cafe racer jacket","distressed denim jacket with patches","black bandana as top","mesh motorcycle shirt","riding shirt with snaps","prom dress bodice","strapless satin gown top","beaded evening bodice","off-shoulder tulle top","sweetheart neckline dress top","bridesmaid satin top","wedding guest lace blouse","letterman jacket","college hoodie with greek letters","cheerleading crop top","sorority tank top","frat party polo","campus crewneck sweatshirt","oversized turtleneck sweater","chunky knit cardigan","vintage band tee under blazer","corduroy shirt","tweed blazer","thick black turtleneck","bookish cable knit","art student smock","lab coat over clothes"];
-
-const SEXY_TOPS = ["plunging V-neck","backless halter","sheer lace corset","bralette with blazer","tube top","mesh top","cropped tank with deep armholes","ribbed baby tee stretched tight","off-shoulder ribbed top","lace-trim camisole with thin straps","sheer organza shirt unbuttoned","bandeau top","cutout bodysuit","strappy backless top","underboob crop top","sports bra as top","vintage slip dress layered over tee","sheer mesh long sleeve","corset-style bustier","one-shoulder ruched top","halter with open back","micro crop top","plunging lace bodysuit","cowl neck satin cami","side-boob tank top","keyhole cutout top","chainmail halter top","sheer long-sleeve over bralette","deep scoop neck tee","lace bustier","open-knit sweater over bare skin","tie-front crop top showing midriff","leather tube top","velvet corset","criss-cross halter top","strapless bandage top","lace-up front top","micro bralette under open jacket","mesh crop top","backless draped top"];
-
-const FORMAL_TOPS = ["silk evening gown bodice","structured satin bustier","beaded chiffon blouse","velvet halter neck evening top","tailored tuxedo jacket with nothing underneath","sequined draped top","lace appliqué evening bodice","off-shoulder velvet wrap top","silk cowl neck camisole","organza ruffle-neck blouse","metallic jacquard peplum top","crystal-embellished crop top","draped silk crepe top","tulle layered bustier","embroidered lace evening top","satin one-shoulder top with train","pleated taffeta corset","plunging silk wrap blouse","pearl-beaded halter","brocade structured bodice","prom queen strapless gown","homecoming sweetheart dress","bridesmaid chiffon top","wedding guest lace bodice","vintage prom tulle top"];
-
-const BOTTOMS = ["wide-leg trousers in cream","tailored cigarette trousers","high-waist flared jeans","straight-leg vintage denim","baggy carpenter jeans","pleated midi skirt","bias-cut satin slip skirt","denim mini skirt","pleated micro skirt","asymmetric hem skirt","maxi floral skirt","tiered peasant skirt","wrap skirt in linen","knit pencil skirt","A-line wool skirt","leather mini skirt","faux leather trousers","vinyl pencil skirt","patent leather skirt","moto-style trousers","cargo trousers with multiple pockets","utility pants","parachute trousers","technical hiking trousers","drawstring joggers","tailored shorts","high-waist denim shorts","linen wide shorts","pleated bermuda shorts","athletic biker shorts","flowy palazzo trousers","harem pants","draped trousers","wide silk trousers","fluid crepe trousers","corduroy flares","velvet wide-leg trousers","brocade trousers","jacquard skirt","tapestry-print skirt","distressed ripped jeans","patchwork denim","tie-dye flares","acid wash jeans","vintage washed trousers","pinstripe trousers","checked trousers","houndstooth skirt","plaid mini skirt","tartan trousers","sports shorts","track pants","yoga flares","compression leggings","athletic skort","tulle midi skirt","organza layered skirt","sheer overlay skirt","lace skirt","chiffon maxi skirt","hand-embroidered skirt","folk print skirt","ikat trousers","batik wrap skirt","block-print maxi skirt","paper bag waist trousers","gathered waist skirt","shirred skirt","smocked midi skirt","elasticated wide trousers","wrap trousers","kilt-style skirt","sarong-style skirt","draped wrap skirt","pareo-style bottom","sculpted structured skirt","architectural paneled trousers","origami skirt","pleated sculptural trousers","3D texture skirt","knit tube skirt","ribbed midi skirt","crochet skirt","knit flare skirt","open-weave skirt","cropped flared trousers","culotte","gaucho trousers","pedal pushers","capri trousers","denim skirt with raw hem","distressed mini","bleached jeans","overdyed trousers","reverse-dye skirt","high-waisted yoga leggings","nylon track shorts","double-knee work pants","faded black dungarees","plaid flannel lounge pants","loose linen drawstring trousers","micro denim shorts with frayed hems","high-slit satin maxi skirt","bodycon mini skirt in faux leather","low-rise flared trousers with hip cutouts","sheer mesh leggings layered with shorts","ultra-short pleated tennis skirt","leather chaps","moto jeans with knee armor","distressed riding jeans","black leather pants","studded leather pants","denim vest as skirt","vintage moto pants","riding pants with side zip"];
-
-const OUTERWEAR = {
-  spring: ["lightweight trench coat in camel","cropped denim jacket","linen blazer","cotton bomber jacket","sheer organza jacket","oversized blazer in pastel","double-breasted spring coat","belted wrap coat in pale blue","cropped leather jacket","windbreaker in soft pink","knit cardigan layered open","broderie anglaise jacket","printed kimono jacket","embroidered denim jacket","tie-dye denim jacket","tailored short jacket","military-inspired spring jacket","washed canvas jacket","cotton parka","transitional peacoat","vintage blazer thrifted","reworked suit jacket","deconstructed blazer","oversized shirt jacket","soft structured coat"],
-  summer: ["sheer kimono wrap","lightweight mesh cover-up","sheer linen duster","cropped sheer organza jacket","translucent PVC raincoat","ultra-light nylon windbreaker","sheer chiffon wrap skirt as outerwear","open-weave crochet cardigan"],
-  autumn: ["oversized camel coat","plaid wool blazer","corduroy jacket","leather biker jacket","suede fringe jacket","double-breasted peacoat","checked wool coat","belted trench in rust","shearling-collar bomber","quilted vest layered","velvet blazer","brocade jacket","embroidered folk jacket","patchwork coat","vintage fur-trim coat","longline duster coat","wrap coat in burgundy","knit coat","boiled wool jacket","herringbone coat","military surplus field jacket","waxed cotton jacket","canvas work jacket","tech fleece","insulated puffer vest","cape coat","cocoon coat","opera coat","dramatic statement coat","sculptural structured coat","quilted duck canvas jacket","vintage chore coat with brass buttons","studded leather jacket","vintage cafe racer jacket","distressed denim jacket with patches","black leather jacket with patches","motorcycle club vest over hoodie"],
-  winter: ["long wool overcoat in charcoal","puffer coat in midnight blue","shearling coat","faux fur statement coat","quilted down coat","belted wool coat in camel","double-breasted military coat","longline parka","technical ski jacket","insulated puffer jacket","bouclé coat","mohair coat","cashmere wrap coat","plaid oversized coat","checked blanket coat","leather trench coat","vinyl coat","patent cocoon coat","metallic puffer","reflective technical jacket","vintage fur coat","faux fur teddy coat","sherpa jacket","fleece-lined coat","curly shearling coat","cape coat with dramatic collar","sculptural architectural coat","deconstructed oversized coat","avant-garde wrap coat","statement maxi coat","heavy leather jacket with fur collar","vintage motorcycle jacket with quilted lining"]
-};
-
-const FABRICS = ["silk charmeuse","heavy satin","matte crepe","chiffon","georgette","organza","tulle","lace","broderie anglaise","eyelet cotton","raw denim","washed denim","stretch denim","selvage denim","coated denim","soft leather","distressed leather","patent leather","suede","nubuck","ribbed knit","cable knit","chunky wool knit","fine gauge jersey","waffle knit","linen","washed linen","heavy cotton canvas","cotton poplin","chambray","velvet","crushed velvet","velour","corduroy","brocade","wool tweed","herringbone wool","bouclé","cashmere","mohair","technical nylon","ripstop","Cordura nylon","parachute fabric","mesh fabric","vinyl","PVC","latex-effect","metallic foil fabric","reflective material","sheer chiffon overlay","semi-sheer organza","transparent mesh","burnout velvet","devore fabric","jacquard","tapestry weave","ikat","batik","block-print cotton","tie-dye cotton","acid-wash denim","ombre fabric","patchwork","quilted fabric","organic cotton","hemp linen","recycled polyester","bamboo jersey","deadstock fabric","sequined fabric","beaded fabric","embroidered fabric","appliqué fabric","hand-painted fabric","plaid wool","tartan","houndstooth","windowpane check","pinstripe fabric","faux fur","sherpa fleece","teddy bear fabric","boiled wool","felt","silk satin","silk taffeta","silk dupioni","raw silk","habotai silk","printed cotton","digital print fabric","abstract print fabric","floral print fabric","geometric print fabric"];
-
-const SHOES = [
-  "chunky lug-sole boots","knee-high leather boots","over-the-knee boots","ankle boots with buckles","combat boots",
-  "white leather sneakers","chunky platform sneakers","retro running shoes","canvas high-tops","slip-on sneakers",
-  "ballet flats","Mary Jane shoes","loafers in leather","penny loafers","horsebit loafers",
-  "strappy flat sandals","gladiator sandals","thong sandals","espadrille wedges","platform sandals",
-  "Chelsea boots","Western cowboy boots","riding boots","lace-up Oxford shoes","brogues",
-  "mules in suede","backless loafers","slides in leather","pool slides","embellished flip flops",
-  "fisherman sandals","Birkenstock-style sandals","woven sandals","leather huaraches","rope-sole sandals",
-  "pointed mules","square-toe flats","round-toe block heels","d'Orsay pumps","slingback heels",
-  "thigh-high boots","sock boots","Chelsea heeled boots","heeled ankle boots","zip-up knee boots",
-  "platform Mary Janes","chunky loafers","lug-sole loafers","creeper shoes","platform Oxford shoes",
-  "metallic heels","glitter boots","patent leather pumps","vinyl knee boots","mirror-finish shoes",
-  "sneaker heels","hybrid sneaker boot","dad shoes","trail runners","hiking sandals",
-  "pointed-toe flats","ballet pumps","bow-front flats","embellished flats","velvet flats",
-  "woven leather flats","jelly shoes","transparent PVC mules","lucite heels","perspex platform shoes",
-  "ankle-strap heels","T-bar heels","wrap-around sandal heels","cross-strap sandals","barely-there heels",
-  "sock sneakers","knit slip-on shoes","woven fabric flats","crochet sandals","macramé sandals",
-  "wooden-sole clogs","Swedish clogs","leather clogs","embroidered clogs","painted clogs",
-  "pointed-toe boots","Chelsea boot with chain","studded boots","embroidered Western boots","painted cowboy boots",
-  "motorcycle boots","engineer boots","harness boots","steel-toe boots","vintage moto boots",
-  "riding boots with buckle","black leather boots with chains","studded ankle boots"
-];
-
-const COLORS = {
-  spring: ["soft blush and ivory","lavender and cream","sage green and white","powder blue and blush","lilac and pale yellow","mint and coral","peach and sky blue","rose quartz and fog","cherry blossom pink and grey","butter yellow and soft white","pastel rainbow mix","pale violet and ecru","soft terracotta and cream","washed rose and linen","dusty pink and warm grey","celadon and ivory","pale aqua and blush","soft periwinkle and white","light moss and cream","nude and soft pink","warm sand and peach","muted coral and sage","blush pink monochrome","soft lilac monochrome","pale mint monochrome","white and gold","cream and silver","soft beige tonal","warm neutral tonal","pale pastels mixed"],
-  summer: ["cobalt blue and white","hot coral and gold","sunshine yellow and sky blue","vivid orange and turquoise","electric pink and lime","tropical red and emerald","bright fuchsia and navy","neon yellow and black","aqua and coral","vivid violet and gold","white and bright pop of color","crisp linen white","bleached denim and white","all white","ivory and tan","bold color block","saturated primary mix","tropical multicolor print","vivid stripe","bold geometric color","terracotta and sand","warm amber and cream","golden yellow and rust","burnt orange and ivory","papaya and beige","ocean blue and seafoam","turquoise and sandy beige","lagoon teal and white","deep sea blue and coral","wave blue tonal","jungle green and yellow","palm print green","botanical mix","mango orange and leafy green","tropical floral mix"],
-  autumn: ["burnt sienna and cream","rust and camel","deep olive and tan","chocolate brown and ivory","cognac and off-white","burgundy and blush","wine red and grey","deep plum and nude","maroon and cream","oxblood and sand","forest green and rust","hunter green and camel","deep emerald and gold","sage and terracotta","moss and amber","mustard yellow and brown","golden amber and burgundy","harvest orange and chocolate","pumpkin and cream","ochre and navy","warm earthy tonal","brown monochrome","rust monochrome","deep olive monochrome","autumnal color gradient","navy and rust","dark teal and camel","deep indigo and amber","slate blue and terracotta","charcoal and cognac","plaid mix warm tones","houndstooth black and tan","checked russet and cream","tartan earth tones","tweed mixed warm"],
-  winter: ["midnight black and ivory","charcoal and white","deep navy and cream","slate grey and silver","graphite and pale blue","pure black monochrome","all grey tonal","black and gold","black and silver","black and deep red","deep burgundy and black","midnight plum and silver","forest green and black","deep teal and charcoal","navy and midnight blue","crisp white and ice blue","winter white tonal","ivory and pearl","snow white and silver","white and pale gold","rich camel and black","warm brown and cream","cognac and ivory","chocolate and off-white","warm taupe and white","deep red and cream","holly green and red","midnight blue and gold","emerald and black","jewel tones mixed","metallic silver","gold and black","bronze and deep brown","copper and midnight blue","iridescent pearl tones"]
-};
-
-const ACCESSORIES = [
-  // Headwear
-  "pearl hair clip","satin scrunchie","claw clip in tortoiseshell","velvet headband","ribbon tied in hair","silk scarf as hair wrap","knit beanie","wide-brim felt hat","beret","baseball cap worn backwards","bucket hat","straw sun hat","cowboy hat","fascinator","embellished hair pins","braided headband","floral hair crown","gold hair cuff","jeweled barrette","French twist pin","black bandana","do-rag","skull cap","vintage motorcycle helmet","open-face helmet","full-face helmet",
-  // Eyewear
-  "oversized square sunglasses","cat-eye sunglasses","round retro sunglasses","slim rectangular shades","tiny oval sunglasses","shield sunglasses","wrap-around sport shades","aviator sunglasses","gradient lens sunglasses","mirrored lens sunglasses","oversized tortoiseshell glasses","thin gold wire round glasses","classic black rectangular frames","clear acetate frames","vintage cat-eye glasses","thick black square frames","rimless oval glasses","double-bridge glasses","geometric hexagonal frames","coloured tinted glasses","goggles","riding goggles",
-  // Jewelry
-  "layered gold chains","chunky silver hoops","pearl drop earrings","geometric statement earrings","mismatched earrings","stacked bangles","charm bracelet","tennis bracelet","cuff bracelet","beaded bracelets stack","dainty ring stack","statement cocktail ring","signet ring","knuckle rings","midi rings","long pendant necklace","choker necklace","statement bib necklace","lariat necklace","charm necklace","delicate gold body chain","choker with small silver heart","dog tag necklace","heavy silver chain","skull ring","biker rings",
-  // Bags
-  "mini structured bag","slouchy hobo bag","structured top-handle bag","crossbody chain bag","tote bag in canvas","baguette bag","clutch in satin","belt bag","backpack in leather","mesh tote","saddlebag","tank bag","roll bag",
-  // Neck / Scarf
-  "silk neck scarf","wool tartan scarf","sheer chiffon scarf","bandana","black bandana around neck","do-rag under helmet",
-  // Belts & Legwear
-  "wide leather belt","thin chain belt","corset belt","embroidered belt","woven belt","thigh-high fishnet stockings","seamed sheer black tights","lace garter detail","studded belt","chain wallet","fingerless leather gloves","riding gloves","prom corsage","wrist corsage","boutonniere","bridal bouquet","bridesmaid bouquet","tiara","prom queen sash","homecoming queen sash","letterman jacket patches","sorority pin","frat pin","graduation cap tassel","thick black glasses","round wireframe glasses","book locket necklace","vintage fountain pen","leather-bound notebook","stack of books as prop","canvas tote with art prints","polaroid camera","headphones around neck","clapperboard with scene number","walkie-talkie clipped to belt","light meter hanging from neck","thick script binder with colored tabs","coffee cup with film crew logo","folding director's chair with name","boom mic held above head","slate with dry-erase marker","film camera viewfinder hanging from neck","headset with mic","multi-tool Leatherman","tape measure","flashlight for night shoots","earplugs for loud scenes","sunscreen outdoor location","bug spray forest location","hand sanitizer crew habit","notebook labeled SHOT LIST","energy drink cans scattered","walkie-talkie earpiece","film loader changing bag","continuity photo album Polaroids","megaphone for crowd scenes","stopwatch 1st AD timing takes","turquoise jewelry","native american beadwork","lei","hula skirt","snowmobile helmet","fishing gear","polar parka","mukluks"
-];
-
-// Accessory picker with location-aware filtering (Gemini proposal #1)
-function pickAccessories(loc = "") {
-  const isFilmSet = /film set|sound stage|actor.*trailer|craft services|makeup trailer|costume department|editing suite|sound mixing|location scout/.test(loc);
-  const isCultural = /navajo|hawaii|alaska|arctic|powwow|inupiat|yupik|native hawaiian/.test(loc);
-  const isBiker = /motorcycle|bike|harley|biker|cafe racer|road warrior/.test(loc);
-  const isWedding = /wedding|bride|bridesmaid/.test(loc);
-  const isPromOrHomecoming = /prom|homecoming/.test(loc);
-
-  // Category definitions
-  const bagItems = ACCESSORIES.filter(a => a.includes("bag") || a.includes("tote") || a.includes("clutch") || a.includes("backpack") || a.includes("saddlebag") || a.includes("tank bag") || a.includes("roll bag"));
-  const hatItems = ACCESSORIES.filter(a => a.includes("hat") || a.includes("beanie") || a.includes("beret") || a.includes("cap") || a.includes("bucket") || a.includes("fascinator") || a.includes("crown") || a.includes("headband") || a.includes("scrunchie") || a.includes("clip") || a.includes("ribbon") || a.includes("braided headband") || a.includes("floral hair crown"));
-  const neckItems = ACCESSORIES.filter(a => a.includes("scarf") || a.includes("muffler") || a.includes("choker") || a.includes("necklace") || a.includes("pendant") || a.includes("lariat") || a.includes("bandana") || a.includes("do-rag") || a.includes("collar") || a.includes("body chain"));
-  const wristItems = ACCESSORIES.filter(a => a.includes("bracelet") || a.includes("bangle") || a.includes("cuff") || a.includes("wrist") || a.includes("garter"));
-  const fingerItems = ACCESSORIES.filter(a => a.includes("ring") || a.includes("knuckle"));
-  const eyewearItems = ACCESSORIES.filter(a => a.includes("glasses") || a.includes("frames") || a.includes("sunglasses") || a.includes("shades"));
-  const sunglassesItems = ACCESSORIES.filter(a => a.includes("sunglasses") || a.includes("shades"));
-  const regularGlassesItems = ACCESSORIES.filter(a => (a.includes("glasses") || a.includes("frames")) && !a.includes("sunglasses") && !a.includes("shades"));
-
-  // Context-specific items to exclude in normal scenes
-  const filmSetAccessories = ["clapperboard with scene number","megaphone for crowd scenes","boom mic held above head","light meter hanging from neck","thick script binder with colored tabs","coffee cup with film crew logo","folding director's chair with name","slate with dry-erase marker","film camera viewfinder hanging from neck","headset with mic","multi-tool Leatherman","tape measure","flashlight for night shoots","earplugs for loud scenes","walkie-talkie clipped to belt","walkie-talkie earpiece","film loader changing bag","continuity photo album Polaroids","stopwatch 1st AD timing takes"];
-  const culturalAccessories = ["turquoise jewelry","native american beadwork","lei","hula skirt","snowmobile helmet","polar parka","mukluks"];
-  const bikerAccessories = ["chain wallet","fingerless leather gloves","riding gloves","studded belt","biker rings"];
-  const weddingAccessories = ["bridal bouquet","bridesmaid bouquet","boutonniere","prom corsage","wrist corsage"];
-  const eventAccessories = ["tiara","prom queen sash","homecoming queen sash"];
-
-  // Build filtered pool based on context
-  let pool = [...ACCESSORIES];
-
-  if (!isFilmSet) {
-    pool = pool.filter(a => !filmSetAccessories.includes(a));
-  }
-  if (!isCultural) {
-    pool = pool.filter(a => !culturalAccessories.includes(a));
-  }
-  if (!isBiker) {
-    pool = pool.filter(a => !bikerAccessories.includes(a));
-  }
-  if (!isWedding) {
-    pool = pool.filter(a => !weddingAccessories.includes(a));
-  }
-  if (!isPromOrHomecoming) {
-    pool = pool.filter(a => !eventAccessories.includes(a));
-  }
-
-  // Rebuild category lists from filtered pool
-  const filteredBags = pool.filter(a => bagItems.includes(a));
-  const filteredHats = pool.filter(a => hatItems.includes(a));
-  const filteredNecks = pool.filter(a => neckItems.includes(a));
-  const filteredWrists = pool.filter(a => wristItems.includes(a));
-  const filteredFingers = pool.filter(a => fingerItems.includes(a));
-  const filteredEyewear = pool.filter(a => eyewearItems.includes(a));
-  const filteredSunglasses = pool.filter(a => sunglassesItems.includes(a));
-  const filteredRegularGlasses = pool.filter(a => regularGlassesItems.includes(a));
-  const filteredOthers = pool.filter(a => 
-    !bagItems.includes(a) && !hatItems.includes(a) && !neckItems.includes(a) && 
-    !wristItems.includes(a) && !fingerItems.includes(a) && !eyewearItems.includes(a)
-  );
-
-  let selected = [];
-  let hasBag = false;
-  let hasHat = false;
-  let hasNeck = false;
-  let hasWrist = false;
-  let hasFinger = false;
-  let hasEyewear = false;
-
-  const count = Math.random() < 0.5 ? 2 : 3;
-
-  for (let i = 0; i < count; i++) {
-    let currentPool = filteredOthers;
-    
-    if (!hasBag && filteredBags.length > 0 && Math.random() < 0.6) currentPool = [...currentPool, ...filteredBags];
-    if (!hasHat && filteredHats.length > 0 && Math.random() < 0.5) currentPool = [...currentPool, ...filteredHats];
-    if (!hasNeck && filteredNecks.length > 0 && Math.random() < 0.4) currentPool = [...currentPool, ...filteredNecks];
-    if (!hasWrist && filteredWrists.length > 0 && Math.random() < 0.35) currentPool = [...currentPool, ...filteredWrists];
-    if (!hasFinger && filteredFingers.length > 0 && Math.random() < 0.3) currentPool = [...currentPool, ...filteredFingers];
-    
-    if (!hasEyewear && filteredEyewear.length > 0 && Math.random() < 0.3) {
-      if (filteredRegularGlasses.length > 0 && Math.random() < 0.65) {
-        currentPool = [...currentPool, ...filteredRegularGlasses];
-      } else if (filteredSunglasses.length > 0) {
-        currentPool = [...currentPool, ...filteredSunglasses];
-      }
-    }
-
-    if (currentPool.length === 0) break;
-
-    const item = pick(currentPool);
-    selected.push(item);
-    currentPool = currentPool.filter(i => i !== item);
-
-    if (filteredBags.includes(item)) hasBag = true;
-    if (filteredHats.includes(item)) hasHat = true;
-    if (filteredNecks.includes(item)) hasNeck = true;
-    if (filteredWrists.includes(item)) hasWrist = true;
-    if (filteredFingers.includes(item)) hasFinger = true;
-    if (filteredEyewear.includes(item)) hasEyewear = true;
-  }
-
-  return selected.join(", ");
-}
-
-// New: Location-aware noise filtering (Gemini proposal #2)
-function getContextualNoise(loc) {
-  const isFilmSet = /film set|sound stage|actor.*trailer|craft services|makeup trailer|costume department|editing suite|sound mixing|location scout/.test(loc);
-  const isCultural = /navajo|hawaii|alaska|arctic|powwow|inupiat|yupik|native hawaiian/.test(loc);
-  const isBiker = /motorcycle|bike|harley|biker|cafe racer|road warrior/.test(loc);
-  const isDiner = /diner/.test(loc);
-  const isBeach = /beach|ocean|sand/.test(loc);
-  const isWinter = /winter|snow|arctic|polar/.test(loc);
-  const isDesert = /desert|navajo/.test(loc);
-
-  let pool = [...NOISE];
-
-  // Film set noise
-  const filmSetNoise = ["coiled cables and wires snaking across the floor","lighting stands and sandbags everywhere","half-eaten craft services food, bagels, donuts, fruit, coffee cups","script pages scattered on the ground, wind-blown","fog machine residue hanging in the air","walkie-talkie chatter and static in the background","generator hum, constant low drone","fake blood splatter on the ground, horror action set","period costume fabric rustling and dragging","camera dolly tracks visible on the floor","makeup brushes and products scattered on a table","sewing machine running in the background, costume dept","extras chatting and laughing between takes","director yelling Rolling! and Cut! through megaphone","sound of old film cameras rolling, mechanical whir","quiet tension before Action!, everyone holding breath","post-take silence, relief and immediate chatter","Bluetooth speaker playing music between takes, crew playlist","takeout containers and coffee cups piled up","sandbags and apple boxes used as makeshift furniture"];
-  
-  if (!isFilmSet) {
-    pool = pool.filter(n => !filmSetNoise.includes(n));
-  }
-
-  // Cultural noise
-  const culturalNoise = ["desert wind, sand blowing, extreme dryness","aurora crackling in the sky, extreme silence","ocean waves, palm trees rustling, tropical humidity","traditional drumming in the distance","fishing boat engine, cold wind, ice cracking","snow crunching under boots, extreme cold silence"];
-  
-  if (!isCultural) {
-    pool = pool.filter(n => !culturalNoise.includes(n));
-  }
-
-  // Biker noise
-  const bikerNoise = ["distant motorcycle engine roar","tire marks on asphalt","oil stains on the ground"];
-  if (!isBiker) {
-    pool = pool.filter(n => !bikerNoise.includes(n));
-  }
-
-  // Diner-specific noise
-  const dinerNoise = ["half-eaten donut on a paper plate nearby","coffee cup rings on the table","crumpled napkin on the floor"];
-  if (!isDiner) {
-    pool = pool.filter(n => !dinerNoise.includes(n));
-  }
-
-  // Beach noise
-  const beachNoise = ["sand in shoes","salt smell in the air","seagulls in the distance"];
-  if (!isBeach) {
-    pool = pool.filter(n => !beachNoise.includes(n));
-  }
-
-  // Winter noise
-  const winterNoise = ["snow crunching under boots","breath visible in cold air","frost on surfaces"];
-  if (!isWinter) {
-    pool = pool.filter(n => !winterNoise.includes(n));
-  }
-
-  // Desert noise
-  const desertNoise = ["desert wind, sand blowing, extreme dryness","heat shimmer on the horizon"];
-  if (!isDesert) {
-    pool = pool.filter(n => !desertNoise.includes(n));
-  }
-
-  return pool.length > 0 ? pick(pool) : null;
-}
-
-// New: Season and TPO-aware bottom correction (Gemini proposal #3)
-function getContextualBottom(season, loc) {
-  const isWinter = season === "winter";
-  const isFormal = /wedding|prom|homecoming|ballroom|opera|formal|church/.test(loc);
-  const isBeach = /beach|ocean|sand|hawaii/.test(loc);
-  const isBiker = /motorcycle|bike|harley|biker/.test(loc);
-
-  let pool = [...BOTTOMS];
-
-  // Winter: reduce extremely revealing bottoms
-  if (isWinter) {
-    const revealingBottoms = pool.filter(b => 
-      b.includes("micro") || b.includes("ultra-short") || b.includes("bodycon mini") || 
-      b.includes("high-slit") || b.includes("thong") || b.includes("barely-there")
-    );
-    if (revealingBottoms.length > 0 && Math.random() < 0.7) {
-      pool = pool.filter(b => !revealingBottoms.includes(b));
-    }
-  }
-
-  // Formal locations: reduce casual bottoms
-  if (isFormal) {
-    const casualBottoms = pool.filter(b => 
-      b.includes("sweat") || b.includes("jogger") || b.includes("cargo") || 
-      b.includes("track") || b.includes("yoga") || b.includes("athletic") ||
-      b.includes("denim shorts") || b.includes("micro denim")
-    );
-    if (casualBottoms.length > 0 && Math.random() < 0.8) {
-      pool = pool.filter(b => !casualBottoms.includes(b));
-    }
-  }
-
-  // Beach: boost light/summer bottoms
-  if (isBeach) {
-    const beachBottoms = pool.filter(b => 
-      b.includes("shorts") || b.includes("skirt") || b.includes("sarong") || 
-      b.includes("pareo") || b.includes("wrap") || b.includes("thong") ||
-      b.includes("high-slit")
-    );
-    if (beachBottoms.length > 0 && Math.random() < 0.6) {
-      pool = [...pool, ...beachBottoms]; // increase chance
-    }
-  }
-
-  // Biker: boost leather/denim
-  if (isBiker) {
-    const bikerBottoms = pool.filter(b => 
-      b.includes("leather") || b.includes("denim") || b.includes("moto") || 
-      b.includes("riding") || b.includes("distressed")
-    );
-    if (bikerBottoms.length > 0 && Math.random() < 0.5) {
-      pool = [...pool, ...bikerBottoms];
-    }
-  }
-
-  return pick(pool);
-}
-
-// Light contextual bias: reduce "field mismatch" while keeping randomness
-function getStyleBias(loc, style) {
-  const isEveryday = /diner|high school|university|campus|prom|homecoming|wedding|library|bookstore|coffee shop|dorm|quad|lecture hall/.test(loc);
-  const isFilmSet = /film set|sound stage|actor.*trailer|craft services|makeup trailer|costume department|editing suite|sound mixing|location scout/.test(loc);
-  const isCultural = /navajo|hawaii|alaska|arctic|powwow|inupiat|yupik|native hawaiian/.test(loc);
-  const isPromOrHomecoming = /prom|homecoming/.test(loc);
-  const isWedding = /wedding|bride|bridesmaid/.test(loc);
-  const isBiker = /motorcycle|bike|harley|biker|cafe racer|road warrior/.test(loc);
-  const isGreekLife = /sorority|frat|fraternity/.test(loc);
-  const isGraduation = /graduation/.test(loc);
-
-  const filmCrewStyles = ["film director","cinematographer","1st AD","2nd AD","script supervisor","production assistant","gaffer","best boy","key grip","dolly grip","boom operator","sound mixer","camera operator","focus puller","clapper loader","makeup artist on set","hair stylist on set","costume supervisor","wardrobe assistant","prop master","set decorator","production designer","location manager","casting director visiting set","unit publicist","stills photographer","film producer","line producer","film student intern","method actor","exhausted actor between takes","stunt coordinator","special effects technician","VFX supervisor on set","editor visiting set","colorist on set","film composer visiting set"];
-  
-  const culturalStyles = ["navajo","cherokee","sioux","powwow dancer","desert reservation","inupiat","yupik","polar night","aurora","alaska fishing village","snowmobile","native hawaiian","hula","lei","plantation","surf culture roots"];
-  
-  const eventSashStyles = ["prom queen sash","homecoming queen sash"];
-  
-  const weddingStyles = ["bridal bouquet","bridesmaid bouquet","boutonniere","prom corsage","wrist corsage"];
-  
-  const bikerStyles = ["chain wallet","fingerless leather gloves","riding gloves","studded belt","biker rings"];
-  
-  const filmSetAccessories = ["clapperboard with scene number","megaphone for crowd scenes","boom mic held above head","light meter hanging from neck","thick script binder with colored tabs","coffee cup with film crew logo","folding director's chair with name","slate with dry-erase marker","film camera viewfinder hanging from neck","headset with mic","multi-tool Leatherman","tape measure","flashlight for night shoots","earplugs for loud scenes","walkie-talkie clipped to belt","walkie-talkie earpiece","film loader changing bag","continuity photo album Polaroids","stopwatch 1st AD timing takes"];
-  
-  const eventSpecificStyles = ["tiara","graduation cap tassel","letterman jacket patches","sorority pin","frat pin"];
-
-  // Slightly boost normal styles in everyday locations
-  if (isEveryday && !filmCrewStyles.includes(style) && !culturalStyles.includes(style) && !eventSashStyles.includes(style) && !weddingStyles.includes(style) && !bikerStyles.includes(style) && !filmSetAccessories.includes(style) && !eventSpecificStyles.includes(style)) {
-    return 1.3;
-  }
-  
-  // Reduce film crew in everyday locations (but not too harshly)
-  if (isEveryday && filmCrewStyles.includes(style)) {
-    return 0.35;
-  }
-  
-  // Reduce cultural styles outside cultural locations
-  if (!isCultural && culturalStyles.includes(style)) {
-    return 0.4;
-  }
-  
-  // Event sashes (prom/homecoming) should only appear in prom/homecoming locations
-  if (!isPromOrHomecoming && eventSashStyles.includes(style)) {
-    return 0.1;
-  }
-  
-  // Wedding items should only appear in wedding locations
-  if (!isWedding && weddingStyles.includes(style)) {
-    return 0.1;
-  }
-  
-  // Biker items should only appear in biker locations
-  if (!isBiker && bikerStyles.includes(style)) {
-    return 0.2;
-  }
-  
-  // Film set accessories should only appear in film set locations
-  if (!isFilmSet && filmSetAccessories.includes(style)) {
-    return 0.1;
-  }
-  
-  // Event-specific items (tiara, graduation, letterman, Greek life)
-  if (!isPromOrHomecoming && !isWedding && !isGraduation && !isGreekLife && eventSpecificStyles.includes(style)) {
-    return 0.15;
-  }
-  
-  // Mild boost for film crew in film set locations
-  if (isFilmSet && filmCrewStyles.includes(style)) {
-    return 1.6;
-  }
-  
-  // Mild boost for cultural styles in cultural locations
-  if (isCultural && culturalStyles.includes(style)) {
-    return 1.5;
-  }
-  
-  // Mild boost for biker styles in biker locations
-  if (isBiker && bikerStyles.includes(style)) {
-    return 1.8;
-  }
-  
-  // Mild boost for film set accessories in film set locations
-  if (isFilmSet && filmSetAccessories.includes(style)) {
-    return 2.0;
-  }
-  
-  return 1.0;
-}
-
-// ============================================
-// Gemini's Precision & Intent Update (5 features)
-// ============================================
-
-// 1. Temporal Lighting Sync - Time-based lighting filter
-function getTemporalLighting(time) {
-  const isNight = /night|midnight|3am|sodium|streetlight/.test(time);
-  const isGoldenHour = /golden hour|sunset|sunrise|dusk|dawn/.test(time);
-  const isOvercast = /overcast|cloudy|flat|grey/.test(time);
-  const isWinter = /winter|cold|snow/.test(time);
-
-  let pool = [...LIGHTING];
-
-  if (isNight) {
-    // Night: neon, streetlights, headlights, indoor lights only
-    const nightLighting = pool.filter(l => 
-      l.includes("neon") || l.includes("street lamp") || l.includes("headlight") || 
-      l.includes("indoor") || l.includes("lamp") || l.includes("bulb") || 
-      l.includes("fluorescent") || l.includes("sodium") || l.includes("moonlight")
-    );
-    if (nightLighting.length > 0) pool = nightLighting;
-  } else if (isGoldenHour) {
-    // Golden hour: side light, rim light, backlight
-    const goldenLighting = pool.filter(l => 
-      l.includes("golden") || l.includes("side") || l.includes("rim") || 
-      l.includes("backlight") || l.includes("warm") || l.includes("sunset") || 
-      l.includes("sunrise") || l.includes("dawn") || l.includes("dusk")
-    );
-    if (goldenLighting.length > 0) pool = goldenLighting;
-  } else if (isOvercast || isWinter) {
-    // Overcast/Winter: flat, soft, diffused light
-    const softLighting = pool.filter(l => 
-      l.includes("overcast") || l.includes("diffused") || l.includes("soft") || 
-      l.includes("flat") || l.includes("even") || l.includes("pale") || 
-      l.includes("thin") || l.includes("cloud")
-    );
-    if (softLighting.length > 0) pool = softLighting;
-  }
-
-  return pool.length > 0 ? pick(pool) : pick(LIGHTING);
-}
-
-// 2. Optical Integrity Logic - Framing-aware camera selection
-function getOpticalCamera(framing) {
-  let pool = [...CAMERA];
-
-  if (framing === "close") {
-    // Close-up: prefer portrait lenses (85mm, macro)
-    const closeupCameras = pool.filter(c => 
-      c.includes("85mm") || c.includes("portrait") || c.includes("macro") || 
-      c.includes("close-up") || c.includes("intimate") || c.includes("shallow depth")
-    );
-    if (closeupCameras.length > 0 && Math.random() < 0.7) {
-      pool = [...pool, ...closeupCameras, ...closeupCameras]; // boost
-    }
-  } else if (framing === "full") {
-    // Full body: prefer wide angle (24mm) or telephoto (200mm)
-    const fullbodyCameras = pool.filter(c => 
-      c.includes("24mm") || c.includes("wide") || c.includes("200mm") || 
-      c.includes("telephoto") || c.includes("compressed") || c.includes("bird's eye")
-    );
-    if (fullbodyCameras.length > 0 && Math.random() < 0.6) {
-      pool = [...pool, ...fullbodyCameras];
-    }
-  } else if (framing === "bust") {
-    // Bust shot: balanced, natural perspective (50mm)
-    const bustCameras = pool.filter(c => 
-      c.includes("50mm") || c.includes("natural perspective") || c.includes("mid-distance")
-    );
-    if (bustCameras.length > 0 && Math.random() < 0.5) {
-      pool = [...pool, ...bustCameras];
-    }
-  }
-
-  return pick(pool);
-}
-
-// 3. Environment Boundary - Indoor/Outdoor detection
-function isIndoorLocation(loc) {
-  return /interior|inside|room|cafe|diner|pub|bar|library|bookstore|workshop|studio|church|chapel|ballroom|theatre|cinema|museum|gallery|shop|store|office|bedroom|kitchen|bathroom|hallway|corridor|basement|attic|garage|warehouse|factory|gym|school|university|dorm|frat|sorority/.test(loc);
-}
-
-function getEnvironmentalWeather(loc, weather) {
-  const isIndoor = isIndoorLocation(loc);
-  
-  if (isIndoor) {
-    // Indoor: convert weather to light/atmosphere description
-    if (weather.includes("rain")) return "soft rain visible through window, gentle light";
-    if (weather.includes("snow")) return "snow falling outside window, cozy indoor warmth";
-    if (weather.includes("wind")) return "wind visible through window, curtains moving slightly";
-    if (weather.includes("storm")) return "distant thunder, dim indoor lighting";
-    if (weather.includes("sun")) return "bright sunlight streaming through window";
-    return "soft indoor ambient light, window view in background";
-  }
-  
-  return weather; // Outdoor: keep original weather
-}
-
-// 4. Negative Constraint Enforcement - Hard validation rules
-function hasNegativeConstraint(season, loc, bottom, outer) {
-  const isSummer = season === "summer";
-  const isWinter = season === "winter";
-  const isFormal = /wedding|prom|homecoming|ballroom|opera|formal|church/.test(loc);
-  const isBeach = /beach|ocean|sand|hawaii/.test(loc);
-
-  // Summer + heavy winter clothing
-  if (isSummer && outer && (outer.includes("wool") || outer.includes("puffer") || outer.includes("shearling") || outer.includes("fur"))) {
-    return true;
-  }
-
-  // Winter + swimwear/revealing
-  if (isWinter && bottom && (bottom.includes("swim") || bottom.includes("bikini") || bottom.includes("shorts") || bottom.includes("micro"))) {
-    return true;
-  }
-
-  // Formal + heavy distressed/casual
-  if (isFormal && bottom && (bottom.includes("distressed") || bottom.includes("ripped") || bottom.includes("cargo") || bottom.includes("sweat"))) {
-    return true;
-  }
-
-  // Beach + heavy winter clothing
-  if (isBeach && outer && (outer.includes("wool") || outer.includes("puffer") || outer.includes("coat"))) {
-    return true;
-  }
-
-  return false;
-}
-
-// 5. Emotional Tone Deepening - Theme to film style linking
-function getThemedStyleScene(theme, styleScene) {
-  const nostalgicThemes = ["nostalgic", "bittersweet", "memory", "half-remembered", "golden light"];
-  const rawThemes = ["raw and real", "no performance", "just life", "unflinching", "gritty"];
-  const dreamyThemes = ["dreamy", "soft", "ethereal", "hazy", "floating"];
-  const tenseThemes = ["tense", "charged", "something about to happen", "uneasy"];
-
-  let pool = [styleScene];
-
-  if (nostalgicThemes.some(t => theme.includes(t))) {
-    // Nostalgic: Portra, Super 8, warm faded
-    const nostalgicStyles = ["Kodak Portra 400 film aesthetic, warm and slightly faded", "Super 8 film aesthetic, warm grain and vignette", "35mm film grain, saturated American colours"];
-    pool = [...pool, ...nostalgicStyles];
-  } else if (rawThemes.some(t => theme.includes(t))) {
-    // Raw/Real: deadpan, 35mm grain, unflinching
-    const rawStyles = ["gritty street photography, unflinching and real", "35mm film grain, saturated American colours", "William Eggleston colour photography, banal and beautiful"];
-    pool = [...pool, ...rawStyles];
-  } else if (dreamyThemes.some(t => theme.includes(t))) {
-    // Dreamy: soft focus, hazy
-    const dreamyStyles = ["soft focus dreamlike quality, hazy edges", "Sofia Coppola dreamy soft focus, intimate and floating"];
-    pool = [...pool, ...dreamyStyles];
-  } else if (tenseThemes.some(t => theme.includes(t))) {
-    // Tense: high contrast, dramatic
-    const tenseStyles = ["bleach bypass processing, desaturated with contrast", "David Lynch wide angle uncanny stillness, something wrong you cannot name"];
-    pool = [...pool, ...tenseStyles];
-  }
-
-  return pick(pool);
-}
-
-// Light contextual bias: reduce "field mismatch" while keeping randomness
-const LOCATIONS = [
-  // (truncated for brevity in this response, but in real file it would be full)
-  "classic American diner interior at golden hour, sunlight streaming through large windows onto red vinyl booths",
-  "midnight diner counter, half-empty coffee cups and pie display case glowing under fluorescent light",
-  "roadside diner booth by the window, late afternoon light, crumpled napkin and empty mug",
-  "ferry boat upper deck, open water and wind, afternoon sun on the waves",
-  "commuter ferry crossing at golden hour, city skyline in background, wind in hair",
-  "night ferry interior cabin, city lights reflecting on water through the window",
-  "ferry terminal dock with cars lined up waiting, late afternoon light",
-  "ferry deck at dusk, wind in hair, distant lights on the horizon",
-  "high-speed ferry cutting through waves at sunset, spray in the air",
-  "quiet ferry ride at blue hour, lights of the city starting to glow",
-  "small local ferry with wooden benches, open air, morning mist over water",
-  "car ferry crossing, people sitting in cars or on deck, golden hour",
-  "ferry terminal waiting area, plastic chairs and vending machines, early morning",
-  "ferry at night, interior lights and dark water outside, quiet hum of engines",
-  "ferry upper deck at sunrise, first light hitting the water, nobody else around",
-  // Biker / Motorcycle locations
-  "desert highway at golden hour, lone motorcycle parked on the side of the road, vast empty landscape",
-  "motorcycle club outside a roadside bar at dusk, rows of Harley-Davidson bikes lined up, neon sign glowing",
-  "empty two-lane highway at sunset, one biker in the distance, long shadows across the asphalt",
-  "desert gas station at night, single motorcycle under harsh fluorescent light, stars above",
-  "mountain road switchback at golden hour, motorcycle leaning into the curve, dramatic cliffs",
-  "small town main street at dusk, group of bikers parked in front of the diner, warm light spilling out",
-  "highway rest stop at night, motorcycle under the only working lamp, empty picnic tables",
-  "Route 66 roadside at sunset, classic motorcycle with saddlebags, long empty road disappearing into the horizon",
-  "bike rally in a dusty field at golden hour, rows of motorcycles, American flags, warm light",
-  "overlook at dusk, motorcycle parked at the edge, city lights far below, wind in the air",
-  "abandoned drive-in at night, one motorcycle in the lot, glowing screen in the distance",
-  "wet highway at night after rain, motorcycle headlight cutting through the mist",
-  "cafe racer meet at a retro gas station, vintage bikes lined up, golden hour light on chrome",
-  "lone rider on an empty road at blue hour, taillight glowing, vast sky above",
-  // Prom / Homecoming
-  "high school gym decorated for prom, balloons and streamers, empty dance floor at golden hour",
-  "hotel ballroom at prom night, chandeliers and tables with centerpieces, soft lighting",
-  "limousine interior at night, prom couple in formal wear, city lights outside",
-  "school parking lot at dusk, limos lined up, students in gowns and tuxedos",
-  "homecoming football game stands at night, crowd and lights, cheerleaders on the field",
-  "high school hallway with homecoming posters, afternoon light through windows",
-  // College Life
-  "university campus quad at golden hour, students walking, autumn leaves, brick buildings",
-  "college football stadium at dusk, empty stands, field lights turning on",
-  "frat house porch at night, red solo cups, string lights, party atmosphere",
-  "university library reading room, green lamps, tall shelves, evening quiet",
-  "dorm room at afternoon, unmade bed, posters on wall, sunlight through blinds",
-  "campus coffee shop, mismatched furniture, laptop screens, mid-morning bustle",
-  "tailgating in the parking lot before the game, grills and folding chairs, American flags",
-  "sorority house exterior at golden hour, Greek letters, girls in matching outfits",
-  // American Wedding
-  "white church with steeple at golden hour, wedding party outside, flowers and smiles",
-  "garden wedding at dusk, string lights in trees, white chairs in rows",
-  "rustic barn wedding reception, string lights, wooden tables, mason jar centerpieces",
-  "beach wedding at sunset, barefoot bride, ocean in background, soft pink sky",
-  "hotel ballroom wedding reception, round tables, dance floor, warm lighting",
-  "outdoor wedding arch at golden hour, flowers and fabric, empty chairs waiting",
-  "wedding limo at night, just married sign, city lights in background",
-  // Nerd / Bookish locations
-  "university library reading room at golden hour, tall bookshelves, green lamps, quiet atmosphere",
-  "independent bookstore with wooden shelves and old wooden floors, afternoon light through the window",
-  "art school studio, paint splatters on the floor, canvases everywhere, natural light from skylight",
-  "coffee shop with large windows and bookshelves, laptop open, golden hour light on the table",
-  "university lecture hall, wooden desks with carved initials, afternoon light through high windows",
-  "dorm room with fairy lights, books stacked everywhere, laptop glowing, evening quiet",
-  "used bookstore basement, narrow aisles, dust motes in the light, old book smell",
-  "campus quad with a single student reading under a tree, golden hour, peaceful",
-  // Film / Movie Set locations
-  "active film set on location, desert highway, crew and equipment scattered, golden hour",
-  "sound stage with green screen and massive lighting rigs, crew moving in organized chaos",
-  "period drama set, historical costumes, props, carriages, fake cobblestones, afternoon light",
-  "horror movie set, fog machines, fake blood, creepy lighting, crew joking between takes",
-  "action movie set, cars, explosions, wire work, safety crew, organized chaos",
-  "romantic comedy set, bright colors, artificial but charming, everyone in a good mood",
-  "indie film set, run-down location, small crew, natural light, beautiful chaos",
-  "big budget blockbuster set, hundreds of extras, cranes, organized precision",
-  "night shoot with lighting towers and generators humming, 3am, everyone running on fumes",
-  "car chase prep area, stunt drivers, safety briefing, marked roads, tension in the air",
-  "actor's trailer, cozy, personal items, coffee cups, script pages, quiet moment",
-  "craft services table, snacks, coffee, bagels, crew eating between takes, laughter",
-  "director's monitor station, folding chairs, monitors, intense discussion, quiet focus",
-  "makeup trailer, bright lights, mirrors, actors in various stages of transformation",
-  "costume department, racks of clothes, sewing machines, steaming, organized mess",
-  "prop warehouse, endless shelves of random objects, dust, organized chaos",
-  "editing suite, dark room, multiple monitors, takeout containers, empty coffee cups",
-  "sound mixing stage, huge speakers, mixing console, dim lighting, intense focus",
-  "film festival afterparty, red carpet area, but behind the scenes, exhausted crew",
-  "location scout van, maps, photos, coffee, stressed location manager, early morning",
-  // Native American / Alaska / Hawaii locations
-  "navajo reservation at sunset, desert landscape with traditional hogan, turquoise jewelry",
-  "alaska fishing village at polar night, aurora in the sky, snowmobiles, extreme cold",
-  "hawaii beach at sunrise, hula performance, lei, plantation background, ocean waves",
-  "arctic research station, northern lights, extreme cold, isolation, snow crunching"
-];
-
-const FORMAL_LOC_KEYWORDS = ["hotel", "gallery", "ballroom", "chapel", "opera house", "steakhouse", "gala", "graduation", "city hall", "wedding", "symphony", "museum", "mansion", "members-only", "red carpet", "country club"];
-
-const TIMES = ["golden hour at sunset, long warm shadows stretching east","harsh midday sun, deep short shadows, bleached colour","early morning, low sun casting long diagonal shadows","late afternoon, amber light turning everything golden","just after sunrise, soft directional light, dew still on surfaces","blue hour just after sunset, sky deepening to indigo","mid-morning, crisp clear light, day fully underway","noon with almost no shadow, everything exposed","late evening, day cooling, light going soft and warm","3am under sodium streetlights, orange cast on everything","pre-dawn, sky barely lightening, one bird already calling","twilight, shapes losing definition, lights starting to matter","overcast midday, flat diffused light, no shadows at all","dusk, the last ten minutes before dark","morning rush hour, strong raking light, everyone in motion"];
-
-const SEASONS_SCENE = {
-  spring: ["spring bloom, everything green and new","April, rain and new growth","early spring, trees just budding","May, warm and bright, flowers everywhere","late spring, lush and mild","March, cold fading but still present","spring evening, long daylight stretching out"],
-  summer: ["peak American summer, lush and humid","July heat, baked and still","late summer, heat fading but still present","August, heavy and golden","midsummer, everything baked and bright","early summer, warm and expansive","summer night, warm air and cicadas"],
-  autumn: ["early fall, leaves just beginning to turn","October, full autumn colour","November, stripped back, low light","late autumn, bare trees and cold air","September, summer fading into gold","autumn afternoon, amber light on fallen leaves","deep fall, everything dark and rich"],
-  winter: ["deep midwestern winter, bare trees and frozen ground","February, cold and spare but bright","January, grey and still","winter morning, frost on every surface","late winter, grey and slow","December, cold and quiet","midwinter, sparse and sharp"]
-};
-
-const WEATHER = {
-  spring: ["clear blue sky, no clouds, perfect spring light","light spring rain, everything slightly wet and fresh","thin clouds softening the sunlight, warm and hazy","just after rain, everything freshly wet, sky clearing","early spring, cold and clear, first warm day","overcast with soft even cloud cover, gentle light","dense morning fog slowly lifting","post-storm clarity, washed air and sharp light"],
-  summer: ["clear blue sky, no clouds, brilliant summer light","heat haze shimmering off asphalt, deep summer","humid summer evening, air heavy, everything slightly damp","late summer humidity, everything lush and slightly oppressive","thunderstorm building in the distance, sky turning green","dust in the air, dry wind from the west, light going amber","thin clouds softening the sunlight, warm and hazy","just after rain, everything freshly wet, sky clearing"],
-  autumn: ["autumn day, leaves turning, cool clear air","overcast with soft even cloud cover, no harsh shadows","thin clouds softening the sunlight, warm amber haze","just after rain, everything freshly wet, sky clearing","post-storm clarity, washed air and sharp light","dense morning fog slowly lifting","dry autumn cold, bare trees, low sun, sharp shadows","dust in the air, dry wind from the west, light going amber"],
-  winter: ["dry winter cold, bare trees, low sun, sharp shadows","overcast with soft even cloud cover, flat grey light","dense morning fog slowly lifting","post-storm clarity, washed air and sharp light","thin cloud cover softening weak winter sun","early spring, cold and clear, first warm day","just after rain, everything freshly wet, sky clearing","overcast midday, flat diffused light, no shadows at all"]
-};
-
-const MOODS = ["quietly beautiful, no drama needed","nostalgic without being sad","the feeling of a Sunday afternoon with nowhere to be","something just happened or is about to","ordinary and somehow perfect","the loneliness that isn't quite loneliness","warm and slightly melancholic","the last moment before everything changes","unhurried and real","beautiful in a way that doesn't announce itself","the quality of light that makes you stop","intimately observed, like a private photograph","the texture of a life being lived","still and charged at the same time","the kind of scene a filmmaker would remember years later"];
-
-const CAMERA = ["wide angle 24mm, vast sky dominating frame","50mm lens, natural perspective, mid-distance","85mm portrait lens, shallow depth of field, background softened","long telephoto 200mm, compressed perspective","low angle looking up at sign or sky","high angle looking down at street or floor","locked-off static shot, perfectly composed","handheld, slightly unsteady, documentary feel","through a window, reflections layered with interior","silhouette against the light","extreme close-up of texture and surface detail","slow dolly move along an empty space","bird's eye view from above","rack focus from foreground detail to background","Wes Anderson symmetrical dead-centre framing, flat and precise","Sofia Coppola dreamy soft focus, intimate and floating","Wong Kar-wai blurred motion, neon and longing","Terrence Malick handheld golden light, nature and human intertwined","David Lynch wide angle uncanny stillness, something wrong you cannot name","Barry Jenkins intimate close-up, eyes and light and emotion","Roger Deakins clean wide shot, landscape dwarfing the subject"];
-
-const STYLE_SCENE = ["Kodak Portra 400 film aesthetic, warm and slightly faded","35mm film grain, saturated American colours","digital cinema, warm teal and orange grade","Terrence Malick golden hour cinematography","Edward Hopper painting quality, light and stillness","Stephen Shore photography, deadpan American everyday","William Eggleston colour photography, banal and beautiful","soft focus dreamlike quality, hazy edges","crisp architectural photography, clean and precise","gritty street photography, unflinching and real","contemporary American indie film look","hyperrealistic CGI environment, photographic clarity","long lens heat haze, shimmering and compressed","bleach bypass processing, desaturated with contrast","Super 8 film aesthetic, warm grain and vignette"];
-
-const PERCEPTION = ["slight focus drift, as if the lens is struggling to settle","subtle temporal lag, movement feels delayed","soft motion blur lingering after stillness","light flickers unnaturally, barely perceptible","colours slightly misaligned, like a memory offset","depth feels inconsistent, foreground and background blending","visual noise creeping in like analog signal decay","frame feels almost still, but not completely frozen","the horizon line is not quite level, the world slightly tilted","colour temperature shifts mid-frame, warm to cold without reason","a figure that was there a moment ago seems to have never existed","reflections do not match their sources, reversed or delayed","edges of the frame feel closer than they should be"];
-
-// New: Theme axis (controls overall atmosphere)
-const THEMES = [
-  "lonely and quiet, nobody else around",
-  "romantic and nostalgic, golden light on everything",
-  "chaotic and alive, energy in the air",
-  "empty and slightly melancholic, time frozen",
-  "warm and lived-in, memory of a perfect day",
-  "tense and charged, something about to happen",
-  "dreamy and soft, like a half-remembered moment",
-  "raw and real, no performance, just life",
-  // Film production themes
-  "between takes, exhausted but still focused",
-  "director in the zone, staring at the monitor, completely silent",
-  "actor breaking character and laughing with crew",
-  "first day of shooting, nervous energy everywhere",
-  "last day of shooting, bittersweet atmosphere, hugs and photos",
-  "indie film chaos, small crew, big dreams, running on caffeine",
-  "big budget precision, hundreds of people moving like clockwork",
-  "method actor refusing to break character even between takes",
-  "stunt performer preparing mentally for dangerous take",
-  "cinematographer obsessing over the perfect light, everyone waiting",
-  "night shoot, 3am, everyone running on fumes but still going",
-  "period drama set, actors in corsets and heavy costumes, sweating",
-  "horror movie set, fake blood everywhere, crew joking to lighten the mood",
-  "romantic comedy set, bright and artificial, everyone in a good mood",
-  "actor in trailer, alone, running lines, visibly nervous"
-];
-
-// New: American-specific noise / imperfection layer
-const NOISE = [
-  "faded and peeling paint on the wall behind",
-  "cigarette butt on the concrete near the subject",
-  "distant siren barely audible in the background",
-  "half-eaten donut on a paper plate nearby",
-  "cracked asphalt with weeds growing through",
-  "old faded sign with missing letters",
-  "plastic bag caught on a fence, fluttering",
-  "empty beer cans scattered near the curb",
-  "graffiti on the wall, slightly out of focus",
-  "dead leaves and dust in the corner of the frame",
-  "faint smell of rain on hot asphalt",
-  "distant traffic hum and occasional horn",
-  "peeling poster on the telephone pole",
-  "single lost shoe on the side of the road",
-  "faded chalk drawings on the sidewalk",
-  // Film set noise
-  "coiled cables and wires snaking across the floor",
-  "lighting stands and sandbags everywhere",
-  "half-eaten craft services food, bagels, donuts, fruit, coffee cups",
-  "script pages scattered on the ground, wind-blown",
-  "fog machine residue hanging in the air",
-  "walkie-talkie chatter and static in the background",
-  "generator hum, constant low drone",
-  "fake blood splatter on the ground, horror action set",
-  "period costume fabric rustling and dragging",
-  "camera dolly tracks visible on the floor",
-  "makeup brushes and products scattered on a table",
-  "sewing machine running in the background, costume dept",
-  "extras chatting and laughing between takes",
-  "director yelling Rolling! and Cut! through megaphone",
-  "sound of old film cameras rolling, mechanical whir",
-  "quiet tension before Action!, everyone holding breath",
-  "post-take silence, relief and immediate chatter",
-  "Bluetooth speaker playing music between takes, crew playlist",
-  "takeout containers and coffee cups piled up",
-  "sandbags and apple boxes used as makeshift furniture",
-  // Native American / Alaska / Hawaii noise
-  "desert wind, sand blowing, extreme dryness",
-  "aurora crackling in the sky, extreme silence",
-  "ocean waves, palm trees rustling, tropical humidity",
-  "traditional drumming in the distance",
-  "fishing boat engine, cold wind, ice cracking",
-  "snow crunching under boots, extreme cold silence"
-];
-
-const CORE_FIXED = "the quiet weight of an ordinary moment";
-const CORE_VARIATION = ["something here will be remembered long after it's gone","the world going on as it always does, beautiful for no reason","as if the camera arrived just in time"];
-
-// New: Unified emotional narrative (combines theme + mood + core + variation into one cohesive sentence)
-function buildEmotionalNarrative(theme, mood, variation) {
-  const base = `${theme}, ${mood}`;
-  const variationPart = variation ? ` ${variation}` : "";
-  
-  // Create natural flowing sentences
-  const narratives = [
-    `${base}${variationPart}`,
-    `this feels like ${base}${variationPart}`,
-    `a moment that captures ${base}${variationPart}`,
-    `the kind of ${base} that stays with you${variationPart}`
-  ];
-  
-  return pick(narratives);
-}
-
-// ==================== FIGURE DATA ====================
-const BODY_POSES = ["standing naturally with weight on one leg","walking gracefully toward camera","leaning casually against a wall","sitting on steps looking sideways","standing with hands in pockets","turning around while walking","sitting on the floor with knees up","standing with arms crossed loosely","mid-stride dynamic walking pose","relaxed standing pose, looking over shoulder","leaning forward slightly with interest","standing tall and confident","sitting on a chair backwards","crouching down gently","lying on side propped on elbow","standing with one hand on hip","walking away from camera","sitting with legs crossed elegantly","standing with slight contrapposto pose","kneeling on one knee","jumping in mid-air","running dynamically","dancing freely","spinning around","balancing on one foot","stretching arms upward","hugging own body gently","bending forward slightly","squatting playfully","reclining on elbow","standing with legs crossed","posing with hand on waist","walking with confident stride","sitting with one leg up","leaning back relaxed","crouching with hands on knees","standing with arms open wide","twirling with scarf flowing","posing dramatically with hand on chest","casual hands behind head","sitting on edge of something","standing in contrapposto with hand on hip","gentle sway while standing","looking back over shoulder while walking"];
-
-const HAND_GESTURES = ["hand gently touching hair","fingers running through hair","one hand resting on cheek","hand on hip, confident pose","both hands in pockets casually","touching neck softly","fingers playing with collar or necklace","hand raised near face thoughtfully","arms crossed loosely","hand resting on collarbone","fingers touching lips","one hand holding the other arm","hand brushing hair behind ear","fingers tracing jawline","hand placed on chest emotionally","both hands holding a cup or object","casual peace sign","hand making a small wave","fingers interlaced in front","one hand touching the back of neck","hand resting on thigh while sitting","fingers drumming lightly","hand covering mouth gently","pointing softly with index finger","hand adjusting sleeve or cuff","fingers touching ear","hand on forehead in thought","both hands on hips","one hand touching shoulder","fingers making heart shape","hand gently holding chin","arms raised above head","hand waving goodbye","fingers snapping","hand resting on stomach","one hand behind head","fingers counting something","hand making okay sign","both hands covering face shyly","hand touching lips seductively","fingers tracing collarbone","hand grabbing strap of bag","one hand in hair, other on hip","hands clasped together in front","hand touching opposite elbow","fingers playing with earring","hand resting lightly on chest","fingers gently touching lips while thinking"];
-
-const FACIAL_EXPRESSIONS = ["soft gentle smile, eyes slightly narrowed","dreamy distant gaze, lips slightly parted","playful smirk, one eyebrow raised","serene peaceful look, eyes softly closed","confident subtle smile, direct eye contact","pensive thoughtful expression, eyes downcast","bright cheerful open laugh","stoic mysterious look, steady gaze","gentle curious tilt of the head","cool indifferent expression, slight pout","tender emotional look, eyes glistening","fierce determined gaze, jaw set","wistful faraway expression, looking into the distance","surprised delight, eyes wide","quietly intense, unblinking focus","shy downward glance, small smile","radiant full smile, eyes crinkled","melancholic half-smile, looking sideways","amused barely-there smirk","wide-eyed wonder, mouth slightly open","soft bittersweet smile, eyes slightly wet","confident smize, eyes doing all the work","candid mid-laugh, eyes squeezed shut","languid heavy-lidded gaze, relaxed and sensual","fresh natural expression, caught off guard","contemplative look, gaze drifting slightly upward","subtle pout, thoughtful and quiet","bright animated expression, eyebrows raised","tender closed-eye smile, turned slightly downward","electric direct stare, full presence","wry knowing smile, one corner lifted","open mouth smile, genuine and warm","serious composed expression, neutral and still","gentle concern, brow slightly furrowed","euphoric eyes-closed smile, head tilted back slightly","cheeky grin, chin slightly down","dreamy soft focus, lost in thought","determined set jaw, calm and ready","raw vulnerable look, holding something back","light amused expression, barely suppressing a smile"];
-
-const LIGHTING = ["golden hour warm side lighting, long soft shadows","soft diffused natural window light, even and flattering","warm sunset rim light, hair glowing","blue hour ambient glow, cool and ethereal","volumetric god rays cutting through dust or fog","harsh midday sun, deep shadows under eyes and chin","neon sign glow casting coloured light on face","soft moonlight, silver and cool","dramatic high-contrast chiaroscuro lighting","warm indoor lamp glow, intimate and golden","overcast outdoor light, flat and clear","street lamp from above at night, harsh and cinematic","early morning backlight, figure silhouetted","late afternoon raking light from the side","studio-quality natural north light, even and precise","diner fluorescent light, flat and honest","car headlights from behind, dramatic rim","shop window spill light, warm on one side","candle or flame light, flickering and warm","bounce light from concrete or asphalt, lifted shadows","thin overcast winter light, pale and diffused","deep shade with bright ambient fill","single bare bulb overhead, stark and direct","dawn light just touching the horizon, pale gold","reflected light from water surface, rippling and soft","harsh backlight creating silhouette and lens flare","warm practical light from a nearby lamp post","split lighting, one side lit one side dark","cool blue shade with warm highlight from sun","dappled light through tree canopy, moving shadows"];
-
-// ==================== LOGIC ====================
-function setSeason(s) {
-  currentSeason = s;
-  document.querySelectorAll(".selector-btn[data-season]").forEach(b => {
-    b.className = "selector-btn";
-    if (b.dataset.season === s) b.classList.add("active-" + s);
-  });
-}
-
-function setFraming(f) {
-  currentFraming = f;
-  document.querySelectorAll(".frame-btn").forEach(b => b.classList.remove("active"));
-  document.getElementById("frame-" + f).classList.add("active");
-}
-
-let lastVals = {};
-
-function reroll(key) {
-  const sources = {
-    style: STYLES, bottom: BOTTOMS, fabric: FABRICS,
-    shoe: SHOES, loc: LOCATIONS, time: TIMES, mood: MOODS,
-    camera: CAMERA, styleScene: STYLE_SCENE, pose: BODY_POSES,
-    gesture: HAND_GESTURES, expression: FACIAL_EXPRESSIONS, light: LIGHTING,
+// ==================== データ構造 ====================
+let audioCtx, masterGain, warmthFilter, saturator, outputGain, vinylNoiseSource, vinylNoiseGain;
+let isPlaying = false;
+let currentStep = 0;
+let currentBar = 0;
+let bpm = 95;
+let isRecording = false;
+let mediaRecorder, recordedChunks = [];
+let recordFormat = 'wav';
+let scriptNode, silentGain, recordedSamples = [];
+let vinylOn = true;
+
+const PATTERN_KEYS = ['A','B','C','D','E','F','G','H'];
+const ROLE_NAMES = { A:'Verse', B:'Verse Var.', C:'Hook', D:'Fill', E:'Breakdown', F:'Groove Jam', G:'Fill+Build', H:'Outro' };
+let currentPatternKey = 'A';
+const BAR_COUNT = 8;
+
+let patterns = {};
+PATTERN_KEYS.forEach(key => {
+  patterns[key] = {
+    kick:   new Array(16).fill(false),
+    snare:  new Array(16).fill(false),
+    hihat:  new Array(16).fill(null),
+    bass:   new Array(16).fill(null),
+    clav:   new Array(16).fill(false),
+    rhodes: new Array(16).fill(false),
   };
-  
-  if (sources[key]) {
-    lastVals[key] = pick(sources[key]);
-  } else if (key === 'top') {
-    const isFormalLocation = lastVals.loc && FORMAL_LOC_KEYWORDS.some(k => lastVals.loc.includes(k));
-    if (isFormalLocation && Math.random() < 0.7) {
-      lastVals.top = pick(FORMAL_TOPS);
-    } else if (Math.random() < 0.25) {
-      lastVals.top = pick(SEXY_TOPS);
-    } else {
-      lastVals.top = pick(TOPS);
-    }
-  } else if (key === 'color') {
-    lastVals.color = pick(COLORS[currentSeason]);
-  } else if (key === 'weather') {
-    lastVals.weather = pick(WEATHER[currentSeason]);
-  } else if (key === 'season_scene') {
-    lastVals.season_scene = pick(SEASONS_SCENE[currentSeason]);
-  } else if (key === 'bottom') {
-    lastVals.bottom = getContextualBottom(currentSeason, lastVals.loc);
-  } else if (key === 'acc') {
-    lastVals.acc = pickAccessories(lastVals.loc);
-  } else if (key === 'outer') {
-    if (currentSeason === "summer") {
-      lastVals.outer = Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null;
-    } else {
-      lastVals.outer = Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null;
-    }
-  } else if (key === 'perception') {
-    lastVals.perception = Math.random() < 0.55 ? pick(PERCEPTION) : null;
-  } else if (key === 'theme' || key === 'mood') {
-    if (key === 'theme') lastVals.theme = pick(THEMES);
-    if (key === 'mood') lastVals.mood = pick(MOODS);
-    lastVals.variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
-    lastVals.emotionalNarrative = buildEmotionalNarrative(lastVals.theme, lastVals.mood, lastVals.variation);
-  } else if (key === 'noise') {
-    lastVals.noise = Math.random() < 0.65 ? getContextualNoise(lastVals.loc) : null;
-  } else if (key === 'emotionalNarrative') {
-    lastVals.emotionalNarrative = buildEmotionalNarrative(lastVals.theme, lastVals.mood, lastVals.variation);
-  }
-  rebuildPromptAndDisplay();
+});
+
+// 8小節のアレンジメント
+let arrangement = new Array(BAR_COUNT).fill('A');
+
+const tracks = [
+  { id: 'kick',   name: 'キック',       sub: 'BASS-LOCKED',   color: '#c8543a' },
+  { id: 'snare',  name: 'スネア',       sub: 'TIGHT GHOST',   color: '#5c9187' },
+  { id: 'hihat',  name: 'ハイハット',   sub: 'OPEN/HALF/GHOST', color: '#d9a84e' },
+  { id: 'bass',   name: 'ベース',       sub: 'RIFF DRIVEN',   color: '#7986cb' },
+  { id: 'clav',   name: 'クラヴ',       sub: '16TH CUTTING',  color: '#c77fd6' },
+  { id: 'rhodes', name: 'Rhodes',      sub: 'LONG PAD',      color: '#68b0c4' },
+];
+
+// ==================== コード進行（小節位置ベース・2小節ホールド） ====================
+// chordProgression は4つのコードの配列で、それぞれ2小節ずつ保持される
+let chordProgression = [];
+function chordForBar(barNum) {
+  return chordProgression[Math.floor(barNum / 2) % chordProgression.length];
 }
 
-function rebuildPromptAndDisplay() {
-  const v = lastVals;
-  const framingText = { full: "full body shot", upper: "upper body shot from waist up", bust: "bust shot", close: "extreme close-up on face" }[currentFraming];
-  const parts = [
-    // SUBJECT
-    "subject: young American woman in her early 20s, naturally styled, no heavy makeup",
-    `framing: ${framingText}`,
-    `pose: ${v.pose}`,
-    `gesture: ${v.gesture}`,
-    `expression: ${v.expression}`,
-    `lighting: ${v.light}`,
+const CHROMATIC = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const ROOT_POOL = [
+  { idx: 0, freq: 130.81 }, { idx: 2, freq: 146.83 }, { idx: 3, freq: 155.56 },
+  { idx: 4, freq: 164.81 }, { idx: 5, freq: 174.61 }, { idx: 7, freq: 196.00 },
+  { idx: 8, freq: 207.65 }, { idx: 9, freq: 220.00 }, { idx: 10, freq: 233.08 },
+  { idx: 11, freq: 246.94 }, { idx: 0, freq: 261.63 }, { idx: 2, freq: 293.66 },
+];
+const CHORD_QUALITIES = {
+  dom9:   { tensionIntervals: [4, 10, 14, 17], suffix: '9' },
+  m9:     { tensionIntervals: [3, 10, 14, 17], suffix: 'm9' },
+  maj9:   { tensionIntervals: [4, 11, 14, 18], suffix: 'maj9' },
+  dom13:  { tensionIntervals: [4, 10, 14, 21], suffix: '13' },
+  m7:     { tensionIntervals: [3, 10, 14, 17], suffix: 'm7' },
+  maj7:   { tensionIntervals: [4, 11, 14, 18], suffix: 'maj7' },
+};
+const CHORD_MOODS = [
+  { name: 'グルーヴィ・ファンク', degrees: [{ d: 0, q: 'dom9' }, { d: 5, q: 'm7' }, { d: 0, q: 'dom9' }, { d: 7, q: 'dom9' }] },
+  { name: 'アシッド・ジャズ', degrees: [{ d: 0, q: 'm9' }, { d: 5, q: 'dom9' }, { d: 0, q: 'maj7' }, { d: 3, q: 'm7' }] },
+  { name: 'ジャジー・ファンク', degrees: [{ d: 0, q: 'dom13' }, { d: 5, q: 'm9' }, { d: 7, q: 'dom9' }, { d: 0, q: 'maj9' }] },
+  { name: 'コズミック・グルーヴ', degrees: [{ d: 0, q: 'm7' }, { d: 5, q: 'dom9' }, { d: 0, q: 'm7' }, { d: 7, q: 'dom13' }] },
+];
 
-    // LOOK
-    `outfit style: ${v.style}`,
-    `top: ${v.top}`,
-    `bottom: ${v.bottom}`,
-    ...(v.outer ? [`outer: ${v.outer}`] : []),
-    `fabric: ${v.fabric}`,
-    `color palette: ${v.color}`,
-    `accessories: ${v.acc}`,
-    `shoes: ${v.shoe}`,
-
-    // SCENE
-    `location: ${v.loc}`,
-    `season context: ${v.season_scene}`,
-    `time: ${v.time}`,
-    `weather: ${v.weather}`,
-    ...(v.noise ? [`environmental detail: ${v.noise}`] : []),
-
-    // CINEMA
-    `camera: ${v.camera}`,
-    `film style: ${v.styleScene}`,
-    ...(v.perception ? [`perception: ${v.perception}`] : []),
-
-    // EMOTION
-    `emotional atmosphere: ${v.emotionalNarrative}`,
-
-    // FINAL
-    "cinematic everyday America, film photography realism, natural imperfect lighting, subtle grain, authentic atmosphere, high detail"
-  ];
-  currentPrompt = parts.join(", ");
-  document.getElementById("finalPrompt").value = currentPrompt;
-  renderFields();
+function buildChord(rootFreq, rootChromIdx, deg, qualityKey) {
+  const q = CHORD_QUALITIES[qualityKey];
+  const chordRootFreq = rootFreq * Math.pow(2, deg / 12);
+  const tensions = q.tensionIntervals.map(iv => chordRootFreq * Math.pow(2, iv / 12));
+  const noteName = CHROMATIC[(rootChromIdx + deg) % 12];
+  return { root: chordRootFreq, tensions, label: noteName + q.suffix };
 }
 
-function renderFields() {
-  const v = lastVals;
-  document.getElementById("displayFields").innerHTML = [
-    { label: "Style", value: v.style, color: "#f9a8d4", key: "style" },
-    { label: "Top", value: v.top, color: "#c084fc", key: "top" },
-    { label: "Bottom", value: v.bottom, color: "#c084fc", key: "bottom" },
-    { label: "Outer", value: v.outer || "— none —", color: v.outer ? "#93c5fd" : "#2a2535", key: "outer" },
-    { label: "Fabric", value: v.fabric, color: "#fcd34d", key: "fabric" },
-    { label: "Color", value: v.color, color: "#fcd34d", key: "color" },
-    { label: "Accessories", value: v.acc, color: "#86efac", key: "acc" },
-    { label: "Shoes", value: v.shoe, color: "#67e8f9", key: "shoe" },
-    { label: "Scene", value: v.loc, color: "#fda4af", key: "loc" },
-    { label: "Season", value: v.season_scene, color: "#fcd34d", key: "season_scene" },
-    { label: "Time", value: v.time, color: "#fcd34d", key: "time" },
-    { label: "Weather", value: v.weather, color: "#a5f3fc", key: "weather" },
-    { label: "Mood", value: v.mood, color: "#d9f99d", key: "mood" },
-    { label: "Camera", value: v.camera, color: "#fed7aa", key: "camera" },
-    { label: "Figure", value: v.pose, color: "#c084fc", key: "pose" },
-    { label: "Gesture", value: v.gesture, color: "#f9a8d4", key: "gesture" },
-    { label: "Expression", value: v.expression, color: "#86efac", key: "expression" },
-    { label: "Lighting", value: v.light, color: "#fcd34d", key: "light" },
-    { label: "Theme", value: v.theme, color: "#d9f99d", key: "theme" },
-    { label: "Narrative", value: v.emotionalNarrative, color: "#c084fc", key: "emotionalNarrative" },
-    ...(v.perception ? [{ label: "Perception", value: v.perception, color: "#c084fc", key: "perception", rare: true }] : []),
-    ...(v.noise ? [{ label: "Noise", value: v.noise, color: "#fda4af", key: "noise" }] : []),
-  ].map(f => `
-    <div class="field-row">
-      <div class="field-label">${f.label}</div>
-      <div class="field-value" style="color:${f.color}">
-        ${f.value}${f.rare ? '<span class="rare-badge" style="color:#c084fc">rare</span>' : ''}
-      </div>
-      <button class="reroll-btn" onclick="reroll('${f.key}')" title="Re-roll">🔄</button>
-    </div>
-  `).join("");
+function randomizeChordProgression() {
+  const root = ROOT_POOL[Math.floor(Math.random() * ROOT_POOL.length)];
+  const mood = CHORD_MOODS[Math.floor(Math.random() * CHORD_MOODS.length)];
+  chordProgression = mood.degrees.map(deg => buildChord(root.freq, root.idx, deg.d, deg.q));
+  const labels = chordProgression.map(c => c.label + '×2小節');
+  const label = document.getElementById('chordLabel');
+  if (label) label.textContent = `${mood.name}： ${labels.join(' → ')}`;
+  const status = document.getElementById('status');
+  if (status) status.textContent = 'コード進行をランダムに変更しました（2小節ずつホールド）';
 }
 
-function generateAll() {
-  generated++;
-  document.getElementById("counter").textContent = `${generated} generated`;
-  document.getElementById("emptyState").style.display = "none";
-  document.getElementById("displayFields").style.display = "flex";
-  document.getElementById("promptBox").style.display = "block";
+// ファンクベースが動き回る音域（半音オフセット）。index2 = ルート音
+const bassScaleSteps = [-5, -2, 0, 3, 5, 7, 10, 12];
+const BASS_ROOT_IDX = 2;
+const BASS_LABELS = ['♭5↓','♭2↓','R','m3','4','5','♭7','8'];
 
-  const loc = pick(LOCATIONS);
-  const time = pick(TIMES);
-  let weather = pick(WEATHER[currentSeason]);
-  weather = getEnvironmentalWeather(loc, weather);
-  const season_scene = pick(SEASONS_SCENE[currentSeason]);
-  const mood = pick(MOODS);
-  const camera = getOpticalCamera(currentFraming);
-  const theme = pick(THEMES);
-  let styleScene = pick(STYLE_SCENE);
-  styleScene = getThemedStyleScene(theme, styleScene);
-  const perception = Math.random() < 0.38 ? pick(PERCEPTION) : null; // Reduced to 38% for better "rare" feel
-  const noise = Math.random() < 0.65 ? getContextualNoise(loc) : null;
-  const variation = Math.random() < 0.5 ? pick(CORE_VARIATION) : null;
-  
-  // Build unified emotional narrative (theme + mood + variation)
-  const emotionalNarrative = buildEmotionalNarrative(theme, mood, variation);
+// ==================== Audio エンジン ====================
+function getAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.9;
 
-  // Use contextual bias to reduce field mismatch
-  let style = pick(STYLES);
-  for (let attempt = 0; attempt < 8; attempt++) {
-    const bias = getStyleBias(loc, style);
-    if (Math.random() < bias) break;
-    style = pick(STYLES);
+    warmthFilter = audioCtx.createBiquadFilter();
+    warmthFilter.type = 'lowpass';
+    warmthFilter.frequency.value = 8200;
+    warmthFilter.Q.value = 0.3;
+
+    saturator = audioCtx.createWaveShaper();
+    saturator.curve = makeSaturationCurve(14);
+    saturator.oversample = '2x';
+
+    outputGain = audioCtx.createGain();
+    outputGain.gain.value = 0.95;
+
+    masterGain.connect(warmthFilter);
+    warmthFilter.connect(saturator);
+    saturator.connect(outputGain);
+    outputGain.connect(audioCtx.destination);
+
+    setupVinylNoise();
   }
-  
-  const isFormalLocation = FORMAL_LOC_KEYWORDS.some(k => loc.includes(k));
-  let top;
-  if (isFormalLocation && Math.random() < 0.7) {
-    top = pick(FORMAL_TOPS);
-  } else if (Math.random() < 0.25) {
-    top = pick(SEXY_TOPS);
-  } else {
-    top = pick(TOPS);
-  }
-  
-  const bottom = getContextualBottom(currentSeason, loc);
-  const outer = (currentSeason === "summer") ? (Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null) : (Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null);
-  const fabric = pick(FABRICS);
-  const color = pick(COLORS[currentSeason]);
-  const acc = pickAccessories(loc);
-  
-  // Light consistency rules for shoes/outer
-  let shoe = pick(SHOES);
-  if (isFormalLocation) {
-    // Prefer heels for formal locations
-    const formalShoes = SHOES.filter(s => s.includes("heel") || s.includes("pump") || s.includes("Mary Jane") || s.includes("slingback"));
-    if (formalShoes.length > 0 && Math.random() < 0.7) shoe = pick(formalShoes);
-  } else if (loc.includes("motorcycle") || loc.includes("bike") || loc.includes("Harley")) {
-    const motoShoes = SHOES.filter(s => s.includes("motorcycle") || s.includes("engineer") || s.includes("harness") || s.includes("boot"));
-    if (motoShoes.length > 0 && Math.random() < 0.7) shoe = pick(motoShoes);
-  } else if (loc.includes("beach") || loc.includes("sand") || loc.includes("ocean")) {
-    const beachShoes = SHOES.filter(s => s.includes("sandal") || s.includes("flip") || s.includes("thong"));
-    if (beachShoes.length > 0 && Math.random() < 0.6) shoe = pick(beachShoes);
-  }
-
-  const framingText = { full: "full body shot", upper: "upper body shot from waist up", bust: "bust shot", close: "extreme close-up on face" }[currentFraming];
-  const pose = pick(BODY_POSES);
-  const gesture = pick(HAND_GESTURES);
-  const expression = pick(FACIAL_EXPRESSIONS);
-  const light = getTemporalLighting(time);
-
-  const parts = [
-    // SUBJECT
-    "subject: young American woman in her early 20s, naturally styled, no heavy makeup",
-    `framing: ${framingText}`,
-    `pose: ${pose}`,
-    `gesture: ${gesture}`,
-    `expression: ${expression}`,
-    `lighting: ${light}`,
-
-    // LOOK
-    `outfit style: ${style}`,
-    `top: ${top}`,
-    `bottom: ${bottom}`,
-    ...(outer ? [`outer: ${outer}`] : []),
-    `fabric: ${fabric}`,
-    `color palette: ${color}`,
-    `accessories: ${acc}`,
-    `shoes: ${shoe}`,
-
-    // SCENE
-    `location: ${loc}`,
-    `season context: ${season_scene}`,
-    `time: ${time}`,
-    `weather: ${weather}`,
-    ...(noise ? [`environmental detail: ${noise}`] : []),
-
-    // CINEMA
-    `camera: ${camera}`,
-    `film style: ${styleScene}`,
-    ...(perception ? [`perception: ${perception}`] : []),
-
-    // EMOTION
-    `emotional atmosphere: ${emotionalNarrative}`,
-
-    // FINAL
-    "cinematic everyday America, film photography realism, natural imperfect lighting, subtle grain, authentic atmosphere, high detail"
-  ];
-
-  // 4. Negative Constraint Enforcement - auto-reroll if invalid
-  let retryCount = 0;
-  while (hasNegativeConstraint(currentSeason, loc, bottom, outer) && retryCount < 5) {
-    bottom = getContextualBottom(currentSeason, loc);
-    outer = (currentSeason === "summer") ? (Math.random() < 0.25 ? pick(OUTERWEAR.summer) : null) : (Math.random() < 0.55 ? pick(OUTERWEAR[currentSeason]) : null);
-    retryCount++;
-  }
-
-  lastVals = { style, top, bottom, outer, fabric, color, acc, shoe, loc, time, weather, season_scene, mood, camera, styleScene, perception, theme, noise, variation, emotionalNarrative, pose, gesture, expression, light };
-
-  currentPrompt = parts.join(", ");
-  document.getElementById("finalPrompt").value = currentPrompt;
-  renderFields();
-  document.getElementById("saveBtn").style.display = "block";
+  return audioCtx;
 }
 
-function copyPrompt() {
-  if (!currentPrompt) return;
-
-  // Most reliable method: use temporary textarea + execCommand
-  const textarea = document.createElement("textarea");
-  textarea.value = currentPrompt;
-  textarea.style.position = "fixed";
-  textarea.style.opacity = "0";
-  document.body.appendChild(textarea);
-  textarea.select();
-
-  try {
-    const successful = document.execCommand("copy");
-    if (successful) {
-      const btn = document.getElementById("copyBtn");
-      btn.textContent = "Copied ✓";
-      btn.classList.add("copied");
-      setTimeout(() => {
-        btn.textContent = "Copy Prompt";
-        btn.classList.remove("copied");
-      }, 2000);
-    }
-  } catch (err) {
-    console.error("Copy failed:", err);
+function makeSaturationCurve(amount) {
+  const n = 1024;
+  const curve = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const x = (i * 2) / n - 1;
+    curve[i] = Math.tanh(x * (1 + amount * 0.05)) / Math.tanh(1 + amount * 0.05);
   }
-
-  document.body.removeChild(textarea);
+  return curve;
 }
 
-function savePrompt() {
-  if (!currentPrompt) return;
-  let saved = JSON.parse(localStorage.getItem("asa_v1") || "[]");
-  if (saved.includes(currentPrompt)) return;
-  saved.unshift(currentPrompt);
-  localStorage.setItem("asa_v1", JSON.stringify(saved.slice(0, 30)));
-  renderSaved();
+function setupVinylNoise(){
+  const bufferSize = audioCtx.sampleRate * 2;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  let lastOut = 0;
+  for (let i = 0; i < bufferSize; i++) {
+    const white = Math.random() * 2 - 1;
+    const crackle = Math.random() > 0.9985 ? (Math.random() * 2 - 1) * 0.6 : 0;
+    lastOut = (lastOut + 0.02 * white) / 1.02;
+    data[i] = lastOut * 3 + crackle;
+  }
+  vinylNoiseSource = audioCtx.createBufferSource();
+  vinylNoiseSource.buffer = buffer;
+  vinylNoiseSource.loop = true;
+
+  const vinylFilter = audioCtx.createBiquadFilter();
+  vinylFilter.type = 'highpass';
+  vinylFilter.frequency.value = 2200;
+
+  vinylNoiseGain = audioCtx.createGain();
+  vinylNoiseGain.gain.value = vinylOn ? 0.018 : 0.0;
+
+  vinylNoiseSource.connect(vinylFilter);
+  vinylFilter.connect(vinylNoiseGain);
+  vinylNoiseGain.connect(outputGain);
+  vinylNoiseSource.start();
 }
 
-function renderSaved() {
-  const saved = JSON.parse(localStorage.getItem("asa_v1") || "[]");
-  const section = document.getElementById("savedSection");
-  const list = document.getElementById("savedList");
-  if (saved.length === 0) { section.style.display = "none"; return; }
-  section.style.display = "block";
-  list.innerHTML = saved.map((p, i) => `<div class="saved-item" data-index="${i}">${p}</div>`).join("");
-  document.querySelectorAll(".saved-item").forEach(el => {
-    el.onclick = () => {
-      const promptText = saved[el.dataset.index];
-      navigator.clipboard.writeText(promptText);
-      currentPrompt = promptText;
-      document.getElementById("finalPrompt").value = currentPrompt;
-    };
+async function ensureAudio() {
+  const ctx = getAudioContext();
+  if (ctx.state === 'suspended') await ctx.resume();
+}
+
+// ---- キック：ファンクパンチ（ベースに追従して配置される。ここは音色のみ） ----
+function playKick(time, velocity) {
+  velocity = velocity || 1;
+  const ctx = audioCtx;
+  const osc = ctx.createOscillator(); osc.type = 'sine';
+  osc.frequency.setValueAtTime(125 + (Math.random() * 6 - 3), time);
+  const decay = 0.22 * (0.9 + Math.random() * 0.2);
+  osc.frequency.exponentialRampToValueAtTime(42, time + decay);
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(1.4 * velocity, time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + 0.48 * (0.9 + Math.random() * 0.2));
+  osc.connect(gain); gain.connect(masterGain);
+  osc.start(time); osc.stop(time + 0.55);
+}
+
+// ---- スネア：タイトでゴースト感 ----
+function playSnare(time, velocity) {
+  velocity = velocity || 1;
+  const ctx = audioCtx;
+  const dur = 0.32 * (0.9 + Math.random() * 0.2);
+  const noise = ctx.createBufferSource();
+  const buffer = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  noise.buffer = buffer;
+  const f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1350; f.Q.value = 0.9;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.48 * velocity, time);
+  g.gain.exponentialRampToValueAtTime(0.001, time + 0.26 * (0.9 + Math.random() * 0.2));
+  const osc = ctx.createOscillator(); osc.type = 'triangle'; osc.frequency.value = 175;
+  const og = ctx.createGain();
+  og.gain.setValueAtTime(0.38 * velocity, time);
+  og.gain.exponentialRampToValueAtTime(0.001, time + 0.18);
+  noise.connect(f); f.connect(g); g.connect(masterGain);
+  osc.connect(og); og.connect(masterGain);
+  noise.start(time); osc.start(time); osc.stop(time + 0.28);
+}
+
+// ---- ハイハット：クローズド/ハーフ/オープン/ゴーストの表情 ----
+function playHiHat(time, type, velocity) {
+  velocity = velocity || 1;
+  const ctx = audioCtx;
+  let dur, gainVal, hpFreq;
+  switch (type) {
+    case 'open': dur = 0.28; gainVal = 0.30; hpFreq = 6800; break;
+    case 'half': dur = 0.14; gainVal = 0.24; hpFreq = 7000; break;
+    case 'ghost': dur = 0.045; gainVal = 0.09; hpFreq = 7800; break;
+    default: dur = 0.06; gainVal = 0.25; hpFreq = 7500; break; // closed
+  }
+  dur *= (0.9 + Math.random() * 0.2);
+  const noise = ctx.createBufferSource();
+  const buffer = ctx.createBuffer(1, Math.max(1, ctx.sampleRate * dur), ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  noise.buffer = buffer;
+  const f = ctx.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = hpFreq;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(gainVal * velocity, time);
+  g.gain.exponentialRampToValueAtTime(0.001, time + dur);
+  noise.connect(f); f.connect(g); g.connect(masterGain);
+  noise.start(time);
+}
+
+// ---- ベース：ディスパッチ（リフの各トークンに応じて音色を出し分け） ----
+function playBass(time, barNum, val, velocity) {
+  velocity = velocity || 1;
+  if (val === 'ghost') { playBassGhost(time, velocity); return; }
+  if (val === 'jumpUp' || val === 'jumpDown') { playBassOctaveJump(time, barNum, val === 'jumpUp', velocity); return; }
+  if (val === 'approachUp' || val === 'approachDown') { playBassApproach(time, barNum, val === 'approachUp', velocity); return; }
+
+  const ctx = audioCtx;
+  const chord = chordForBar(barNum);
+  const rootFreq = chord.root / 2;
+  const semitones = bassScaleSteps[val !== undefined && val !== null ? val : BASS_ROOT_IDX];
+  const freq = rootFreq * Math.pow(2, semitones / 12);
+
+  const osc = ctx.createOscillator(); osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(freq * 1.02, time);
+  osc.frequency.exponentialRampToValueAtTime(freq, time + 0.04);
+  const sub = ctx.createOscillator(); sub.type = 'sine'; sub.frequency.value = freq * 0.5;
+  const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1050; f.Q.value = 0.55;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.001, time);
+  g.gain.linearRampToValueAtTime(0.65 * velocity, time + 0.01);
+  const decay = 0.52 * (0.88 + Math.random() * 0.24);
+  g.gain.exponentialRampToValueAtTime(0.001, time + decay);
+  osc.connect(f); sub.connect(f); f.connect(g); g.connect(masterGain);
+  osc.start(time); sub.start(time);
+  osc.stop(time + decay + 0.05); sub.stop(time + decay + 0.05);
+}
+
+// ---- ゴーストノート：指弾きの「プッ」というアタックノイズだけの超短デケイ ----
+function playBassGhost(time, velocity) {
+  velocity = velocity || 1;
+  const ctx = audioCtx;
+  const noise = ctx.createBufferSource();
+  const buffer = ctx.createBuffer(1, ctx.sampleRate * 0.045, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * 0.55;
+  noise.buffer = buffer;
+  const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 620;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.13 * velocity, time);
+  g.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
+  noise.connect(f); f.connect(g); g.connect(masterGain);
+  noise.start(time);
+}
+
+// ---- オクターブ・ジャンプ・スライド：小節末尾から次の小節頭へ滑り込む ----
+function playBassOctaveJump(time, barNum, goingUp, velocity) {
+  velocity = velocity || 1;
+  const ctx = audioCtx;
+  const chord = chordForBar(barNum);
+  const rootFreq = chord.root / 2;
+  const startFreq = goingUp ? rootFreq : rootFreq * 2;
+  const endFreq = goingUp ? rootFreq * 2 : rootFreq;
+
+  const osc = ctx.createOscillator(); osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(startFreq, time);
+  osc.frequency.exponentialRampToValueAtTime(endFreq, time + 0.14);
+  const sub = ctx.createOscillator(); sub.type = 'sine';
+  sub.frequency.setValueAtTime(startFreq * 0.5, time);
+  sub.frequency.exponentialRampToValueAtTime(endFreq * 0.5, time + 0.14);
+  const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1200; f.Q.value = 0.5;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.001, time);
+  g.gain.linearRampToValueAtTime(0.6 * velocity, time + 0.015);
+  g.gain.exponentialRampToValueAtTime(0.001, time + 0.32);
+  osc.connect(f); sub.connect(f); f.connect(g); g.connect(masterGain);
+  osc.start(time); sub.start(time);
+  osc.stop(time + 0.36); sub.stop(time + 0.36);
+}
+
+// ---- アプローチノート：次の小節のルートへ半音上/下から入るクロマチック・ピックアップ ----
+function playBassApproach(time, barNum, fromBelow, velocity) {
+  velocity = velocity || 1;
+  const ctx = audioCtx;
+  const nextBar = (barNum + 1) % BAR_COUNT;
+  const targetChord = chordForBar(nextBar);
+  const targetRoot = targetChord.root / 2;
+  const freq = fromBelow ? targetRoot / Math.pow(2, 1 / 12) : targetRoot * Math.pow(2, 1 / 12);
+
+  const osc = ctx.createOscillator(); osc.type = 'sawtooth'; osc.frequency.value = freq;
+  const sub = ctx.createOscillator(); sub.type = 'sine'; sub.frequency.value = freq * 0.5;
+  const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1000; f.Q.value = 0.5;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.001, time);
+  g.gain.linearRampToValueAtTime(0.55 * velocity, time + 0.008);
+  g.gain.exponentialRampToValueAtTime(0.001, time + 0.22);
+  osc.connect(f); sub.connect(f); f.connect(g); g.connect(masterGain);
+  osc.start(time); sub.start(time);
+  osc.stop(time + 0.26); sub.stop(time + 0.26);
+}
+
+// ---- クラヴ（Clavinet）：オートワウ的バンドパスの短いパーカッシブ・コンピング ----
+function playClavNote(time, freq, velocity, delay) {
+  const ctx = audioCtx;
+  const t0 = time + delay;
+
+  const osc = ctx.createOscillator(); osc.type = 'square'; osc.frequency.value = freq;
+  const osc2 = ctx.createOscillator(); osc2.type = 'sawtooth'; osc2.frequency.value = freq * 1.004;
+
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.Q.value = 3.2;
+  filter.frequency.setValueAtTime(420, t0);
+  filter.frequency.exponentialRampToValueAtTime(2600, t0 + 0.025);
+  const decay = 0.16 * (0.85 + Math.random() * 0.3);
+  filter.frequency.exponentialRampToValueAtTime(650, t0 + decay);
+
+  const mix = ctx.createGain(); mix.gain.value = 0.5;
+  osc.connect(mix); osc2.connect(mix); mix.connect(filter);
+
+  const ampEnv = ctx.createGain();
+  ampEnv.gain.setValueAtTime(0.0001, t0);
+  ampEnv.gain.linearRampToValueAtTime(Math.max(0.02, velocity), t0 + 0.004);
+  ampEnv.gain.exponentialRampToValueAtTime(0.001, t0 + decay + 0.04);
+
+  filter.connect(ampEnv); ampEnv.connect(masterGain);
+
+  osc.start(t0); osc2.start(t0);
+  osc.stop(t0 + 0.3); osc2.stop(t0 + 0.3);
+}
+
+function playClav(time, barNum, velocity) {
+  velocity = velocity || 1;
+  const chord = chordForBar(barNum);
+  chord.tensions.forEach((freq, i) => {
+    playClavNote(time, freq, (0.3 - i * 0.03) * velocity, i * 0.004 + Math.random() * 0.006);
   });
 }
 
-renderSaved();
+// ---- Rhodes：FMベルトーン + トレモロのロングトーン・パッド。裏で空間を支える役目 ----
+function playRhodesNote(time, freq, velocity, delay) {
+  const ctx = audioCtx;
+  const t0 = time + delay;
+
+  const carrier = ctx.createOscillator(); carrier.type = 'sine'; carrier.frequency.value = freq;
+  const modulator = ctx.createOscillator(); modulator.type = 'sine'; modulator.frequency.value = freq * 3.98;
+  const modGain = ctx.createGain();
+  modGain.gain.setValueAtTime(freq * 0.65, t0);
+  modGain.gain.exponentialRampToValueAtTime(0.01, t0 + 0.6);
+  modulator.connect(modGain); modGain.connect(carrier.frequency);
+
+  const trem = ctx.createOscillator(); trem.type = 'sine'; trem.frequency.value = 4.6;
+  const tremGain = ctx.createGain(); tremGain.gain.value = 0.16;
+  const tremBase = ctx.createGain(); tremBase.gain.value = 0.84;
+  trem.connect(tremGain); tremGain.connect(tremBase.gain);
+
+  const ampEnv = ctx.createGain();
+  ampEnv.gain.setValueAtTime(0.0001, t0);
+  ampEnv.gain.linearRampToValueAtTime(Math.max(0.02, velocity), t0 + 0.03);
+  const sustainTime = 1.6 * (0.85 + Math.random() * 0.3);
+  ampEnv.gain.exponentialRampToValueAtTime(0.001, t0 + sustainTime);
+
+  carrier.connect(tremBase); tremBase.connect(ampEnv); ampEnv.connect(masterGain);
+
+  carrier.start(t0); modulator.start(t0); trem.start(t0);
+  const stopTime = t0 + sustainTime + 0.1;
+  carrier.stop(stopTime); modulator.stop(stopTime); trem.stop(stopTime);
+}
+
+function playRhodes(time, barNum, velocity) {
+  velocity = velocity || 1;
+  const chord = chordForBar(barNum);
+  chord.tensions.slice(0, 3).forEach((freq, i) => {
+    playRhodesNote(time, freq, (0.15 - i * 0.02) * velocity, i * 0.025);
+  });
+}
+
+function playSoundForTrack(trackId, time, barNum, val, velocity) {
+  if (trackId === 'kick') playKick(time, velocity);
+  else if (trackId === 'snare') playSnare(time, velocity);
+  else if (trackId === 'hihat') playHiHat(time, val, velocity);
+  else if (trackId === 'bass') playBass(time, barNum, val, velocity);
+  else if (trackId === 'clav') playClav(time, barNum, velocity);
+  else if (trackId === 'rhodes') playRhodes(time, barNum, velocity);
+}
+
+// ==================== ① ベース：リフ生成（ランダムウォークをやめてリフ＋バリエーション） ====================
+// 各ショットは {s: ステップ位置, d: 度数インデックス or 'jump'/'approach'}
+const BASS_RIFF_SHAPES = {
+  classic:     [ {s:0,d:2}, {s:3,d:2}, {s:4,d:4}, {s:7,d:2}, {s:10,d:6}, {s:12,d:2}, {s:14,d:'approach'} ],
+  syncopated:  [ {s:0,d:2}, {s:2,d:4}, {s:5,d:2}, {s:8,d:6}, {s:10,d:2}, {s:13,d:5}, {s:15,d:'jump'} ],
+  busy:        [ {s:0,d:2}, {s:2,d:2}, {s:3,d:4}, {s:6,d:2}, {s:8,d:5}, {s:9,d:2}, {s:11,d:6}, {s:12,d:2}, {s:14,d:'approach'} ],
+  minimal:     [ {s:0,d:2}, {s:6,d:2}, {s:8,d:6}, {s:12,d:2} ],
+  fill:        [ {s:0,d:2}, {s:3,d:6}, {s:5,d:5}, {s:8,d:2}, {s:10,d:4}, {s:12,d:6}, {s:13,d:'jump'}, {s:15,d:'approach'} ],
+};
+
+// パターン(役割)ごとに「どのリフ形をベースに、どれくらい崩すか」を設定
+const ROLE_BASS_CONFIG = {
+  A: { shape: 'classic',    opts: { ghostChance: 0.05, muteProbability: 0,    pitchDrift: 0    } }, // Verse：リフそのまま
+  B: { shape: 'classic',    opts: { ghostChance: 0.10, muteProbability: 0.05, pitchDrift: 0.15 } }, // Verse Var.：同じ家族で少し崩す
+  C: { shape: 'syncopated', opts: { ghostChance: 0.08, muteProbability: 0,    pitchDrift: 0.05 } }, // Hook：曲を牽引する主リフ
+  D: { shape: 'fill',       opts: { ghostChance: 0.15, muteProbability: 0,    pitchDrift: 0.1  } }, // Fill：スライド/ジャンプ多め
+  E: { shape: 'minimal',    opts: { ghostChance: 0.03, muteProbability: 0.15, pitchDrift: 0    } }, // Breakdown：スカスカ
+  F: { shape: 'busy',       opts: { ghostChance: 0.12, muteProbability: 0,    pitchDrift: 0.1  } }, // Groove Jam：手数多め
+  G: { shape: 'fill',       opts: { ghostChance: 0.18, muteProbability: 0,    pitchDrift: 0.15 } }, // Fill+Build：さらに崩す
+  H: { shape: 'minimal',    opts: { ghostChance: 0.02, muteProbability: 0.2,  pitchDrift: 0    } }, // Outro：フェード
+};
+
+function buildBassPatternFromShape(shape, opts) {
+  const arr = new Array(16).fill(null);
+  shape.forEach(hit => {
+    if (opts.muteProbability && Math.random() < opts.muteProbability) return; // 抜けを作って生っぽく
+    let val;
+    if (hit.d === 'approach') {
+      val = Math.random() < 0.5 ? 'approachUp' : 'approachDown';
+    } else if (hit.d === 'jump') {
+      val = Math.random() < 0.5 ? 'jumpUp' : 'jumpDown';
+    } else {
+      let deg = hit.d;
+      if (opts.pitchDrift && Math.random() < opts.pitchDrift) {
+        deg = Math.max(0, Math.min(bassScaleSteps.length - 1, deg + (Math.random() < 0.5 ? 1 : -1)));
+      }
+      val = deg;
+    }
+    arr[hit.s] = val;
+  });
+  if (opts.ghostChance) {
+    for (let s = 0; s < 16; s++) {
+      if (arr[s] === null && Math.random() < opts.ghostChance) arr[s] = 'ghost';
+    }
+  }
+  return arr;
+}
+
+// ==================== ② キック：ベース生成の後に、ベースへ追従して配置 ====================
+const ROLE_KICK_FOLLOW = { A:0.5, B:0.55, C:0.7, D:0.4, E:0.3, F:0.8, G:0.6, H:0.3 };
+function generateKickFromBass(bassArr, role) {
+  const kick = new Array(16).fill(false);
+  kick[0] = true; // 頭打ちは必須
+  const followProb = ROLE_KICK_FOLLOW[role] !== undefined ? ROLE_KICK_FOLLOW[role] : 0.6;
+  for (let s = 1; s < 16; s++) {
+    const val = bassArr[s];
+    const isStrongHit = (typeof val === 'number') || val === 'jumpUp' || val === 'jumpDown';
+    if (isStrongHit && Math.random() < followProb) kick[s] = true;
+  }
+  if (Math.random() < 0.25) kick[14] = true; // 独立したアクセント裏打ち
+  return kick;
+}
+
+// ---- スネア：役割ごとにゴースト量・フィルを調整 ----
+const ROLE_SNARE_CONFIG = {
+  A: { ghost: 0.5,  fill: false },
+  B: { ghost: 0.55, fill: false },
+  C: { ghost: 0.3,  fill: false },
+  D: { ghost: 0.6,  fill: true  },
+  E: { ghost: 0.15, fill: false },
+  F: { ghost: 0.65, fill: true  },
+  G: { ghost: 0.6,  fill: true  },
+  H: { ghost: 0.2,  fill: false },
+};
+function generateSnare(role) {
+  const cfg = ROLE_SNARE_CONFIG[role];
+  const arr = new Array(16).fill(false);
+  arr[4] = true; arr[12] = true;
+  if (Math.random() < cfg.ghost) arr[6] = true;
+  if (Math.random() < cfg.ghost * 0.8) arr[14] = true;
+  if (cfg.fill) {
+    if (Math.random() > 0.4) arr[2] = true;
+    if (Math.random() > 0.4) arr[10] = true;
+    if (Math.random() > 0.6) arr[15] = true;
+  }
+  return arr;
+}
+
+// ==================== ⑥ ハイハット：表情付け（オープン/ハーフ/ゴースト/小節ごとの揺らぎ） ====================
+const ROLE_HAT_DENSITY = { A:0.55, B:0.65, C:0.7, D:0.6, E:0.3, F:0.85, G:0.75, H:0.3 };
+function generateHihat(role) {
+  const baseDensity = ROLE_HAT_DENSITY[role] !== undefined ? ROLE_HAT_DENSITY[role] : 0.6;
+  const arr = new Array(16).fill(null);
+  for (let s = 0; s < 16; s++) {
+    let density = baseDensity;
+    if (role === 'G') density = baseDensity * (0.6 + (s / 15) * 0.8); // Fill+Build：後半ほど密に
+    if (s % 2 === 1) {
+      if (Math.random() < density) {
+        const roll = Math.random();
+        if (roll < 0.08) arr[s] = 'open';
+        else if (roll < 0.2) arr[s] = 'half';
+        else if (roll < 0.3) arr[s] = 'ghost';
+        else arr[s] = 'closed';
+      }
+    } else {
+      if (Math.random() < density * 0.25) arr[s] = (Math.random() < 0.15 ? 'open' : 'closed');
+    }
+  }
+  if (Math.random() < 0.25) arr[15] = 'open'; // フレーズの切れ目のアクセント
+  return arr;
+}
+
+// ==================== ③ クラヴ：16分カッティングのリズムパターン集から選択 ====================
+const CLAV_PATTERNS = {
+  p1: [0,0,1,0,0,0,1,1,0,0,1,0,0,0,1,0], // チャ・チャッ・チャ
+  p2: [0,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0], // チャッ・・チャチャ
+  p3: [0,0,1,0,0,0,1,1,0,0,0,0,1,0,0,0], // チャ・・チャッ・・チャ
+  p4: [0,1,1,0,1,0,1,1,0,1,0,1,1,0,1,0], // 16分ビジー
+  p5: [0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0], // 最小限
+  p6: [0,0,1,1,0,1,0,0,1,1,0,0,1,0,1,0], // シンコペーション変化形
+};
+const ROLE_CLAV_PATTERN = { A:'p1', B:'p3', C:'p4', D:'p6', E:'p5', F:'p4', G:'p6', H:'p5' };
+function generateClav(role) {
+  const base = CLAV_PATTERNS[ROLE_CLAV_PATTERN[role]];
+  const arr = base.map(v => !!v);
+  if (Math.random() < 0.3) {
+    const idx = Math.floor(Math.random() * 16);
+    arr[idx] = !arr[idx]; // 軽く1音だけ入れ替えて毎回同じにしない
+  }
+  return arr;
+}
+
+// ==================== ④ Rhodes：ロングトーンで少なめに、裏で空間を支える ====================
+const ROLE_RHODES_HITS = { A:[0], B:[0,8], C:[0], D:[], E:[0,8], F:[0], G:[0], H:[0,8] };
+function generateRhodesPattern(role) {
+  const arr = new Array(16).fill(false);
+  (ROLE_RHODES_HITS[role] || []).forEach(s => { arr[s] = true; });
+  return arr;
+}
+
+// 8小節の構成テンプレート・プール
+const ARRANGEMENT_TEMPLATES = [
+  ['A','A','B','B','C','C','D','D'],
+  ['A','B','A','B','C','C','D','D'],
+  ['E','A','A','B','C','C','H','D'],
+  ['A','A','B','C','C','D','C','D'],
+  ['A','B','C','D','E','F','G','H'],
+  ['F','A','B','C','C','G','D','H'],
+  ['A','A','A','B','C','C','C','D'],
+  ['E','B','C','F','C','G','D','H'],
+];
+
+// ==================== ⑦ 全体生成：役割ごとに演奏内容そのものを変える ====================
+function generateAcidJazzGroove() {
+  PATTERN_KEYS.forEach((key) => {
+    const p = patterns[key];
+    const role = key;
+
+    // 1) ベース：まずリフを生成
+    const bassCfg = ROLE_BASS_CONFIG[role];
+    p.bass = buildBassPatternFromShape(BASS_RIFF_SHAPES[bassCfg.shape], bassCfg.opts);
+
+    // 2) キック：ベースの後に、ベースへ追従して生成
+    p.kick = generateKickFromBass(p.bass, role);
+
+    // 3) スネア
+    p.snare = generateSnare(role);
+
+    // 4) ハイハット：表情付き
+    p.hihat = generateHihat(role);
+
+    // 5) クラヴ：リズムパターン集から選択
+    p.clav = generateClav(role);
+
+    // 6) Rhodes：ロングトーンで少なめ
+    p.rhodes = generateRhodesPattern(role);
+  });
+
+  const template = ARRANGEMENT_TEMPLATES[Math.floor(Math.random() * ARRANGEMENT_TEMPLATES.length)];
+  arrangement = template.slice();
+
+  refreshAllUI();
+  document.getElementById('status').textContent = '90年代UKジャズファンク風の8小節グルーヴを生成しました！ 再生してみてください';
+}
+
+// ==================== UI ====================
+function createPatternTabs() {
+  const container = document.getElementById('pattern-tabs');
+  container.innerHTML = '';
+  PATTERN_KEYS.forEach(key => {
+    const tab = document.createElement('div');
+    tab.className = 'pattern-tab';
+    tab.innerHTML = `${key}<span class="role-name">${ROLE_NAMES[key]}</span>`;
+    if (key === currentPatternKey) tab.classList.add('active');
+    tab.onclick = () => {
+      currentPatternKey = key;
+      createPatternTabs();
+      createSequencer();
+    };
+    container.appendChild(tab);
+  });
+}
+
+function createArrangement() {
+  const container = document.getElementById('arrangement');
+  container.innerHTML = '';
+  arrangement.forEach((pat, index) => {
+    const slot = document.createElement('div');
+    slot.className = 'bar-slot';
+    slot.innerHTML = `<span class="barnum">${index + 1}</span><span class="patname">${pat}</span>`;
+    slot.title = ROLE_NAMES[pat];
+    slot.onclick = () => {
+      const currentIdx = PATTERN_KEYS.indexOf(pat);
+      const nextIdx = (currentIdx + 1) % PATTERN_KEYS.length;
+      arrangement[index] = PATTERN_KEYS[nextIdx];
+      createArrangement();
+    };
+    container.appendChild(slot);
+  });
+}
+
+function createSequencer() {
+  const container = document.getElementById('sequencer');
+  container.innerHTML = '';
+
+  const labels = document.createElement('div');
+  labels.className = 'step-labels';
+  for (let i = 0; i < 16; i++) {
+    const d = document.createElement('div');
+    d.textContent = i + 1;
+    if (i % 4 === 0) d.classList.add('beat');
+    labels.appendChild(d);
+  }
+  container.appendChild(labels);
+
+  const currentPattern = patterns[currentPatternKey];
+  const HAT_CYCLE = [null, 'closed', 'half', 'open', 'ghost'];
+
+  tracks.forEach(track => {
+    const row = document.createElement('div');
+    row.className = 'track-row';
+
+    const label = document.createElement('div');
+    label.className = 'track-label';
+    label.style.color = track.color;
+    label.innerHTML = `${track.name}<span class="track-sub">${track.sub}</span>`;
+    row.appendChild(label);
+
+    const stepsDiv = document.createElement('div');
+    stepsDiv.className = 'steps';
+
+    for (let s = 0; s < 16; s++) {
+      const btn = document.createElement('button');
+      btn.className = 'step';
+      if (s % 4 === 0) btn.classList.add('beat-line');
+      btn.dataset.step = s;
+      btn.style.setProperty('--active-color', track.color);
+
+      if (track.id === 'bass') {
+        btn.classList.add('bass-step');
+        const rootLine = document.createElement('div');
+        rootLine.className = 'root-line';
+        btn.appendChild(rootLine);
+        const dot = document.createElement('div');
+        dot.className = 'bass-dot';
+        btn.appendChild(dot);
+
+        const setBassVisual = () => {
+          const val = currentPattern.bass[s];
+          dot.className = 'bass-dot';
+          if (val === null || val === undefined) {
+            btn.classList.remove('active');
+            btn.title = '';
+          } else if (val === 'ghost') {
+            btn.classList.add('active');
+            dot.classList.add('bass-ghost');
+            dot.style.top = '50%';
+            btn.title = 'ゴーストノート';
+          } else if (val === 'jumpUp' || val === 'jumpDown') {
+            btn.classList.add('active');
+            dot.classList.add('bass-jump');
+            dot.style.top = val === 'jumpUp' ? '15%' : '85%';
+            btn.title = val === 'jumpUp' ? 'オクターブ・スライド（上）' : 'オクターブ・スライド（下）';
+          } else if (val === 'approachUp' || val === 'approachDown') {
+            btn.classList.add('active');
+            dot.classList.add('bass-approach');
+            dot.style.top = val === 'approachUp' ? '30%' : '70%';
+            btn.title = 'アプローチノート（次の小節へ半音で接近）';
+          } else {
+            btn.classList.add('active');
+            const topPct = 100 - (val / (bassScaleSteps.length - 1)) * 100;
+            dot.style.top = topPct + '%';
+            btn.title = BASS_LABELS[val];
+          }
+        };
+        setBassVisual();
+
+        btn.onclick = () => {
+          const val = currentPattern.bass[s];
+          const next = (typeof val === 'number') ? val + 1 : 0;
+          currentPattern.bass[s] = next >= bassScaleSteps.length ? null : next;
+          setBassVisual();
+        };
+      } else if (track.id === 'hihat') {
+        btn.classList.add('hihat-step');
+        const setHatVisual = () => {
+          const val = currentPattern.hihat[s];
+          btn.classList.remove('active', 'hat-open', 'hat-half', 'hat-ghost');
+          if (val === null || val === undefined) { btn.title = ''; return; }
+          btn.classList.add('active');
+          if (val === 'open') { btn.classList.add('hat-open'); btn.title = 'オープンハット'; }
+          else if (val === 'half') { btn.classList.add('hat-half'); btn.title = 'ハーフオープン'; }
+          else if (val === 'ghost') { btn.classList.add('hat-ghost'); btn.title = 'ゴーストハット'; }
+          else { btn.title = 'クローズドハット'; }
+        };
+        setHatVisual();
+        btn.onclick = () => {
+          const val = currentPattern.hihat[s];
+          const idx = HAT_CYCLE.indexOf(val);
+          currentPattern.hihat[s] = HAT_CYCLE[(idx + 1) % HAT_CYCLE.length];
+          setHatVisual();
+        };
+      } else {
+        if (currentPattern[track.id][s]) {
+          btn.classList.add('active');
+        }
+        btn.onclick = () => {
+          currentPattern[track.id][s] = !currentPattern[track.id][s];
+          btn.classList.toggle('active', !!currentPattern[track.id][s]);
+        };
+      }
+      stepsDiv.appendChild(btn);
+    }
+    row.appendChild(stepsDiv);
+    container.appendChild(row);
+  });
+}
+
+function refreshAllUI() {
+  createPatternTabs();
+  createArrangement();
+  createSequencer();
+}
+
+// ==================== 再生（スウィング付きルックアヘッド・スケジューラ + ⑧Humanize） ====================
+let schedulerHandle = null;
+let nextStepTime = 0;
+let scheduleStepIndex = 0;
+let scheduleBarIndex = 0;
+let uiQueue = [];
+const lookaheadMs = 25;
+const scheduleAheadTime = 0.12;
+
+const SWING_MIN_BPM = 70, SWING_MAX_BPM = 140;
+const SWING_MAX = 0.16, SWING_MIN = 0.09;
+function currentSwingAmount() {
+  const t = Math.max(0, Math.min(1, (bpm - SWING_MIN_BPM) / (SWING_MAX_BPM - SWING_MIN_BPM)));
+  return SWING_MAX - t * (SWING_MAX - SWING_MIN);
+}
+function updateSwingReadout() {
+  const el = document.getElementById('swingReadout');
+  if (el) el.textContent = `/ Swing ${Math.round(currentSwingAmount() * 100)}%`;
+}
+
+function stepSeconds() { return 60 / bpm / 4; }
+
+// トラックごとのマイクロタイミング揺らぎ幅（秒）
+const TIMING_JITTER = { kick: 0.006, snare: 0.009, hihat: 0.013, bass: 0.007, clav: 0.015, rhodes: 0.02 };
+
+function scheduleStep(stepNum, barNum, time) {
+  const patKey = arrangement[barNum];
+  const pat = patterns[patKey];
+  tracks.forEach(track => {
+    const val = pat[track.id][stepNum];
+    const isOn = (track.id === 'bass' || track.id === 'hihat') ? (val !== null && val !== undefined) : !!val;
+    if (!isOn) return;
+    const jitterRange = TIMING_JITTER[track.id] || 0.01;
+    const jTime = time + (Math.random() * 2 - 1) * jitterRange;
+    const velocity = 0.82 + Math.random() * 0.36; // ベロシティの揺らぎ
+    playSoundForTrack(track.id, jTime, barNum, val, velocity);
+  });
+  uiQueue.push({ stepNum, barNum, time });
+}
+
+function advanceScheduler() {
+  scheduleStepIndex++;
+  if (scheduleStepIndex >= 16) {
+    scheduleStepIndex = 0;
+    scheduleBarIndex = (scheduleBarIndex + 1) % BAR_COUNT;
+  }
+}
+
+function schedulerLoop() {
+  while (nextStepTime < audioCtx.currentTime + scheduleAheadTime) {
+    const swing = (scheduleStepIndex % 2 === 1) ? stepSeconds() * currentSwingAmount() : 0;
+    scheduleStep(scheduleStepIndex, scheduleBarIndex, nextStepTime + swing);
+    nextStepTime += stepSeconds();
+    advanceScheduler();
+  }
+  schedulerHandle = setTimeout(schedulerLoop, lookaheadMs);
+}
+
+let uiRafHandle = null;
+function uiLoop() {
+  const now = audioCtx.currentTime;
+  while (uiQueue.length && uiQueue[0].time <= now) {
+    const ev = uiQueue.shift();
+    currentStep = ev.stepNum;
+    currentBar = ev.barNum;
+    highlightUI();
+  }
+  uiRafHandle = requestAnimationFrame(uiLoop);
+}
+
+function highlightUI() {
+  document.querySelectorAll('.step.playing').forEach(el => el.classList.remove('playing'));
+  document.querySelectorAll('.bar-slot.playing').forEach(el => el.classList.remove('playing'));
+
+  const barSlots = document.querySelectorAll('.bar-slot');
+  if (barSlots[currentBar]) barSlots[currentBar].classList.add('playing');
+
+  const patKey = arrangement[currentBar];
+  if (patKey !== currentPatternKey) return;
+  const pat = patterns[patKey];
+  tracks.forEach((track, rowIdx) => {
+    const row = document.querySelectorAll('.track-row')[rowIdx];
+    if (!row) return;
+    const btn = row.querySelector(`.step[data-step="${currentStep}"]`);
+    const val = pat[track.id][currentStep];
+    const isOn = (track.id === 'bass' || track.id === 'hihat') ? (val !== null && val !== undefined) : !!val;
+    if (btn && isOn) btn.classList.add('playing');
+  });
+}
+
+function startPlayback() {
+  stopPlayback();
+  nextStepTime = audioCtx.currentTime + 0.05;
+  scheduleStepIndex = 0;
+  scheduleBarIndex = 0;
+  uiQueue = [];
+  schedulerLoop();
+  uiLoop();
+}
+
+function stopPlayback() {
+  if (schedulerHandle) clearTimeout(schedulerHandle);
+  if (uiRafHandle) cancelAnimationFrame(uiRafHandle);
+  schedulerHandle = null;
+  uiRafHandle = null;
+  uiQueue = [];
+  document.querySelectorAll('.step.playing').forEach(el => el.classList.remove('playing'));
+  document.querySelectorAll('.bar-slot.playing').forEach(el => el.classList.remove('playing'));
+}
+
+function togglePlay() {
+  isPlaying = !isPlaying;
+  const btn = document.getElementById('playBtn');
+  if (isPlaying) {
+    ensureAudio().then(() => {
+      btn.textContent = '⏸ 停止';
+      startPlayback();
+    });
+  } else {
+    btn.textContent = '▶ 8小節再生';
+    stopPlayback();
+  }
+}
+
+// ==================== 録音 ====================
+function toggleRecord() {
+  if (recordFormat === 'wav') toggleRecordWav();
+  else toggleRecordWebm();
+}
+
+function toggleRecordWebm() {
+  const btn = document.getElementById('recordBtn');
+  if (!isRecording) {
+    ensureAudio().then(() => {
+      const dest = audioCtx.createMediaStreamDestination();
+      outputGain.connect(dest);
+      mediaRecorder = new MediaRecorder(dest.stream);
+      recordedChunks = [];
+      mediaRecorder.ondataavailable = e => recordedChunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        outputGain.disconnect(dest);
+        const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `8bar_jazzfunk_${Date.now()}.webm`;
+        a.click();
+        document.getElementById('status').textContent = 'WebMファイルを書き出しました';
+      };
+      mediaRecorder.start();
+      isRecording = true;
+      btn.textContent = '■ 録音停止';
+      document.getElementById('status').textContent = '8小節をWebMで録音中...';
+    });
+  } else {
+    if (mediaRecorder) mediaRecorder.stop();
+    isRecording = false;
+    btn.textContent = '● 録音して保存';
+  }
+}
+
+function toggleRecordWav() {
+  const btn = document.getElementById('recordBtn');
+  if (!isRecording) {
+    ensureAudio().then(() => {
+      recordedSamples = [];
+      const bufferSize = 4096;
+      scriptNode = audioCtx.createScriptProcessor(bufferSize, 1, 1);
+      silentGain = audioCtx.createGain();
+      silentGain.gain.value = 0;
+
+      outputGain.connect(scriptNode);
+      scriptNode.connect(silentGain);
+      silentGain.connect(audioCtx.destination);
+
+      scriptNode.onaudioprocess = (e) => {
+        recordedSamples.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+      };
+
+      isRecording = true;
+      btn.textContent = '■ 録音停止';
+      document.getElementById('status').textContent = '8小節をWAVで録音中...';
+    });
+  } else {
+    isRecording = false;
+    btn.textContent = '● 録音して保存';
+
+    if (scriptNode) {
+      scriptNode.onaudioprocess = null;
+      outputGain.disconnect(scriptNode);
+      scriptNode.disconnect();
+      if (silentGain) silentGain.disconnect();
+    }
+
+    const wavBlob = encodeWAV(recordedSamples, audioCtx.sampleRate);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(wavBlob);
+    a.download = `8bar_jazzfunk_${Date.now()}.wav`;
+    a.click();
+    document.getElementById('status').textContent = 'WAVファイルを書き出しました';
+  }
+}
+
+function encodeWAV(chunks, sampleRate) {
+  let totalLength = 0;
+  chunks.forEach(c => { totalLength += c.length; });
+  const merged = new Float32Array(totalLength);
+  let offset = 0;
+  chunks.forEach(c => { merged.set(c, offset); offset += c.length; });
+
+  const bytesPerSample = 2;
+  const buffer = new ArrayBuffer(44 + merged.length * bytesPerSample);
+  const view = new DataView(buffer);
+
+  function writeString(v, off, str) {
+    for (let i = 0; i < str.length; i++) v.setUint8(off + i, str.charCodeAt(i));
+  }
+
+  writeString(view, 0, 'RIFF');
+  view.setUint32(4, 36 + merged.length * bytesPerSample, true);
+  writeString(view, 8, 'WAVE');
+  writeString(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * bytesPerSample, true);
+  view.setUint16(32, bytesPerSample, true);
+  view.setUint16(34, 16, true);
+  writeString(view, 36, 'data');
+  view.setUint32(40, merged.length * bytesPerSample, true);
+
+  let idx = 44;
+  for (let i = 0; i < merged.length; i++) {
+    let s = Math.max(-1, Math.min(1, merged[i]));
+    s = s < 0 ? s * 0x8000 : s * 0x7FFF;
+    view.setInt16(idx, s, true);
+    idx += 2;
+  }
+
+  return new Blob([view], { type: 'audio/wav' });
+}
+
+// ==================== 初期化 ====================
+function init() {
+  randomizeChordProgression();
+  generateAcidJazzGroove();
+  refreshAllUI();
+
+  document.getElementById('playBtn').onclick = togglePlay;
+  document.getElementById('recordBtn').onclick = toggleRecord;
+  document.getElementById('formatToggleBtn').onclick = () => {
+    if (isRecording) return;
+    recordFormat = recordFormat === 'wav' ? 'webm' : 'wav';
+    document.getElementById('formatToggleBtn').textContent = '形式: ' + (recordFormat === 'wav' ? 'WAV' : 'WebM');
+  };
+  document.getElementById('generateBtn').onclick = generateAcidJazzGroove;
+  document.getElementById('chordRandomBtn').onclick = randomizeChordProgression;
+  document.getElementById('vinylBtn').onclick = () => {
+    vinylOn = !vinylOn;
+    const btn = document.getElementById('vinylBtn');
+    btn.classList.toggle('on', vinylOn);
+    if (vinylNoiseGain) vinylNoiseGain.gain.value = vinylOn ? 0.018 : 0.0;
+  };
+  document.getElementById('clearBtn').onclick = () => {
+    PATTERN_KEYS.forEach(k => Object.keys(patterns[k]).forEach(t => {
+      const nullable = (t === 'bass' || t === 'hihat');
+      patterns[k][t].fill(nullable ? null : false);
+    }));
+    arrangement = new Array(BAR_COUNT).fill('A');
+    refreshAllUI();
+  };
+  document.getElementById('bpmUp').onclick = () => { bpm = Math.min(160, bpm + 2); document.getElementById('bpmValue').textContent = bpm; updateSwingReadout(); };
+  document.getElementById('bpmDown').onclick = () => { bpm = Math.max(60, bpm - 2); document.getElementById('bpmValue').textContent = bpm; updateSwingReadout(); };
+  updateSwingReadout();
+
+  document.getElementById('status').textContent = 'UKジャズファンク風8小節を生成しました。パターンやアレンジを編集して自分好みにしてください！';
+}
+
+window.onload = init;
 </script>
 
 </body>
